@@ -1,4 +1,0 @@
-# Hello bookdown 
-
-
-Try with @xie2015
