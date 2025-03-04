@@ -1,0 +1,17 @@
+--- 
+title: "My Notes During PhD"
+author: "Yongqi Wang"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+url: https://wyq977.github.io/phd-notes
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  This is a e-book of my notes and reflections of my notes during my PhD
+github-repo: wyq977/phd-notes
+---
+
+# About
+
+This book (hopefully) will contained my notes and thoughts during my PhD career at CWI.
