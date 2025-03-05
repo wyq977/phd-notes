@@ -1,6 +1,0 @@
-# Hello bookdown 
-
-
-Cite with @andrealorkeCybenkosTheoremCapability.
-
-Cite again [@abbePolytimeUniversalityLimitations2020].

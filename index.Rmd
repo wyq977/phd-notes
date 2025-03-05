@@ -10,6 +10,7 @@ description: |
   This is a e-book of my notes and reflections of my notes during my PhD
 github-repo: wyq977/phd-notes
 bibliography: [bib/references.bib]
+biblio-style: ieee
 ---
 
 # About

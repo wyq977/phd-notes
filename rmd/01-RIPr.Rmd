@@ -1,0 +1,55 @@
+\newcommand{\conv}[1]{\mathrm{conv}(#1)}
+
+
+# Reverse Inverse Projections
+
+::: {#kl .definition name="Kullback-Leibler divergence"}
+$$
+D(P \Vert Q) = 
+$$
+:::
+
+::: {#rip .definition name="RIP"}
+11
+:::
+
+Here we assume a family $\mathcal{Q}$ (singleton or composite) of parametric family.
+
+And we assume the distribution of null hypothesis is well supported $P$ and begin with single element for simplicity.
+
+## Li's Algorithm
+
+Originally developed by @liEstimationMixtureModels1999, the following algorithms is written based on the notes from @haoEvalues$k$sampleTests2024.
+
+The gist is to obtain the RIPr in a greedy manner where the KL divergence between distribtion $Q$ onto the convex hull of a set of distributions $\mathcal{Q}$ (composite null) is minimized. It is assumed that the KL divergence between $Q$ and any distribution $Q \in \mathcal{Q}$ is finite.
+
+Here the step is denoted by $k = 1, 2, \dots$.
+
+1.  **Step 1**, $k=1$, $Q_{(1)}$ is chosen where 
+$$
+    Q_{(1)} = \arg\min_{Q \in \mathcal{Q}}D(P \Vert Q)
+$$ 
+
+It can also be written as when viewing parameter space: $$
+    Q_{(1)} = Q_{\theta_{(1)}} = \arg\min_{\theta \in \Theta}D(P \Vert Q_{\theta})
+    $$
+2.  **Step** $2, 3, \dots$, **do**
+  
+  $$
+  Q_{(m)} := \alpha Q_{(m-1)} + (1 - \alpha) Q'
+  $$
+  where $\alpha \in (0,1)$ and $Q'$ is a single element of $\mathcal{Q}$ or $\conv{\mathcal{Q}}$? (NOT SURE).
+  
+Here, the distribution $Q'$ and $\alpha$ is chosen (coupled) such that the divergence $D(P \Vert \alpha Q_{(m-1)} + (1 - \alpha) Q')$ is minimized.
+
+**Regularity condition on $\mathcal{Q}$**  
+
+> Appraently, the above algorithm is greedy.
+> However, this task is computationally expensive and it is not clear of the convexity.
+
+
+
+
+## Cisszar Algorithm
+
+Originally proposed by @csiszarInformationGeometryAlternating1984.
