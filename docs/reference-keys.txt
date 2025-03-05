@@ -1,2 +1,7 @@
+def:kl
+def:rip
 about
-hello-bookdown
+reverse-inverse-projections
+lis-algorithm
+cisszar-algorithm
+all-materials

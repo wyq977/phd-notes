@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | My Notes During PhD</title>
+  <title>2 Reverse Inverse Projections | My Notes During PhD</title>
   <meta name="description" content="This is a e-book of my notes and reflections of my notes during my PhD" />
   <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | My Notes During PhD" />
+  <meta property="og:title" content="2 Reverse Inverse Projections | My Notes During PhD" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a e-book of my notes and reflections of my notes during my PhD" />
   <meta name="github-repo" content="wyq977/phd-notes" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | My Notes During PhD" />
+  <meta name="twitter:title" content="2 Reverse Inverse Projections | My Notes During PhD" />
   
   <meta name="twitter:description" content="This is a e-book of my notes and reflections of my notes during my PhD" />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-
+<link rel="prev" href="index.html"/>
+<link rel="next" href="all-materials.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -123,19 +123,57 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="reverse-inverse-projections" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Reverse Inverse Projections<a href="reverse-inverse-projections.html#reverse-inverse-projections" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="definition">
+<p><span id="def:kl" class="definition"><strong>Definition 2.1  (Kullback-Leibler divergence) </strong></span><span class="math display">\[
+D(P \Vert Q) =
+\]</span></p>
+</div>
+<div class="definition">
+<p><span id="def:rip" class="definition"><strong>Definition 2.2  (RIP) </strong></span>11</p>
+</div>
+<p>Here we assume a family <span class="math inline">\(\mathcal{Q}\)</span> (singleton or composite) of parametric family.</p>
+<p>And we assume the distribution of null hypothesis is well supported <span class="math inline">\(P\)</span> and begin with single element for simplicity.</p>
+<div id="lis-algorithm" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Li’s Algorithm<a href="reverse-inverse-projections.html#lis-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Originally developed by <span class="citation">Li (1999)</span>, the following algorithms is written based on the notes from <span class="citation">Hao et al. (2024)</span>.</p>
+<p>The gist is to obtain the RIPr in a greedy manner where the KL divergence between distribtion <span class="math inline">\(Q\)</span> onto the convex hull of a set of distributions <span class="math inline">\(\mathcal{Q}\)</span> (composite null) is minimized. It is assumed that the KL divergence between <span class="math inline">\(Q\)</span> and any distribution <span class="math inline">\(Q \in \mathcal{Q}\)</span> is finite.</p>
+<p>Here the step is denoted by <span class="math inline">\(k = 1, 2, \dots\)</span>.</p>
+<ol style="list-style-type: decimal">
+<li><strong>Step 1</strong>, <span class="math inline">\(k=1\)</span>, <span class="math inline">\(Q_{(1)}\)</span> is chosen where
+<span class="math display">\[
+Q_{(1)} = \arg\min_{Q \in \mathcal{Q}}D(P \Vert Q)
+\]</span></li>
+</ol>
+<p>It can also be written as when viewing parameter space: <span class="math display">\[
+    Q_{(1)} = Q_{\theta_{(1)}} = \arg\min_{\theta \in \Theta}D(P \Vert Q_{\theta})
+    \]</span>
+2. <strong>Step</strong> <span class="math inline">\(2, 3, \dots\)</span>, <strong>do</strong></p>
+<p><span class="math display">\[
+  Q_{(m)} := \alpha Q_{(m-1)} + (1 - \alpha) Q&#39;
+  \]</span>
+where <span class="math inline">\(\alpha \in (0,1)\)</span> and <span class="math inline">\(Q&#39;\)</span> is a single element of <span class="math inline">\(\mathcal{Q}\)</span> or <span class="math inline">\(\mathrm{conv}(\mathcal{Q})\)</span>? (NOT SURE).</p>
+<p>Here, the distribution <span class="math inline">\(Q&#39;\)</span> and <span class="math inline">\(\alpha\)</span> is chosen (coupled) such that the divergence <span class="math inline">\(D(P \Vert \alpha Q_{(m-1)} + (1 - \alpha) Q&#39;)\)</span> is minimized.</p>
+<p><strong>Regularity condition on <span class="math inline">\(\mathcal{Q}\)</span></strong></p>
+<blockquote>
+<p>Appraently, the above algorithm is greedy.
+However, this task is computationally expensive and it is not clear of the convexity.</p>
+</blockquote>
+</div>
+<div id="cisszar-algorithm" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Cisszar Algorithm<a href="reverse-inverse-projections.html#cisszar-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Originally proposed by <span class="citation">I. Csiszár and Tusnády (1984)</span>.</p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="all-materials.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
