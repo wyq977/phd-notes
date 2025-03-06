@@ -23,7 +23,7 @@
 <meta name="author" content="Yongqi Wang" />
 
 
-<meta name="date" content="2025-03-04" />
+<meta name="date" content="2025-03-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -102,7 +102,12 @@ div.csl-indent {
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a></li>
 <li class="chapter" data-level="2" data-path="reverse-inverse-projections.html"><a href="reverse-inverse-projections.html"><i class="fa fa-check"></i><b>2</b> Reverse Inverse Projections</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="reverse-inverse-projections.html"><a href="reverse-inverse-projections.html#lis-algorithm"><i class="fa fa-check"></i><b>2.1</b> Li’s Algorithm</a></li>
+<li class="chapter" data-level="2.1" data-path="reverse-inverse-projections.html"><a href="reverse-inverse-projections.html#lis-algorithm"><i class="fa fa-check"></i><b>2.1</b> Li’s Algorithm</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="reverse-inverse-projections.html"><a href="reverse-inverse-projections.html#is-the-returned-mixture-in-the-convex-hull-of-mathcalq"><i class="fa fa-check"></i><b>2.1.1</b> Is the returned mixture in the convex hull of <span class="math inline">\(\mathcal{Q}\)</span></a></li>
+<li class="chapter" data-level="2.1.2" data-path="reverse-inverse-projections.html"><a href="reverse-inverse-projections.html#convexity-of-the-kl"><i class="fa fa-check"></i><b>2.1.2</b> Convexity of the KL</a></li>
+<li class="chapter" data-level="2.1.3" data-path="reverse-inverse-projections.html"><a href="reverse-inverse-projections.html#requirement"><i class="fa fa-check"></i><b>2.1.3</b> Requirement</a></li>
+</ul></li>
 <li class="chapter" data-level="2.2" data-path="reverse-inverse-projections.html"><a href="reverse-inverse-projections.html#cisszar-algorithm"><i class="fa fa-check"></i><b>2.2</b> Cisszar Algorithm</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="all-materials.html"><a href="all-materials.html"><i class="fa fa-check"></i><b>3</b> All Materials</a></li>
@@ -134,11 +139,16 @@ D(P \Vert Q) =
 <p><span id="def:rip" class="definition"><strong>Definition 2.2  (RIP) </strong></span>11</p>
 </div>
 <p>Here we assume a family <span class="math inline">\(\mathcal{Q}\)</span> (singleton or composite) of parametric family.</p>
-<p>And we assume the distribution of null hypothesis is well supported <span class="math inline">\(P\)</span> and begin with single element for simplicity.</p>
+<p>And we assume the distribution of null hypothesis is well supported <span class="math inline">\(P\)</span> and
+begin with single element for simplicity.</p>
 <div id="lis-algorithm" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Li’s Algorithm<a href="reverse-inverse-projections.html#lis-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Originally developed by <span class="citation">Li (1999)</span>, the following algorithms is written based on the notes from <span class="citation">Hao et al. (2024)</span>.</p>
-<p>The gist is to obtain the RIPr in a greedy manner where the KL divergence between distribtion <span class="math inline">\(Q\)</span> onto the convex hull of a set of distributions <span class="math inline">\(\mathcal{Q}\)</span> (composite null) is minimized. It is assumed that the KL divergence between <span class="math inline">\(Q\)</span> and any distribution <span class="math inline">\(Q \in \mathcal{Q}\)</span> is finite.</p>
+<p>Originally developed by <span class="citation">Li (1999)</span>, the following algorithm
+is written based on the notes from <span class="citation">Hao et al. (2024)</span>.</p>
+<p>The gist is to obtain the RIPr in a greedy manner where the KL divergence betwee
+distribtion <span class="math inline">\(Q\)</span> onto the convex hull of a set of distributions <span class="math inline">\(\mathcal{Q}\)</span>
+(composite null) is minimized. It is assumed that the KL divergence between <span class="math inline">\(Q\)</span>
+and any distribution <span class="math inline">\(Q \in \mathcal{Q}\)</span> is finite.</p>
 <p>Here the step is denoted by <span class="math inline">\(k = 1, 2, \dots\)</span>.</p>
 <ol style="list-style-type: decimal">
 <li><strong>Step 1</strong>, <span class="math inline">\(k=1\)</span>, <span class="math inline">\(Q_{(1)}\)</span> is chosen where
@@ -154,12 +164,45 @@ Q_{(1)} = \arg\min_{Q \in \mathcal{Q}}D(P \Vert Q)
   Q_{(m)} := \alpha Q_{(m-1)} + (1 - \alpha) Q&#39;
   \]</span>
 where <span class="math inline">\(\alpha \in (0,1)\)</span> and <span class="math inline">\(Q&#39;\)</span> is a single element of <span class="math inline">\(\mathcal{Q}\)</span> or <span class="math inline">\(\mathrm{conv}(\mathcal{Q})\)</span>? (NOT SURE).</p>
-<p>Here, the distribution <span class="math inline">\(Q&#39;\)</span> and <span class="math inline">\(\alpha\)</span> is chosen (coupled) such that the divergence <span class="math inline">\(D(P \Vert \alpha Q_{(m-1)} + (1 - \alpha) Q&#39;)\)</span> is minimized.</p>
+<p>Here, the distribution <span class="math inline">\(Q&#39;\)</span> and <span class="math inline">\(\alpha\)</span> is chosen (coupled) such that the divergence <span class="math inline">\(D(P \Vert \alpha Q_{(m-1)} + (1 - \alpha) Q&#39;)\)</span> is minimized. The
+minimizer need not be unique (<em>I think</em>).</p>
 <p><strong>Regularity condition on <span class="math inline">\(\mathcal{Q}\)</span></strong></p>
 <blockquote>
-<p>Appraently, the above algorithm is greedy.
-However, this task is computationally expensive and it is not clear of the convexity.</p>
+<p>Li’s algorithm is apprantly greedy with high fluctaction in initial steps.
+Aditionally, this task is computationally expensive and it is not clear of the convexity.</p>
 </blockquote>
+<div id="is-the-returned-mixture-in-the-convex-hull-of-mathcalq" class="section level3 hasAnchor" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Is the returned mixture in the convex hull of <span class="math inline">\(\mathcal{Q}\)</span><a href="reverse-inverse-projections.html#is-the-returned-mixture-in-the-convex-hull-of-mathcalq" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><em>Correction</em>:
+The returned <span class="math inline">\(Q_{(m)}\)</span> is in the convex hull by definition. The first step
+returned a single element in <span class="math inline">\(\mathcal{Q}\)</span> with the smallest KL divergence.
+Iteratively, the linear combination is still in the convex hull, e.g.
+<span class="math display">\[
+\begin{align*}
+Q_{(2)} &amp;= \alpha_1 \cdot Q_{(1)} + (1 - \alpha_1)\cdot Q_{(1)}&#39; \\
+Q_{(2)} &amp;= \alpha_2 \cdot Q_{(2)} + (1 - \alpha_2)\cdot Q_{(2)}&#39; \\
+&amp;= \alpha_2 \cdot \alpha_1 \cdot Q_{(1)} +
+\alpha_2 \cdot (1 - \alpha_1) \cdot Q_{(1)}&#39; +
+(1 - \alpha_2)\cdot Q_{(2)}&#39; \\
+\end{align*}
+\]</span></p>
+<p>It is clear that <span class="math inline">\(Q_{(2)}\)</span> or <span class="math inline">\(Q_{(m)}\)</span> would still be a convex combination of
+elements in <span class="math inline">\(\mathcal{Q}\)</span>.</p>
+<p>Another way to look at Li’s is that we have. It remains unclear how the
+minimization is actually being done in practice.</p>
+</div>
+<div id="convexity-of-the-kl" class="section level3 hasAnchor" number="2.1.2">
+<h3><span class="header-section-number">2.1.2</span> Convexity of the KL<a href="reverse-inverse-projections.html#convexity-of-the-kl" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>KL is convex w.r.t. <em>distributions</em> in <span class="math inline">\(\mathcal{Q}\)</span>. However, it is not convex
+w.r.t. the parameter space.</p>
+<p>TODO: show that it is convex in 2x2 contingency table case but not exponetial
+family cases.</p>
+</div>
+<div id="requirement" class="section level3 hasAnchor" number="2.1.3">
+<h3><span class="header-section-number">2.1.3</span> Requirement<a href="reverse-inverse-projections.html#requirement" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To quote Brinda, Li’s inequality requires the family <span class="math inline">\(\mathcal{Q}\)</span> to have a
+uniformly bounded density ratio.</p>
+</div>
 </div>
 <div id="cisszar-algorithm" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Cisszar Algorithm<a href="reverse-inverse-projections.html#cisszar-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>

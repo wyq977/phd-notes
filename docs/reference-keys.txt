@@ -3,5 +3,8 @@ def:rip
 about
 reverse-inverse-projections
 lis-algorithm
+is-the-returned-mixture-in-the-convex-hull-of-mathcalq
+convexity-of-the-kl
+requirement
 cisszar-algorithm
 all-materials
