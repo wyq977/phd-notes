@@ -1,6 +1,6 @@
 \documentclass{tufte-handout}
 
-\title{Notes during my PhD}
+\title{Notes During PhD}
 
 \author{Yongqi Wang}
 
@@ -8,20 +8,23 @@
 
 \begin{document}
 
-\maketitle% this prints the handout title, author, and date
+\maketitle
 
 \begin{abstract}
     \noindent
-    This document is an ongoing book of my notes and thoughts during my PhD.
-    Inspired by the Tufte-Handout Style \thanks{Inspired by Edward~R. Tufte!},
-    this handout is built using \href{https://github.com/Tufte-LaTeX/tufte-latex}{\texttt{tufte-latex}}.
+    This document is an ongoing collection of my writing during my PhD.
+    Inspired by the Tufte-Handout Style \thanks{Edward~R. Tufte!},
+    this handout is built using \texttt{tufte-latex}\sidenote{\url{https://github.com/Tufte-LaTeX/tufte-latex}}.
 \end{abstract}
 
+\tableofcontents
+
 \input{chapters/0-preface}
+
 \input{chapters/1-intro}
 
 \bibliography{main}
-\bibliographystyle{plainnat}
+\bibliographystyle{alpha}
 
 
 

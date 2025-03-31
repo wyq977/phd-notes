@@ -1,27 +1,81 @@
 % \printclassoptions
 \newpage
+
+\section{General Topics to Explore}
+
+\noindent
+Priority from high to low
+
+\begin{itemize}
+    \item Exponential Family and Duality
+    \item General Linear Model, Logistics Model
+    \item Multiple Testing
+    \item Stein's Method
+    \item Approximation Theory (Neural Network Model) \\
+          \hspace{1em} The gap between Barron's Space and Fourier Space
+\end{itemize}
+
+% Just something to cite \cite{Mittelbach2004}.
+
+\section{\LaTeX\ Project Management}
+
+The goal is to have a consistent boilerplate for \LaTeX projects,
+I choose AOS for regular article.\sidenote{\url{https://vtex-soft.github.io/texsupport.ims-aos/}}
+
+\begin{itemize}
+    \item \verb|chapters/01-*.tex|: individual files
+    \item \verb|fig|: figures to reproduce
+          \begin{itemize}
+              \item External figures by \textsf{R} or Python, DPS $\geq 300$, \texttt{.pdf}
+              \item TikZ: \texttt{.tex} and \texttt{.pdf}
+              \item Asymptote: \texttt{.asy} and \texttt{.pdf}
+          \end{itemize}
+\end{itemize}
+
+Below is an example project hosted on Github or Overleaf:
+
+\begin{Verbatim}
+    ├── chapters
+    │   ├── 01-preface.tex
+    │   ├── 02-intro.tex
+    ├── fig
+    │   ├── hilbertrecursive.tex
+    │   ├── hilbertrecurves.pdf
+    │   ├── helix.asy
+    │   ├── helix.pdf
+    ├── latexmkrc
+    ├── main.bib
+    ├── main.pdf
+    ├── main.tex
+    └── tex
+    ├── macro.tex
+    ├── tufte-book.cls
+    ├── tufte-common.def
+    ├── tufte-handout.cls
+    └── tufte.bst
+\end{Verbatim}
+
 \section{Mathematical Notation}
 
 It has always been a hassle to organise mathematical notation across different sources,
-in fact, lots of my peers argue that it is the most annoying things
+in fact, I would go so far as to argue that it is the most annoying thing
 when one starts reading a book or an article.
 
-However, there \textsc{must be} some notational conflicts beyond primary school
-simply due to the fact that the limited number of alphabets.
-For example, $\mathbb{E}$ might be energy in physics while it could mean
-expectation or scores in the context of probability.
+However, there \textit{must be} some notational conflicts beyond primary school
+simply due to the fact that the limited number of alphabets (\textbf{26}).
+For example, ``$\mathbb{E}$'' might be energy in physics
+while it could refer to expectation or scores in probability.
 
-One reasons that I found it difficult is that the authors often assume
-some familiarity in the topics \textsc{also} readers should be reading
-in some logical or chronological sequences while in reality, I,
-am usually jumping between one literature to another.
+Another difficulty is that  the authors often assume some familiarity in the topics
+\textit{also} I am expected to read in some logical or chronological order.
+In reality, I am constantly jumping back and forth between one literature to another.
 
 \begin{table}[h!]
     \centering\renewcommand{\arraystretch}{1.2}
     \begin{tabular}{ccl}
-        \textbf{Symbol} & \textbf{for ...} & \textbf{Meaning}                             \\
-        $\mathbb{R}$    &                  & set of real numbers $(-\infty,\infty)$       \\
-        $\mathbb{R}$    &                  & set of nonnegative real numbers $[0,\infty)$ \\
+        \textbf{Symbol} & \textbf{Context} & \textbf{Meaning}                       \\
+        $\mathbb{Z}$    &                  & set of integers                        \\
+        $\mathbb{R}$    &                  & set of real numbers $(-\infty,\infty)$ \\
     \end{tabular}
     \label{tab:real-notation}
 \end{table}
