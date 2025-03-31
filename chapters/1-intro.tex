@@ -4,33 +4,34 @@
 
 \subsection{Li's Algorithm}
 
-Originally developed by @liEstimationMixtureModels1999,
-the following algorithm is written based on the notes from \cite{grunwaldSafeTesting2024}
-@haoEvalues$k$sampleTests2024. 
-To quote Brinda, Li's inequality requires the family $\mathcal{Q}$ to have a
+Originally developed by \cite{liEstimationMixtureModels1999},
+the following algorithm is written based on the notes from 
+\cite{grunwaldSafeTesting2024, haoEvalues$k$sampleTests2024}. 
+To quote \cite{brindaAdaptiveEstimationGaussian2018},
+Li's inequality requires the family $\Qc$ to have a
 uniformly bounded density ratio.
 
 Li obtains the RIPr in a greedy manner where the KL divergence between
-distribution $Q$ onto the convex hull of a set of distributions $\mathcal{Q}$
+distribution $Q$ onto the convex hull of a set of distributions $\Qc$
 (composite null) is minimized. It is assumed that the KL divergence between $Q$
-and any distribution $Q \in \mathcal{Q}$ is finite 
+and any distribution $Q \in \Qc$ is finite \sidenote{Which should I use? $\Qc$ or $\Qf$}
 (often call ``nondegenerate'' condition).
 
 \begin{algorithm}
     \DontPrintSemicolon
     \caption{Li's Algorithm}
     \BlankLine
-    $Q_{(1)} = {\arg\min}_{Q \in \mathcal{Q}} D(P \Vert Q)$\;
+    $Q_{(1)} = {\argmin}_{Q \in \Qc} D(P \Vert Q)$\;
     \For{$m = 2, 3, \dots, K$}{
         $Q := \alpha Q_{(m-1)} + (1 - \alpha) Q'$\;
-        $\alpha, Q' \leftarrow \arg\min_{\alpha, Q'} D(P \Vert Q)$
+        $\alpha, Q' \leftarrow \argmin_{\alpha, Q'} D(P \Vert Q)$
     }
 \end{algorithm}
 
 Here, the distribution $Q'$ and $\alpha$ is chosen (coupled) such that the divergence is minimized. 
 The minimizer need not be unique.\sidenote{I think}
 
-\textbf{Regularity condition on $\mathcal{Q}$}
+\textbf{Regularity condition on alternative}
 
 Li's algorithm is apparently greedy with high fluctuation in initial steps. 
 Additionally, this task is computationally expensive, and it is not clear of the convexity.
@@ -38,7 +39,7 @@ Additionally, this task is computationally expensive, and it is not clear of the
 \textbf{Is the returned mixture in the convex hull?}
 
 The returned $Q_{(m)}$ is in the convex hull. 
-The first step returned a single element in $\mathcal{Q}$ with the smallest KL divergence.
+The first step returned a single element in $\Qc$ with the smallest KL divergence.
 Iteratively, the linear combination is still in the convex hull, i.e.
 \begin{align*}
     Q_{(2)} & = \alpha_1 \cdot Q_{(1)} + (1 - \alpha_1)\cdot Q_{(1)}' \\
@@ -49,7 +50,7 @@ Iteratively, the linear combination is still in the convex hull, i.e.
 \end{align*}
 
 It is clear that $Q_{(2)}$ or $Q_{(m)}$ would still be a convex combination of
-elements in $\mathcal{Q}$.
+elements in $\Qc$.
 
 
 \subsection{Cisszar Algorithm}

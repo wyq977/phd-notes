@@ -1,7 +1,6 @@
 This document is an ongoing collection of my writing during my PhD.
 
-Documented using [Tufte-LaTeX](https://github.com/Tufte-LaTeX/tufte-latex),
-[PDF](https://cdn.jsdelivr.net/gh/wyq977/phd-notes@main/main.pdf).
+[PDF](https://raw.githack.com/wyq977/phd-notes/main/main.pdf)
 
 ## General Topics to Explore
 
