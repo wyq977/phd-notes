@@ -5,14 +5,18 @@
 
 \section{\LaTeX\ Project Management}
 
-The goal is to have a consistent boilerplate for \LaTeX projects,
+A consistent boilerplate for \LaTeX projects,
 I choose AOS for regular article.\sidenote{\url{https://vtex-soft.github.io/texsupport.ims-aos/}}
+
+The references are managed externally by Zotero and BBT,
+exported to BibTex format,
+then included via \verb|natbib|.
 
 \begin{itemize}
     \item \verb|chapters/01-*.tex|: individual files
     \item \verb|fig|: figures to reproduce
           \begin{itemize}
-              \item External figures by \textsf{R} or Python, DPS $\geq 300$, \texttt{.pdf}
+              \item External figures by \textsf{R} or Python DPS $\geq 300$ \texttt{.pdf}
               \item TikZ: \texttt{.tex} and \texttt{.pdf}
               \item Asymptote: \texttt{.asy} and \texttt{.pdf}
           \end{itemize}
@@ -22,24 +26,28 @@ Below is an example project hosted on Github or Overleaf:
 
 \begin{Verbatim}
     ├── chapters
-    │   ├── 01-preface.tex
-    │   ├── 02-intro.tex
+    │   ├── 01-blabla.tex             % each chapter/section
+    │   ├── ...
     ├── fig
-    │   ├── hilbertrecursive.tex
-    │   ├── hilbertrecurves.pdf
-    │   ├── helix.asy
-    │   ├── helix.pdf
+    │   ├── R/Python.pdf
+    │   ├── TikZ.tex
+    │   ├── TikZ.pdf
+    │   ├── Asymptote.asy
+    │   ├── Asymptote.pdf
     ├── latexmkrc
-    ├── main.bib
-    ├── main.pdf
-    ├── main.tex
+    ├── main.bib                      % References
+    ├── main.pdf                      % Main output
+    ├── main.tex                      % Main document
     └── tex
-        ├── macro.tex
-        ├── tufte-book.cls
-        ├── tufte-common.def
-        ├── tufte-handout.cls
-        └── tufte.bst
+        ├── macro.tex                 % All my collected macros
+        ├── setup.tex                 % project-specific: package, layout, macro
+        ├── custom-style.cls
+        ├── custom-style.def
+        ├── custom-style.sty
+        └── custom-style.bst
 \end{Verbatim}
+
+\newpage
 
 \section{Mathematical Notation}
 
@@ -56,12 +64,28 @@ Another difficulty is that  the authors often assume some familiarity in the top
 \textit{also} I am expected to read in some logical or chronological order.
 In reality, I am constantly jumping back and forth between one literature to another.
 
+\begin{fullwidth}
+    \begin{align*}
+        \Af, \Bf, \Cf, \Df, \Ef, \Ff, \Gf, \Hf, \Jf, \Kf, \Lf, \Mf, \Nf, \Of, \Pf, \Qf, \Rf, \Sf, \Tf, \Uf, \Vf, \Wf, \Xf, \Yf, \Zf      \\
+        \Ac, \Bc, \Cc, \Dc, \Ec, \Fc, \Gc, \Hc, \Ic, \Jc, \Kc, \Lc, \Mc, \Nc, \Oc, \Pc, \Qc, \Rc, \Sc, \Tc, \Uc, \Vc, \Wc, \Xc, \Yc, \Zc \\
+        \Ak, \Bk, \Ck, \Dk, \Ek, \Fk, \Gk, \Hk, \Ik, \Jk, \Kk, \Lk, \Mk, \Nk, \Ok, \Pk, \Qk, \Rk, \Sk, \Tk, \Uk, \Vk, \Wk, \Xk, \Yk, \Zk
+    \end{align*}
+\end{fullwidth}
+$$
+    \arginf, \argsup, \argmax, \argmin, \conv
+$$
+
+This stackexchange answer \sidenote{\url{https://tex.stackexchange.com/a/58124}}
+is probably the most comprehensive answer to which fonts are shown in \LaTeX.
+
 \begin{table}[h!]
     \centering\renewcommand{\arraystretch}{1.2}
     \begin{tabular}{ccl}
-        \textbf{Symbol} & \textbf{Context} & \textbf{Meaning}                       \\
-        $\mathbb{Z}$    &                  & set of integers                        \\
-        $\mathbb{R}$    &                  & set of real numbers $(-\infty,\infty)$ \\
+        \textbf{Symbol} & \textbf{Usage} & \textbf{Comments}                                 \\
+        $\Bf$           & \verb|\*f|     & blackboard bold except \verb|\If| due to conflict \\
+        $\Bc$           & \verb|\*c|     & calligraphic font                                 \\
+        $\Bk$           & \verb|\*k|     & fraktur font                                      \\
     \end{tabular}
-    \label{tab:real-notation}
+    \label{tab:macro-letters}
+    \caption{Macros for Letters}
 \end{table}

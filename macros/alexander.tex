@@ -1,0 +1,304 @@
+% TODO notes --------------------------------------------------------------------------------------------------
+%
+\usepackage{todonotes}
+\newcommand{\Alexander}[1]{\todo[inline, color=yellow]{  #1 }}
+
+% Tables --------------------------------------------------------------------------------------------------
+%
+\usepackage{booktabs}
+
+% REFERENCES --------------------------------------------------------------------------------------------------
+%
+\newcommand{\refFig}[1]{Fig.~{\ref{#1}}}
+\newcommand{\refEq}[1]{Eq.~{\eqref{#1}}}
+\newcommand{\refTab}[1]{Table~{\ref{#1}}}
+\newcommand{\refSec}[1]{Section~{\ref{#1}}}
+\newcommand{\refLem}[1]{Lemma~{\ref{#1}}}
+\newcommand{\refCor}[1]{Corollary~{\ref{#1}}}
+\newcommand{\refThm}[1]{Theorem~{\ref{#1}}}
+\newcommand{\refProp}[1]{Proposition~{\ref{#1}}}
+\newcommand{\refEx}[1]{Example~{\ref{#1}}}
+\newcommand{\refDef}[1]{Definition~{\ref{#1}}}
+\newcommand{\refApp}[1]{Appendix~{\ref{#1}}}
+\newcommand{\refBox}[1]{Box~{\ref{#1}}}
+
+
+\newcommand{\refRCode}[1]{\texttt{R} Code~{\ref{#1}}}
+\newcommand{\refROutput}[1]{\texttt{R} Output~{\ref{#1}}}
+
+\newcommand{\bibOrder}[1]{}
+
+
+\newcommand{\idea}[1]{\textbf{Idea}: \emph{#1}}
+\newcommand{\heur}[1]{\textbf{Heuristic}: \emph{#1}}
+%\newcommand{\heur}{\paragraph{Heuristic}}
+
+% MATHEMATICAL FIELDS --------------------------------------------------------------------------------------
+%
+\newcommand{\field}[1]{\mathbb{#1}} % the font for a mathematical field is blackboard
+\newcommand{\C}{\field{C}} % the field of complex number
+\newcommand{\R}{\field{R}} % the field of the reals
+\newcommand{\Q}{\field{Q}} % the field of the reals
+\newcommand{\Z}{\field{Z}} % the field of integers
+\newcommand{\N}{\field{N}} % the field of the natural numbers
+
+% INDECES OF SEQUENCES --------------------------------------------------------------------------------------
+%!TEX encoding = UTF-8 Unicode
+\newcommand{\inNNull}[1]{ \ensuremath{ #1 \in \N_{0}}}
+\newcommand{\inN}[1]{ \ensuremath{ #1 \in \N}}
+
+% LETTERS ---------------------------------------------------------------------------------------------------------
+%
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\Ac}{\mathcal{A}}
+\newcommand{\Af}{\mathbb{A}}
+\newcommand{\Bc}{\mathcal{B}}
+\newcommand{\Bk}{\mathfrak{B}}
+\newcommand{\Bf}{\mathbb{B}}
+\newcommand{\Cc}{\mathcal{C}}
+\newcommand{\Ck}{\mathfrak{C}}
+\newcommand{\Dc}{\mathcal{D}}
+\newcommand{\Df}{\mathbb{D}}
+\newcommand{\Ec}{\mathcal{E}}
+\newcommand{\Ef}{\mathbb{E}}
+\newcommand{\Ff}{\mathbb{F}}
+\newcommand{\Fn}{\mathbb{F}_{n}}
+\newcommand{\Fc}{\mathcal{F}}
+\newcommand{\Gc}{\mathcal{G}}
+\newcommand{\Gf}{\mathbb{G}}
+\newcommand{\Gn}{\mathbb{G}_{n}}
+\newcommand{\Hc}{\mathcal{H}}
+\newcommand{\Ic}{\mathcal{I}}
+\newcommand{\Jc}{\mathcal{J}}
+\newcommand{\Kc}{\mathcal{K}}
+\newcommand{\Kf}{\mathbb{K}}
+\newcommand{\Lc}{\mathcal{L}}
+\newcommand{\Lf}{\mathbb{L}}
+\newcommand{\Mc}{\mathcal{M}}
+\newcommand{\Mnc}{\mathcal{M} \mathcal{N}}
+\newcommand{\Nc}{\mathcal{N}}
+\newcommand{\Nn}{N_{n}}
+\newcommand{\Oc}{\mathcal{O}}
+\newcommand{\Pc}{\mathcal{P}}
+\newcommand{\Pf}{\mathbb{P}}
+\newcommand{\Pn}{\mathbb{P}_{n}}
+\newcommand{\Ps}{\mathscr{P}}
+\newcommand{\Qc}{\mathcal{Q}}
+\newcommand{\Qf}{\mathbb{Q}}
+\newcommand{\Rc}{\mathcal{R}}
+\newcommand{\Sc}{\mathcal{S}}
+\newcommand{\Tc}{\mathcal{T}}
+\newcommand{\Uc}{\mathcal{U}}
+\newcommand{\Uf}{\mathbb{U}}
+\newcommand{\Vc}{\mathcal{V}}
+\newcommand{\Wc}{\mathcal{W}}
+\newcommand{\Wf}{\mathbb{W}}
+\newcommand{\Xc}{\mathcal{X}}
+\newcommand{\Xf}{\mathbb{X}}
+\newcommand{\Xn}{X^{(n)}}
+\newcommand{\xn}{x^{(n)}}
+\newcommand{\Yc}{\mathcal{Y}}
+\newcommand{\Yn}{Y^{(n)}}
+\newcommand{\yn}{y^{(n)}}
+%\newcommand{\Yn}{Y_{1:n}}
+%\newcommand{\yn}{y_{1:n}}
+\newcommand{\YnMinusOne}{Y_{1:n-1}}
+\newcommand{\ynMinusOne}{y_{1:n-1}}
+\newcommand{\Zc}{\mathcal{Z}}
+
+% DERIVATIVE ---------------------------------------------------------------------------------------------------
+%
+\newcommand{\der}{\mathrm{d}}
+
+
+% DISTRIBUTIONS ----------------------------------------------------------------------------------------------
+%
+\newcommand{\iid}{\textnormal{iid}}
+
+\newcommand{\Ber}{\textnormal{Ber}}
+\newcommand{\Bin}{\textnormal{Bin}}
+\newcommand{\Multi}{\textnormal{Multi}}
+\newcommand{\Pois}{\textnormal{Pois}}
+\newcommand{\Gam}{\textnormal{Gam}}
+\newcommand{\Beta}{\textnormal{Beta}}
+\newcommand{\SBeta}{\textnormal{SBeta}}
+\newcommand{\BetaPrime}{\textnormal{Beta2}}
+\newcommand{\Dir}{\textnormal{Dir}}
+\newcommand{\IG}{\textnormal{IG}}
+\newcommand{\InvGamma}{\textnormal{InvGamma}}
+\newcommand{\NIG}{\textnormal{NIG}}
+\newcommand{\GIG}{\textnormal{GIG}}
+\newcommand{\Exp}{\textnormal{Exp}}
+\newcommand{\Uni}{\textnormal{Uni}}
+
+% CONVERGENCE ------------------------------------------------------------------------------------------------
+%
+\newcommand{\as}{\overset{\textnormal{a.s.}}{\rightarrow}}
+\newcommand{\inLp}{\overset{\Lc_{p}}{\rightarrow}}
+\newcommand{\inProb}{\overset{P}{\rightarrow}}
+\newcommand{\inDist}{\overset{\textnormal{d}}{\rightarrow}}
+\newcommand{\inDistr}[1]{\overset{#1}{\rightsquigarrow}}
+\newcommand{\isDist}{\overset{\textnormal{d}}{=}}
+\newcommand{\iidSim}{\overset{\iid}{\sim}}
+
+
+
+% MATRICES -------------------------------------------------------------------------------------------------------
+%
+\newcommand{\Id}{\textnormal{Id}}
+\newcommand{\Span}{\textnormal{Span}}
+\newcommand{\tr}{\textnormal{tr}}
+
+\newcommand{\la}{\langle} % Inner product: left
+\newcommand{\ra}{\rangle} % Inner product: right
+
+\newcommand{\inn}[2]{ \ensuremath{ \langle #1, #2 \rangle}}
+
+\newcommand{\norm}[1]{ \ensuremath{ \| #1 \| }}
+\newcommand{\vecB}[1]{\boldsymbol{#1}}
+
+
+% OPERATORS -------------------------------------------------------------------------------------------------------
+%
+\newcommand{\convolution}{\ast}         % convolution
+\DeclareMathOperator{\diag}{diag}       % een eigen wiskundeoperator
+\DeclareMathOperator{\beeld}{Im}        % eigen wiskundeoperator
+\DeclareMathOperator{\vecOp}{vec}
+\DeclareMathOperator*{\plim}{plim}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argsup}{arg\,sup}
+\DeclareMathOperator*{\arginf}{arg\,inf}
+
+% VARIANCE -----------------------------------------------------------------------------------------------------------
+%
+\newcommand{\var}{\textnormal{Var}}
+\newcommand{\cov}{\textnormal{Cov}}
+\newcommand{\cor}{\textnormal{Cor}}
+
+% SUMS OF SQUARES and ERRORS -----------------------------------------------------------------------
+%
+\newcommand{\rss}{\textnormal{RSS}}
+\newcommand{\ess}{\textnormal{ESS}}
+\newcommand{\tss}{\textnormal{TSS}}
+\newcommand{\mise}{\textnormal{MISE}}
+
+% INFORMATION CRITERIA ---------------------------------------------------------------------------------
+%
+\newcommand{\Aic}{\textnormal{AIC}}
+\newcommand{\Bic}{\textnormal{BIC}}
+\newcommand{\Mdl}{\textnormal{MDL}}
+
+
+% BAYES FACTORS -----------------------------------------------------------------------------
+%
+\newcommand{\BF}{\textnormal{BF}}
+\newcommand{\LR}{\textnormal{LR}}
+\newcommand{\info}{\textnormal{info}}
+\newcommand{\bc}{\textnormal{BC}}
+\newcommand{\elpdLoo}{\textnormal{elpd}_{\textnormal{loo}}}
+
+
+% Abbreviations --------------------------------------------------------------------------------------------------
+%
+\newcommand{\dOri}{d_{\textnormal{orig}}}
+\newcommand{\dRep}{d_{\textnormal{rep}}}
+\newcommand{\dAll}{d_{\textnormal{all}}}
+
+\newcommand{\pOri}{p_{\textnormal{orig}}}
+\newcommand{\pRep}{p_{\textnormal{rep}}}
+
+\newcommand{\nAll}{n_{\textnormal{all}}}
+\newcommand{\nOri}{n_{\textnormal{orig}}}
+\newcommand{\nRep}{n_{\textnormal{rep}}}
+
+\newcommand{\ori}{{\textnormal{orig}}}
+\newcommand{\rep}{{\textnormal{rep}}}
+\newcommand{\all}{{\textnormal{all}}}
+
+\newcommand{\nPlan}{n_{\textnormal{plan}}}
+\newcommand{\mPlan}{m_{\textnormal{plan}}}
+\newcommand{\eff}{\textnormal{eff}}
+
+
+\newcommand{\obs}{n_{\textnormal{obs}}}
+\newcommand{\mis}{n_{\textnormal{mis}}}
+
+\newcommand{\st}{\textnormal{such that}}
+\newcommand{\grow}{\texttt{GROW}}
+\newcommand{\sg}{\textnormal{SG}}
+\newcommand{\dom}{\textnormal{dom}}
+
+\newcommand{\meta}{\textnormal{meta}}
+\newcommand{\PL}{\textnormal{PL}}
+
+\newcommand{\safestats}{\texttt{safestats} }
+
+
+\newcommand{\cText}[1]{\texttt{#1}}
+
+% SPECIAL FUNCTIONS ------------------------------------------------------------------------
+%
+\newcommand{\sign}{\textnormal{sign}}
+\newcommand{\Erf}{\textnormal{Erf}}
+\newcommand{\plog}{\textnormal{plog}}
+\newcommand{\pow}{\texttt{pow}}
+%
+\newcommand{\vect}[1]{{\ensuremath{\vec{\reflectbox{\ensuremath{#1}}}}}}
+
+% HYPERGEOMETRIC FUNCTIONS
+\newcommand{\iFi}[3]{ \ensuremath{ \, {_{1} \textnormal{F}}_{1} \left ( #1 \, ; \,  #2 \, ; \, #3 \right )}}
+\newcommand{\iiFi}[4]{ \ensuremath{ \, {_{2} \textnormal{F}}_{1} \left ( #1, #2 \, ; \, #3 \, ; \,  #4 \right )}}
+\newcommand{\AFi}[6]{ \ensuremath{ \, AF_{1} \left ( #1 \, ; \,  #2, #3 \, ; \,  #4 \, ; \, #5, #6 \right )}}
+\newcommand{\FD}[4]{ \ensuremath{ \, F_{D} \left ( #1 \, ; \,  \vec{#2} \, ; \,  #3 \, ; \, \vec{#4} \right )}}
+
+% Empirical process
+\newcommand{\Gfn}[2]{ \ensuremath{\mathbb{G}_{#1}(#2)}}
+% Indicator function
+\newcommand{\ind}[1]{\mathbf{1} \left \{ #1 \right \}}
+
+%\definecolor{nOrange}{RGB}{245,160,80}
+%\definecolor{nOrange}{RGB}{255,194,10}
+%\definecolor{nOrange}{RGB}{255,176,0}
+%\definecolor{nBlue}{RGB}{12,123,220}
+%\definecolor{nRed}{RGB}{220,50,32}
+
+% COLOURS ------------------------------------------------------------------------------------
+%
+\definecolor{nRed}{RGB}{220,0,12}
+\definecolor{nOrange}{RGB}{254,166,0}
+\definecolor{nBlue}{RGB}{40,96,180}
+
+%\definecolor{mGreen}{RGB}{55,122,111}
+\definecolor{mGreen}{RGB}{46,139,87}
+
+%\definecolor{mPurple}{RGB}{62,30,98}
+%\definecolor{mPurple}{RGB}{146,64,153}
+%\definecolor{mPurple}{RGB}{63,63,154}
+%\definecolor{mPurple}{RGB}{147,112,219}
+\definecolor{mPurple}{RGB}{48,0,211}
+
+
+\definecolor{mRed}{RGB}{182,68,57}
+\definecolor{mOrange}{RGB}{225,124,41}
+\definecolor{mGrey}{RGB}{135,141,158}
+\definecolor{mYellow}{RGB}{212,175,55}
+\definecolor{mBlue}{RGB}{0,191,255}
+
+\newcommand{\nRed}[1]{\textcolor{nRed}{#1}}
+\newcommand{\nOrange}[1]{\textcolor{nOrange}{#1}}
+\newcommand{\nBlue}[1]{\textcolor{nBlue}{#1}}
+\newcommand{\mBlue}[1]{\textcolor{mBlue}{#1}}
+
+
+\newcommand{\mYellow}[1]{\textcolor{mYellow}{#1}}
+\newcommand{\mRed}[1]{\textcolor{mRed}{#1}}
+\newcommand{\mPurple}[1]{\textcolor{mPurple}{#1}}
+\newcommand{\mGreen}[1]{\textcolor{mGreen}{#1}}
+\newcommand{\mOrange}[1]{\textcolor{mOrange}{#1}}
+\newcommand{\mGrey}[1]{\textcolor{mGrey}{#1}}
+
+
+% Highlights ------------------------------------------------------------------------------------
+%
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}

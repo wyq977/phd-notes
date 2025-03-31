@@ -1,36 +1,110 @@
-\date{31 March 2025} % without \date command, current date is supplied
+\RequirePackage{amsbsy}       % for \boldsymbol
+\RequirePackage{amssymb}      % for \intercal
+\RequirePackage{amsopn}       % DeclareMathOperator
+\RequirePackage{amsfonts}
 
-%\geometry{showframe} % display margins for debugging page layout
+% ==============================================================================
+% LETTERS                                                                      
+% ==============================================================================
 
-\usepackage{graphicx} % allow embedded images
-\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
-\graphicspath{{fig/}} % set of paths to search for images
-\usepackage{amsmath}  % extended mathematics
-\usepackage{booktabs} % book-quality tables
-\usepackage{units}    % non-stacked fractions and better unit spacing
-\usepackage{multicol} % multiple column layout facilities
-\usepackage{lipsum}   % filler text
-\usepackage{fancyvrb} % extended verbatim environments
-\fvset{fontsize=\normalsize}% default font size for fancy-verbatim environments
+% boldface
+\newcommand{\Af}{\mathbb{A}}
+\newcommand{\Bf}{\mathbb{B}}
+\newcommand{\Cf}{\mathbb{C}}
+\newcommand{\Df}{\mathbb{D}}
+\newcommand{\Ef}{\mathbb{E}}
+\newcommand{\Ff}{\mathbb{F}}
+\newcommand{\Gf}{\mathbb{G}}
+\newcommand{\Hf}{\mathbb{H}}
+% \newcommand{\If}{\mathbb{I}} % conflict with \If
+\newcommand{\Jf}{\mathbb{J}}
+\newcommand{\Kf}{\mathbb{K}}
+\newcommand{\Lf}{\mathbb{L}}
+\newcommand{\Mf}{\mathbb{M}}
+\newcommand{\Nf}{\mathbb{N}}
+\newcommand{\Of}{\mathbb{O}}
+\newcommand{\Pf}{\mathbb{P}}
+\newcommand{\Qf}{\mathbb{Q}}
+\newcommand{\Rf}{\mathbb{R}}
+\newcommand{\Sf}{\mathbb{S}}
+\newcommand{\Tf}{\mathbb{T}}
+\newcommand{\Uf}{\mathbb{U}}
+\newcommand{\Vf}{\mathbb{V}}
+\newcommand{\Wf}{\mathbb{W}}
+\newcommand{\Xf}{\mathbb{X}}
+\newcommand{\Yf}{\mathbb{Y}}
+\newcommand{\Zf}{\mathbb{Z}}
 
-% Standardize command font styles and environments
-% \newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
-% \newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
-% \newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
-% \newcommand{\docenv}[1]{\textsf{#1}}% environment name
-% \newcommand{\docpkg}[1]{\texttt{#1}}% package name
-% \newcommand{\doccls}[1]{\texttt{#1}}% document class name
-% \newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
-% \newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+% calligraphic
+\newcommand{\Ac}{\mathcal{A}}
+\newcommand{\Bc}{\mathcal{B}}
+\newcommand{\Cc}{\mathcal{C}}
+\newcommand{\Dc}{\mathcal{D}}
+\newcommand{\Ec}{\mathcal{E}}
+\newcommand{\Fc}{\mathcal{F}}
+\newcommand{\Gc}{\mathcal{G}}
+\newcommand{\Hc}{\mathcal{H}}
+\newcommand{\Ic}{\mathcal{I}}
+\newcommand{\Jc}{\mathcal{J}}
+\newcommand{\Kc}{\mathcal{K}}
+\newcommand{\Lc}{\mathcal{L}}
+\newcommand{\Mc}{\mathcal{M}}
+\newcommand{\Nc}{\mathcal{N}}
+\newcommand{\Oc}{\mathcal{O}}
+\newcommand{\Pc}{\mathcal{P}}
+\newcommand{\Qc}{\mathcal{Q}}
+\newcommand{\Rc}{\mathcal{R}}
+\newcommand{\Sc}{\mathcal{S}}
+\newcommand{\Tc}{\mathcal{T}}
+\newcommand{\Uc}{\mathcal{U}}
+\newcommand{\Vc}{\mathcal{V}}
+\newcommand{\Wc}{\mathcal{W}}
+\newcommand{\Xc}{\mathcal{X}}
+\newcommand{\Yc}{\mathcal{Y}}
+\newcommand{\Zc}{\mathcal{Z}}
 
-\usepackage{enumitem}
-\setlist[itemize]{itemsep=\parskip}    % adjusts vertical space in itemize
-\setlist[enumerate]{itemsep=\parskip}  % adjusts vertical space in enumerate
+% fraktur
+\newcommand{\Ak}{\mathfrak{A}}
+\newcommand{\Bk}{\mathfrak{B}}
+\newcommand{\Ck}{\mathfrak{C}}
+\newcommand{\Dk}{\mathfrak{D}}
+\newcommand{\Ek}{\mathfrak{E}}
+\newcommand{\Fk}{\mathfrak{F}}
+\newcommand{\Gk}{\mathfrak{G}}
+\newcommand{\Hk}{\mathfrak{H}}
+\newcommand{\Ik}{\mathfrak{I}}
+\newcommand{\Jk}{\mathfrak{J}}
+\newcommand{\Kk}{\mathfrak{K}}
+\newcommand{\Lk}{\mathfrak{L}}
+\newcommand{\Mk}{\mathfrak{M}}
+\newcommand{\Nk}{\mathfrak{N}}
+\newcommand{\Ok}{\mathfrak{O}}
+\newcommand{\Pk}{\mathfrak{P}}
+\newcommand{\Qk}{\mathfrak{Q}}
+\newcommand{\Rk}{\mathfrak{R}}
+\newcommand{\Sk}{\mathfrak{S}}
+\newcommand{\Tk}{\mathfrak{T}}
+\newcommand{\Uk}{\mathfrak{U}}
+\newcommand{\Vk}{\mathfrak{V}}
+\newcommand{\Wk}{\mathfrak{W}}
+\newcommand{\Xk}{\mathfrak{X}}
+\newcommand{\Yk}{\mathfrak{Y}}
+\newcommand{\Zk}{\mathfrak{Z}}
 
-\usepackage{xurl} % long url break
+% often used subscript/superscript
+\newcommand{\Xn}{X^{(n)}}
+\newcommand{\Yn}{X^{(n)}}
+\newcommand{\Fn}{\Ff_{n}}
 
-% https://stackoverflow.com/questions/55036409/latex-verbatimhow-to-show-the-file-directoy-created-by-tree-command
-\usepackage[utf8]{inputenc}
-\usepackage{pmboxdraw}
+% ==============================================================================
+% OPERATORS                                                                    
+% ==============================================================================
 
-\usepackage[ruled,vlined]{algorithm2e}
+% NEVER RE-define \or and \and used in \author
+
+\DeclareMathOperator*{\argmin}{arg\, min}
+\DeclareMathOperator*{\argmax}{arg\, max}
+\DeclareMathOperator*{\argsup}{arg\, sup}
+\DeclareMathOperator*{\arginf}{arg\, inf}
+
+\newcommand{\conv}{\mathrm{conv}}

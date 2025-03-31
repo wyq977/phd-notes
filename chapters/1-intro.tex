@@ -2,71 +2,55 @@
 
 \section{Reverse Inverse Projections (RIPr)}
 
-
-Here we assume a family $\mathcal{Q}$ (singleton or composite) of parametric family.
-
-And we assume the distribution of null hypothesis is well supported $P$ and
-begin with single element for simplicity.
-
-
 \subsection{Li's Algorithm}
 
 Originally developed by @liEstimationMixtureModels1999,
 the following algorithm is written based on the notes from \cite{grunwaldSafeTesting2024}
-@haoEvalues$k$sampleTests2024.
+@haoEvalues$k$sampleTests2024. 
+To quote Brinda, Li's inequality requires the family $\mathcal{Q}$ to have a
+uniformly bounded density ratio.
 
-The gist is to obtain the RIPr in a greedy manner where the KL divergence between
+Li obtains the RIPr in a greedy manner where the KL divergence between
 distribution $Q$ onto the convex hull of a set of distributions $\mathcal{Q}$
 (composite null) is minimized. It is assumed that the KL divergence between $Q$
-and any distribution $Q \in \mathcal{Q}$ is finite.
+and any distribution $Q \in \mathcal{Q}$ is finite 
+(often call ``nondegenerate'' condition).
 
 \begin{algorithm}
     \DontPrintSemicolon
     \caption{Li's Algorithm}
     \BlankLine
     $Q_{(1)} = {\arg\min}_{Q \in \mathcal{Q}} D(P \Vert Q)$\;
-    \For{$j = 2, 3, \dots, K$}{
-        % initialize $U_{0, a} = U_{0, b} \leftarrow 0$ (number of $1$s in each data block)\;
-        $Q_{(m)} := \alpha Q_{(m-1)} + (1 - \alpha) Q'$
+    \For{$m = 2, 3, \dots, K$}{
+        $Q := \alpha Q_{(m-1)} + (1 - \alpha) Q'$\;
+        $\alpha, Q' \leftarrow \arg\min_{\alpha, Q'} D(P \Vert Q)$
     }
 \end{algorithm}
 
-Here, the distribution $Q'$ and $\alpha$ is chosen (coupled) such that
-the divergence $D(P \Vert \alpha Q_{(m-1)} + (1 - \alpha) Q')$ is minimized. The
-minimizer need not be unique (\textit{I think}).
+Here, the distribution $Q'$ and $\alpha$ is chosen (coupled) such that the divergence is minimized. 
+The minimizer need not be unique.\sidenote{I think}
 
 \textbf{Regularity condition on $\mathcal{Q}$}
 
-Li's algorithm is apparently greedy with high fluctuation in initial steps.
-
+Li's algorithm is apparently greedy with high fluctuation in initial steps. 
 Additionally, this task is computationally expensive, and it is not clear of the convexity.
 
 \textbf{Is the returned mixture in the convex hull?}
 
-Correction:
-The returned $Q_{(m)}$ is in the convex hull by definition. The first step
-returned a single element in $\mathcal{Q}$ with the smallest KL divergence.
-Iteratively, the linear combination is still in the convex hull, e.g.
-
+The returned $Q_{(m)}$ is in the convex hull. 
+The first step returned a single element in $\mathcal{Q}$ with the smallest KL divergence.
+Iteratively, the linear combination is still in the convex hull, i.e.
 \begin{align*}
     Q_{(2)} & = \alpha_1 \cdot Q_{(1)} + (1 - \alpha_1)\cdot Q_{(1)}' \\
     Q_{(2)} & = \alpha_2 \cdot Q_{(2)} + (1 - \alpha_2)\cdot Q_{(2)}' \\
             & = \alpha_2 \cdot \alpha_1 \cdot Q_{(1)} +
     \alpha_2 \cdot (1 - \alpha_1) \cdot Q_{(1)}' +
-    (1 - \alpha_2)\cdot Q_{(2)}'
+    (1 - \alpha_2)\cdot Q_{(2)}'.
 \end{align*}
-
 
 It is clear that $Q_{(2)}$ or $Q_{(m)}$ would still be a convex combination of
 elements in $\mathcal{Q}$.
 
-Another way to look at Li's is that we have. It remains unclear how the
-minimization is actually being done in practice.
-
-Requirement
-
-To quote Brinda, Li's inequality requires the family $\mathcal{Q}$ to have a
-uniformly bounded density ratio.
 
 \subsection{Cisszar Algorithm}
 

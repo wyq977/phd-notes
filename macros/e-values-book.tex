@@ -1,0 +1,515 @@
+
+% Packages
+\usepackage{amssymb,amsmath,amsthm,bbm}
+\usepackage{verbatim,float,url,dsfont}
+\usepackage{graphicx,subfigure,psfrag}
+\usepackage{algorithm, algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{bibentry}
+\algtext*{EndWhile}% Remove "end while" text
+\algtext*{EndIf}% Remove "end if" text
+\algtext*{EndFor}% Remove "end if" text
+\algtext*{EndProcedure}% Remove "end if" text
+\usepackage{mathtools,enumitem}
+\usepackage{multirow}
+\usepackage{ragged2e}
+\usepackage{xr-hyper}
+\usepackage{array}
+\usepackage{stmaryrd,scalerel}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+
+\usepackage{longtable}
+
+
+\usepackage[colorlinks=true,citecolor=blue,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage[margin=1in]{geometry}
+% \usepackage[
+% %     backend=biber,
+%      style= authoryear,
+%      % citestyle=authoryear,
+% % %    sortcites,
+% %     sorting=none,
+% %     giveninits=true,
+% %     natbib,
+% %     hyperref,
+% %     maxbibnames=99,
+% %     doi=false,isbn=false,url=false,eprint=false
+% ]{biblatex}
+ \usepackage{natbib}
+
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{nicefrac}         % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{fancyhdr}
+
+\ifdefined\TimesFont 
+\usepackage{times} % use times font
+\fi
+
+\ifdefined\ParSkip 
+\usepackage{parskip} % use par skip
+\fi
+
+% Theorems and such
+ \newtheorem{theorem}{Theorem}
+\numberwithin{theorem}{chapter}
+ \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{fact}[theorem]{Fact}
+
+
+% Min and max
+% \newcommand{\argmin}{\mathop{\mathrm{argmin}}}
+% \newcommand{\argmax}{\mathop{\mathrm{argmax}}}
+\newcommand{\minimize}{\mathop{\mathrm{minimize}}}
+\newcommand{\maximize}{\mathop{\mathrm{maximize}}}
+\newcommand{\st}{\mathop{\mathrm{subject\,\,to}}}
+
+ 
+
+
+
+\renewcommand{\epsilon}{\varepsilon}
+% Shortcuts
+% \def\R{\mathbb{R}}
+% \def\C{\mathbb{C}}
+% \def\Z{\mathbb{Z}}
+% \def\N{\mathbb{N}}
+% %\def\E{\mathbb{E}}
+% \def\P{\mathbb{P}}
+% \def\T{\mathsf{T}}
+% \def\Cov{\mathrm{Cov}}
+% \def\Var{\mathrm{Var}}
+% \def\indep{\perp\!\!\!\perp}
+% \def\th{^{\text{th}}}
+% \def\tr{\mathrm{tr}}
+% \def\df{\mathrm{df}}
+% \def\dim{\mathrm{dim}}
+% \def\col{\mathrm{col}}
+% \def\row{\mathrm{row}}
+% \def\nul{\mathrm{null}}
+% \def\rank{\mathrm{rank}}
+% \def\nuli{\mathrm{nullity}}
+% \def\spa{\mathrm{span}}
+% \def\sign{\mathrm{sign}}
+% \def\supp{\mathrm{supp}}
+% \def\diag{\mathrm{diag}}
+% \def\aff{\mathrm{aff}}
+% \def\conv{\mathrm{conv}}
+% \def\dom{\mathrm{dom}}
+% \def\hy{\hat{y}}
+% \def\hf{\hat{f}}
+% \def\hmu{\hat{\mu}}
+% \def\halpha{\hat{\alpha}}
+% \def\hbeta{\hat{\beta}}
+% \def\htheta{\hat{\theta}}
+% \def\cA{\mathcal{A}}
+% \def\cB{\mathcal{B}}
+% \def\cC{\mathcal{C}}
+% \def\cD{\mathcal{D}}
+% \def\cE{\mathcal{E}}
+% \def\cF{\mathcal{F}}
+% \def\cG{\mathcal{G}}
+% \def\cK{\mathcal{K}}
+% \def\cH{\mathcal{H}}
+% \def\cI{\mathcal{I}}
+% \def\cL{\mathcal{L}}
+% \def\cM{\mathcal{M}}
+% \def\cN{\mathcal{N}}
+% \def\cP{\mathcal{P}}
+% \def\cR{\mathcal{R}}
+% \def\cS{\mathcal{S}}
+% \def\cT{\mathcal{T}}
+% \def\cW{\mathcal{W}}
+% \def\cX{\mathcal{X}}
+% \def\cY{\mathcal{Y}}
+% \def\cZ{\mathcal{Z}}
+
+% \def\bfW{\mathbf{W}}
+% \def\bfX{\mathbf{X}}
+% \def\bfY{\mathbf{Y}}
+
+% \def\bigo{\mathcal{O}}
+% \def\littleo{\mathrm{o}}
+
+
+% Math shortcuts
+\def\abs#1{\left|#1\right|}
+%\def\ind#1{\mathbbm{1}\left\{#1\right\}}
+%\def\indsub#1{\mathbbm{1}_{#1}}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+%change theorem numbering in appendix
+%\usepackage{chngcntr}
+%\usepackage{apptools}
+%\AtAppendix{\counterwithin{theorem}{section}}
+%\AtAppendix{\counterwithin{prop}{section}}
+
+
+%hide unused equation numbers
+\usepackage{mathtools}
+\mathtoolsset{showonlyrefs}
+
+\usepackage{afterpage}
+
+% stuff moved from main.tex
+\makeatletter
+\def\blfootnote{\xdef\@thefnmark{}\@footnotetext}
+\setlength{\parskip}{.1cm}
+\makeatother
+
+% For theorems etc. 
+\usepackage{mdframed}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+\tcbuselibrary{breakable}
+
+\definecolor{theoremcolor}{HTML}{EBB900}
+
+%\tcbset{
+%    enhanced,
+%    colback=gray!5,     % background color of the box
+%    colframe=gray!5,   % color of box frame 
+%    colbacktitle=red!85!black,   % background color of the title
+%    coltitle=white,   % color of title text
+%    fonttitle=\bfseries,
+%}
+
+\newtcolorbox{proofframe}[2][]{
+    enhanced,
+    breakable=true,
+    sharp corners=all,
+    top=0mm, 
+    left=4mm,
+    enlarge top by=2em,
+    enlarge bottom by=0.5em,
+    left skip=1.5em,
+    right skip=1.5em,
+    borderline={0.2em}{0pt}{gray!20}, 
+    boxrule=0pt,
+    colback=gray!5,
+    coltitle=black,
+    colbacktitle=gray!5,
+    colframe=gray!5,
+    parbox=false,
+    fonttitle=\bfseries,
+    before upper={\vskip -0cm},
+    title={{\begin{tikzpicture}[baseline=(title.base)]
+            \node[rectangle, fill=gray!20, sharp corners, inner sep=1.5mm] (title) {#2};
+          \end{tikzpicture}}
+          },
+    toptitle=-0.4cm,
+}
+
+\renewenvironment{proof}[1][]{%
+    \begin{proofframe}{#1}\relax%
+    }{\end{proofframe}}
+
+ 
+    
+
+\renewenvironment{fact}[1][]{%
+   \refstepcounter{theorem}
+    \ifstrempty{#1}% 
+    {\mdfsetup{% 
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70]{Fact~\thetheorem};}} 
+    }%
+    {\mdfsetup{%
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70] {Fact~\thetheorem:~#1};}}% 
+    }% 
+    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+    topline=true, frametitleaboveskip=-0.9em,}
+    \begin{mdframed}[]\relax% 
+    }{\end{mdframed}
+}
+
+
+\renewenvironment{theorem}[1][]{%
+   \refstepcounter{theorem}
+    \ifstrempty{#1}% 
+    {\mdfsetup{% 
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70]{Theorem~\thetheorem};}} 
+    }%
+    {\mdfsetup{%
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70] {Theorem~\thetheorem:~#1};}}% 
+    }% 
+    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+    topline=true, frametitleaboveskip=-0.9em,}
+    \begin{mdframed}[]\relax% 
+    }{\end{mdframed}
+}
+
+\renewenvironment{lemma}[1][]{%
+    \refstepcounter{theorem}
+    \ifstrempty{#1}% 
+    {\mdfsetup{% 
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70]{Lemma~\thetheorem};}} 
+    }%
+    {\mdfsetup{%
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70] {Lemma~\thetheorem:~#1};}}% 
+    }% 
+    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+    topline=true, frametitleaboveskip=-0.9em,}
+    \begin{mdframed}[]\relax% 
+    }{\end{mdframed}
+}
+
+
+\renewenvironment{example}[1][]{%
+    \refstepcounter{theorem}
+    \ifstrempty{#1}% 
+    {\mdfsetup{% 
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70]{Example~\thetheorem};}} 
+    }%
+    {\mdfsetup{%
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70] {Example~\thetheorem:~#1};}}% 
+    }% 
+    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+    topline=true, frametitleaboveskip=-0.9em,}
+    \begin{mdframed}[]\relax% 
+    }{\end{mdframed}
+}
+
+
+\renewenvironment{definition}[1][]{%
+    \refstepcounter{theorem}
+    \ifstrempty{#1}% 
+    {\mdfsetup{% 
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70]{Definition~\thetheorem};}} 
+    }%
+    {\mdfsetup{%
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70] {Definition~\thetheorem:~#1};}}% 
+    }% 
+    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+    topline=true, frametitleaboveskip=-0.9em,}
+    \begin{mdframed}[]\relax% 
+    }{\end{mdframed}
+}
+
+
+\renewenvironment{corollary}[1][]{%
+    \refstepcounter{theorem}
+\ifstrempty{#1}% 
+    {\mdfsetup{% 
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70]{Corollary~\thetheorem};}} 
+    }%
+    {\mdfsetup{%
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70] {Corollary~\thetheorem:~#1};}}% 
+    }% 
+    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+    topline=true, frametitleaboveskip=-0.9em,}
+    \begin{mdframed}[]\relax% 
+    }{\end{mdframed}
+}
+
+
+\renewenvironment{proposition}[1][]{%
+    \refstepcounter{theorem}
+    \ifstrempty{#1}% 
+    {\mdfsetup{% 
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70]{Proposition~\thetheorem};}} 
+    }%
+    {\mdfsetup{%
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70] {Proposition~\thetheorem:~#1};}}% 
+    }% 
+    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+    topline=true, frametitleaboveskip=-0.9em,}
+    \begin{mdframed}[]\relax% 
+    }{\end{mdframed}
+}
+
+
+
+
+
+\newenvironment{axiom}[1][]{%
+    \refstepcounter{theorem}
+    \ifstrempty{#1}% 
+    {\mdfsetup{% 
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70]{Axiom~\thetheorem};}} 
+    }%
+    {\mdfsetup{%
+    frametitle={% 
+        \tikz
+        \node[anchor=east,rectangle,fill=theoremcolor!70] {Axiom~\thetheorem:~#1};}}% 
+    }% 
+    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+    topline=true, frametitleaboveskip=-0.9em,}
+    \begin{mdframed}[]\relax% 
+    }{\end{mdframed}
+}
+
+
+
+
+%shortcuts
+\newcommand{\err}{\mathrm{err}}
+\newcommand{\quantile}{\mathrm{Quantile}}
+
+\newcommand{\eqd}{\stackrel{\textnormal{d}}{=}}
+\newcommand{\dto}{\stackrel{\textnormal{d}}{\to}}
+\newcommand{\asto}{\stackrel{\textnormal{a.s.}}{\to}}
+\newcommand{\aseq}{\stackrel{\textnormal{a.s.}}{=}}
+\newcommand{\asgeq}{\stackrel{\textnormal{a.s.}}{\geq}}
+\newcommand{\asleq}{\stackrel{\textnormal{a.s.}}{\leq}}
+\newcommand{\iidsim}{\stackrel{\textnormal{i.i.d.}}{\sim}}
+\newcommand{\swap}{\mathrm{swap}}
+\newcommand{\dtv}{\textnormal{d}_{\textnormal{TV}}}
+
+\newcommand{\e}{\mathtt{e}}
+\newcommand{\p}{\mathbb{P}}
+\newcommand{\q}{\mathbb{Q}}
+% \newcommand{\r}{\mathbb{R}}
+\newcommand{\s}{\mathbb{S}}
+\renewcommand{\t}{\mathbb{T}}
+\newcommand{\T}{\t_+}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\leb}{\mathbb{L}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\fE}{\mathfrak{E}}
+\newcommand{\fU}{\mathfrak{U}}
+\newcommand{\fV}{\mathfrak{V}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cM}{\mathcal{M}} 
+\newcommand{\cN}{\mathcal{N}} 
+\newcommand{\cX}{\mathcal{X}} 
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\fM}{\mathbb{M}}
+\newcommand{\cZ}{\mathcal{Z}}
+\newcommand{\cT}{\mathcal{T}}
+\newcommand{\kl}{\mathrm{KL}}
+\newcommand{\conv}{\mathrm{Conv}}
+\newcommand{\epo}{\Lambda}
+\newcommand{\bmu}{\boldsymbol{\mu}}
+
+%%%% Empty set
+\renewcommand{\emptyset}{\varnothing}
+
+
+
+%%%%Only used in Ch8
+\newcommand{\Qtt}{\mathtt{Q}}
+\newcommand{\Ptt}{\mathtt{P}}
+\newcommand{\Rtt}{\mathtt{R}}
+
+ 
+%%% ADDED BY RW
+\renewcommand{\d}{\mathrm{d}}  
+\newcommand{\E}{\mathbb{E}}    % expectation 
+\newcommand{\R}{\mathbb{R}}  % real numbers 
+\newcommand{\cR}{\mathcal{R}}   
+\newcommand{\N}{\mathbb{N}}    % natural numbers
+\usepackage{dsfont}
+\newcommand{\id}{\mathds{1}} 
+\newcommand{\lawis}{\buildrel \mathrm{d} \over \sim}
+\newcommand{\laweq}{\buildrel \mathrm{d} \over =}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\mean}{\mathrm{mean}}
+\newcommand{\cov}{\mathrm{cov}}
+\newcommand{\esssup}{\mathrm{ess\mbox{-}sup}}
+\newcommand{\essinf}{\mathrm{ess\mbox{-}inf}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand{\FCR}{\mathrm{FCR}}
+\newcommand{\FCP}{\mathrm{FCP}}
+\newcommand{\FDR}{\mathrm{FDR}}
+\newcommand{\FDP}{\mathrm{FDP}}
+
+
+% \newcommand{\AR}[1]{\marginpar{{\begin{minipage}{0.12\textwidth}{\begin{flushleft} \footnotesize \color{blue}{#1} \end{flushleft} }\end{minipage}}}}
+
+% \newcommand{\RW}[1]{\marginpar{{\begin{minipage}{0.12\textwidth}{\begin{flushleft} \footnotesize \color{red}{#1} \end{flushleft} }\end{minipage}}}}
+
+
+
+ 
+
+\newcommand{\iEEE}{\mathit{i}\mathcal{E}}
+ 
+
+
+%%%% These are only used in the Appendix.   
+%%%% 
+
+
+
+\usepackage{stmaryrd}
+\SetSymbolFont{stmry}{bold}{U}{stmry}{m}{n}
+
+
+%%%%%% USEFUL IN Chapter 12
+
+\usepackage{booktabs,dcolumn}
+\usepackage{diagbox}
+\usepackage{pdflscape}
+\usepackage{pgfplots}
+\usepackage{multirow}  
+\usepgfplotslibrary{fillbetween}
+\pgfplotsset{compat=1.18}
+
+%%%%%% USEFUL IN RISK MEASURES
+
+\newcommand{\VaR}{\mathrm{VaR}} 
+\newcommand{\ES}{\mathrm{ES}}
+
+
+%%%%%%% USED IN THE NIKOS CHAPTER
+\newcommand{\simiid}{\,{\buildrel \text{iid} \over \sim\,}}
+
+
+
+%%%%% for arXiving: hide comments in pdf 
+
+%\renewcommand{\AR}[1]{\marginpar{{\begin{minipage}{0.12\textwidth}{\begin{flushleft} \footnotesize \color{white}{#1} \end{flushleft} }\end{minipage}}}} \renewcommand{\RW}[1]{\marginpar{{\begin{minipage}{0.12\textwidth}{\begin{flushleft} \footnotesize \color{white}{#1} \end{flushleft} }\end{minipage}}}}
+
+%%%%%%  ends here
