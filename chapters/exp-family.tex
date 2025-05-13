@@ -1,0 +1,120 @@
+
+\section{One-dimensional exponential case}
+
+\begin{align*}
+    &\Gc := \{g_{\eta}(y), \eta \in A,  \in \Yc \}, \quad A \text{ and } \Yc \in \Rf^p \\
+    &g_{\eta}(y) := \exp\left(\eta y - \psi(\eta)\right) g_0(y) m(\dd{y})
+\end{align*}
+
+$y$ is the \textit{sufficient} or \textit{natural} statistics. 
+$y = y(x)$ is a function of an observed data $x$.
+
+$m(\dd{y})$ is the \textit{carrying measure} like the discrete measure 
+($1$ on non-negative integers for Poisson family) or the uniform measure on $[-\infty,\infty]$
+for Gaussian family.
+
+$g_0(y)$ is the \textit{carrying density}.
+
+$\psi(\eta)$ is the \textit{normalizing function} or \textit{cumulant generating function} (CGF).
+It scales the $g_{\eta}(y)$ back to $1$ over the sample space $\Yc$.
+
+\begin{remark}[Carrying density in p.3 efron]
+    Any $g_{\eta_0}(y) \in \Gc$ could be the carrier density and the members of $\Gc$
+    are absolutely continuos with respect to each other, 
+    i.e. their null measure sets agree.
+\end{remark}
+
+\begin{remark}
+    \textit{Cumulant generating function} for $\psi(\eta)$ originates from
+    the old techniques for finding expectations, variances and higher-order moments.
+\end{remark}
+
+\subsection{Moment Relationships}
+
+We can differentiate $\exp(\psi(\eta)) = \int_{\Yc} \exp(\eta y) g_0(y)m(\dd{y})$
+
+\begin{align}
+    \dot{\psi}(\eta) \exp(\psi(\eta)) &= \int_{\Yc} y\exp(\eta y) g_0(y) m(\dd{y}) \\
+    \ERWi{g_0}{y} = \dot{\psi}(\eta) &= \int_{\Yc} y\exp(\eta y - \psi(\eta)) g_0(y) m(\dd{y}) 
+\end{align}
+
+Differentiating $\exp(\psi(\eta))$ twice gives:
+\begin{align}
+    (\ddot{\psi}(\eta) + \dot{\psi}(\eta)) \exp(\psi(\eta))
+        &= \int_{\Yc} y^2 \exp(\eta y) g_0(y) m(\dd{y}) \\
+    \VAR{y} = \ddot{\psi}(\eta) &= \int_{\Yc} (y^2 - y)\exp(\eta y - \psi(\eta)) g_0(y) m(\dd{y})
+\end{align}
+
+\section{Exponential family}
+
+\textit{The notation from Hao's thesis is used here for consistency, 
+this section is mainly on Peter's MDL and Bradley Efron's book.}
+
+\subsection{Unifying the Notation Hell}
+
+Efron's book (Chap. 2)
+\begin{align}
+    &\Gc := \{g_{\eta}(y), \eta \in A, y \in \Yc \}, \quad A \text{ and } \Yc \in \Rf^p \\
+    &g_{\eta}(y) := \exp\left(\eta^\transpose y - \psi(\eta)\right) g_0(y) m(\dd{y})
+\end{align}
+\begin{itemize}
+    \item $y$: \textit{sufficient statistics}, $p \times 1$ vector in $\Yc \subset \Rf^p$,
+    \item $\eta$: \textit{canonical parameter}, $p \times 1 $ vector in $A \subset \Rf^p$
+    \item $g_0(y)$: \textit{carrying density} w.r.t. some \textit{carrying measure} $m(\dd{y})$ on $\Yc$
+    \item $A$ is the \textit{canonical parameter space}: $\int_{\Yc} \exp(\eta\transpose y) g_0(y)m(\dd{y}) <\infty$,
+    \item $\psi(\eta)$ is the \textit{normalizing function} or \textit{cumulant generating function} (CGF)
+\end{itemize}
+
+Hao's
+\begin{align}
+    &p_{\bm{\beta}; \bm{\mu}^*}(u) := \frac{1}{Z_p(\bm{\beta}; \bm{\mu}^*)} 
+        \exp\left( \bm{\beta}^\transpose t(u) \right) \cdot p_{\bm{\mu}^*}(u)
+\end{align}
+\begin{itemize}
+    \item $u$: random variable in $\Uc \subset \Rf^d$ with some measure $v$
+    \item $t(u)$: \textit{sufficient statistics} for some measurable function $t$
+    \item $\bm{\beta}$: \textit{canonical parameter}, $d \times 1 $ vector in $\Bt$
+    \item $Z_p(\bm{\beta}; \bm{\mu}^*)$: \textit{partition function}, 
+        $\int \exp(\bm{\beta}^\transpose t(u)) p_{\bm{\mu}^*}(u)\dd{v} < \infty$
+    \item $p_{\bm{\mu}^*} = p_{\bm{0}, \bm{\mu}^*} \quad q_{\bm{0},\bm{\mu}^*} = q = q_{\bm{\mu}^*}$: why?
+\end{itemize}
+\Yongqi{It is rather simple when you write down $\bm{\beta}=\bm{0}$}
+
+\begin{align}
+    p_{\bm{0};\bm{\mu}^*}(u) &:= 
+        \frac{1}{Z_p(\bm{0};\bm{\mu}^*)}\exp(\bm{0}^\transpose t(u))\cdot p_{\bm{\mu}^*}(u) \\
+        &= \frac{p_{\bm{\mu}^*}(u)}{Z_p(\bm{0};\bm{\mu}^*)} \\
+        &= \frac{p_{\bm{\mu}^*}(u)}{\int\exp(\bm{0}^\transpose t(u)) p_{\bm{\mu}^*}(u)\dd{\nu}} 
+        = p_{\bm{\mu}^*}(u)
+\end{align}
+
+A naive question follows: what is the distribution $p_{\bm{\mu}^*}(u)$? 
+Is it in the mean-value parameterization or canonical form?
+
+Now next to MDL book:
+
+
+\begin{define}[Exponential Family]
+$\PRi{\beta}{X} := \exp(\beta^T\phi(X) - \psi(\beta)) r(X)$
+\end{define}
+where $r(X)$ is known as the carrier function.
+
+We can $Z(\beta)$ the partition function for all $\beta \in \Theta_{\textsc{can}}$,
+defined as 
+\begin{align*}
+    Z(\beta) := 
+\end{align*} 
+
+
+
+\begin{itemize}
+    \item In MDL, an exponential family is an \textit{open convex} exponential family 
+        in a more general sense.
+    \item An exponential family is \textit{full} 
+        if $\ThetaCan$ contains all $\beta$ s.t. $Z(\beta) < \infty$.
+        $\ThetaCan$ is called the \textit{natural parameter space}
+\end{itemize}
+
+
+
+\textbf{Why Hao explicitily denote the mean of the carrier density in \cite{grunwaldSafeTesting2024}}

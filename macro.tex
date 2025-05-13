@@ -1,4 +1,4 @@
-% Updated: 2025-04-28
+% Updated: 2025-05-13
 
 \RequirePackage{amsbsy}       % for \boldsymbol
 \RequirePackage{amssymb}      % for \intercal
@@ -23,16 +23,15 @@
 
 
 \theoremstyle{plain}
-\newtheorem{thm}{Theorem}[section]              % stellingen worden genummerd volgens de sections
-\newtheorem*{hoofdstelling}{Claim}              % een hoofdstelling (zonder nummer)
-\newtheorem{lemma}[thm]{Lemma}                  % lemma's worden genummerd als stellingen
-\newtheorem{prop}[thm]{Proposition}             % lemma's worden genummerd als stellingen
+\newtheorem{thm}{Theorem}[section]
+\newtheorem*{hoofdstelling}{Claim}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
 \newtheorem{eigenschappen}{Properties}
 \newtheorem{coro}[thm]{Corollary}
 \newtheorem{define}[thm]{Definition}
-
-\newtheorem{example}[thm]{Example}              % worden genummerd als de stellingen
-\newtheorem{remark}[thm]{Remark}                % opmerkingen worden niet genummerd
+\newtheorem{example}[thm]{Example}
+\newtheorem{remark}[thm]{Remark}
 \newtheorem{exercise}{Exercise}[section]
 
 % ==============================================================================
@@ -58,7 +57,6 @@
 \newcommand{\iid}{\; \overset{\mathrm{i.i.d.}}{\sim} \;}
 
 % inspired by texab.sty
-
 \DeclareMathOperator{\PRSymbol}{\mathrm{P}}
 \DeclareMathOperator{\ERWSymbol}{\mathbb{E}}
 
@@ -74,7 +72,6 @@
 \newcommand{\condERWi}[4][\ERWSymbol]{{#1}_{#2} \left[ {#3} \;\middle|\; {#4} \right]}
 
 \newcommand{\VAR}[2][\mathrm{Var}]{#1 \left( {#2} \right)}
-
 
 % <#1, #2>
 \newcommand{\spri}[1]{\left\langle {#1} \right\rangle}

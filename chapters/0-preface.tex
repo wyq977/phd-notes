@@ -6,7 +6,7 @@
 \section{\LaTeX\ Project Management}
 
 A consistent boilerplate for \LaTeX projects,
-I choose AOS for regular articles.\sidenote{\url{https://vtex-soft.github.io/texsupport.ims-aos/}}
+I choose AOS for regular articles.\url{https://vtex-soft.github.io/texsupport.ims-aos/}
 
 The references are managed externally by Zotero and BBT,
 exported to BibTex format,
@@ -15,7 +15,7 @@ Below is an example project hosted on Github or Overleaf:
 
 \begin{Verbatim}
     ├── chapters
-    │   ├── 01-blabla.tex             % each chapter/section
+    │   ├── 01-blabla.tex
     │   ├── ...
     ├── fig
     │   ├── R/Python.pdf
@@ -24,12 +24,11 @@ Below is an example project hosted on Github or Overleaf:
     │   ├── Asymptote.asy
     │   ├── Asymptote.pdf
     ├── latexmkrc
-    ├── main.bib                      % References
-    ├── main.pdf                      % Main output
-    ├── main.tex                      % Main document
+    ├── main.bib              % References
+    ├── main.pdf              % Main output
+    ├── main.tex              % Main document
     └── tex
-        ├── macro.tex                 % All my collected macros
-        ├── setup.tex                 % project-specific: package, layout, macro
+        ├── macro.tex         % All my collected macros
         ├── custom-style.cls
         ├── custom-style.def
         ├── custom-style.sty
@@ -59,18 +58,16 @@ Another difficulty is that  the authors often assume some familiarity in the top
 \textit{also} I am expected to read in some logical or chronological order.
 In reality, I am constantly jumping back and forth between one literature to another.
 
-\begin{fullwidth}
-    \begin{align*}
-        \Af, \Bf, \Cf, \Df, \Ef, \Ff, \Gf, \Hf, \Jf, \Kf, \Lf, \Mf, \Nf, \Of, \Pf, \Qf, \Rf, \Sf, \Tf, \Uf, \Vf, \Wf, \Xf, \Yf, \Zf      \\
-        \Ac, \Bc, \Cc, \Dc, \Ec, \Fc, \Gc, \Hc, \Ic, \Jc, \Kc, \Lc, \Mc, \Nc, \Oc, \Pc, \Qc, \Rc, \Sc, \Tc, \Uc, \Vc, \Wc, \Xc, \Yc, \Zc \\
-        \Ak, \Bk, \Ck, \Dk, \Ek, \Fk, \Gk, \Hk, \Ik, \Jk, \Kk, \Lk, \Mk, \Nk, \Ok, \Pk, \Qk, \Rk, \Sk, \Tk, \Uk, \Vk, \Wk, \Xk, \Yk, \Zk
-    \end{align*}
-\end{fullwidth}
+\begin{align*}
+    \Af, \Bf, \Cf, \Df, \Ef, \Ff, \Gf, \Hf, \Jf, \Kf, \Lf, \Mf, \Nf, \Of, \Pf, \Qf, \Rf, \Sf, \Tf, \Uf, \Vf, \Wf, \Xf, \Yf, \Zf      \\
+    \Ac, \Bc, \Cc, \Dc, \Ec, \Fc, \Gc, \Hc, \Ic, \Jc, \Kc, \Lc, \Mc, \Nc, \Oc, \Pc, \Qc, \Rc, \Sc, \Tc, \Uc, \Vc, \Wc, \Xc, \Yc, \Zc \\
+    \Ak, \Bk, \Ck, \Dk, \Ek, \Fk, \Gk, \Hk, \Ik, \Jk, \Kk, \Lk, \Mk, \Nk, \Ok, \Pk, \Qk, \Rk, \Sk, \Tk, \Uk, \Vk, \Wk, \Xk, \Yk, \Zk
+\end{align*}
 $$
     \arginf, \argsup, \argmax, \argmin, \conv
 $$
 
-This stackexchange answer \sidenote{\url{https://tex.stackexchange.com/a/58124}}
+This stackexchange answer \footnote{\url{https://tex.stackexchange.com/a/58124}}
 is probably the most comprehensive answer to which fonts are shown in \LaTeX.
 
 \begin{table}[h!]
