@@ -1,28 +1,73 @@
-\documentclass[nobib]{tufte-handout}
+\documentclass[aos]{imsart}
+
+\input{macro}
 
 \title{Notes During PhD}
 
 \author{Yongqi Wang}
 
-\input{setup}
-\input{macro}
+\date{31 March 2025} % without \date command, current date is supplied
+
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue,colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage[authoryear]{natbib}                  % aos cite
+\let\mkbibnamefamily\textsc                      % textsc in author names
+\usepackage{physics}                             % \dv, \vec, ...
+\usepackage{bm}                                  % \bm
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[normalem]{ulem}                      % sout
+\usepackage{todonotes}                           % todo
+\usepackage[mode=buildnew]{standalone}
+\usepackage{standalone}
+% \usepackage{enumerate}                           %i or I in numbered list
+% \usepackage[margin=3cm]{geometry}                % DO NOT CHANGE in aos
+% \usepackage{indentfirst}                         % indent first line after section
+
+\numberwithin{equation}{section}
+
+
+%% 
+\usepackage{graphicx} % allow embedded images
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{fig/}} % set of paths to search for images
+\usepackage{amsmath}  % extended mathematics
+\usepackage{booktabs} % book-quality tables
+\usepackage{units}    % non-stacked fractions and better unit spacing
+\usepackage{multicol} % multiple column layout facilities
+\usepackage{lipsum}   % filler text
+\usepackage{fancyvrb} % extended verbatim environments
+\fvset{fontsize=\normalsize}% default font size for fancy-verbatim environments
+
+\usepackage{enumitem}
+\setlist[itemize]{itemsep=\parskip}    % adjusts vertical space in itemize
+\setlist[enumerate]{itemsep=\parskip}  % adjusts vertical space in enumerate
+
+\usepackage{xurl} % long url break
+
+% https://stackoverflow.com/questions/55036409/latex-verbatimhow-to-show-the-file-directoy-created-by-tree-command
+\usepackage[utf8]{inputenc}
+\usepackage{pmboxdraw}
+
+\usepackage[ruled,vlined]{algorithm2e}
+
 
 \begin{document}
 
 \maketitle
 
+\tableofcontents
+
 \begin{abstract}
     \noindent
     This document is an ongoing collection of my writing during my PhD.
-    Inspired by the Tufte-Handout Style \thanks{Edward~R. Tufte!},
-    this handout is built using \texttt{tufte-latex}\sidenote{\url{https://github.com/Tufte-LaTeX/tufte-latex}}.
 \end{abstract}
-
-\tableofcontents
 
 \input{chapters/0-preface}
 
 \input{chapters/1-intro}
+
+\input{chapters/app-integral}
 
 \clearpage
 

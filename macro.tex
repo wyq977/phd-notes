@@ -1,0 +1,204 @@
+% Updated: 2025-04-28
+
+\RequirePackage{amsbsy}       % for \boldsymbol
+\RequirePackage{amssymb}      % for \intercal
+\RequirePackage{amsopn}       % DeclareMathOperator
+\RequirePackage{amsfonts}
+\RequirePackage{amsthm}       % theorem
+\RequirePackage{physics}      % dd
+\RequirePackage{bm}           % bm
+
+\newcommand{\refFig}[1]{Fig.~{\ref{#1}}}
+\newcommand{\refEq}[1]{Eq.~{\eqref{#1}}}
+\newcommand{\refTab}[1]{Table~{\ref{#1}}}
+\newcommand{\refSec}[1]{Section~{\ref{#1}}}
+\newcommand{\refLem}[1]{Lemma~{\ref{#1}}}
+\newcommand{\refCor}[1]{Corollary~{\ref{#1}}}
+\newcommand{\refThm}[1]{Theorem~{\ref{#1}}}
+\newcommand{\refProp}[1]{Proposition~{\ref{#1}}}
+\newcommand{\refEx}[1]{Example~{\ref{#1}}}
+\newcommand{\refDef}[1]{Definition~{\ref{#1}}}
+\newcommand{\refApp}[1]{Appendix~{\ref{#1}}}
+\newcommand{\refBox}[1]{Box~{\ref{#1}}}
+
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]              % stellingen worden genummerd volgens de sections
+\newtheorem*{hoofdstelling}{Claim}              % een hoofdstelling (zonder nummer)
+\newtheorem{lemma}[thm]{Lemma}                  % lemma's worden genummerd als stellingen
+\newtheorem{prop}[thm]{Proposition}             % lemma's worden genummerd als stellingen
+\newtheorem{eigenschappen}{Properties}
+\newtheorem{coro}[thm]{Corollary}
+\newtheorem{define}[thm]{Definition}
+
+\newtheorem{example}[thm]{Example}              % worden genummerd als de stellingen
+\newtheorem{remark}[thm]{Remark}                % opmerkingen worden niet genummerd
+\newtheorem{exercise}{Exercise}[section]
+
+% ==============================================================================
+% OPERATORS                                                                    
+% ==============================================================================
+
+% https://tex.stackexchange.com/questions/587275/the-transpose-correct-or-mostly-agreed-upon-notation-concern
+\makeatletter
+\newcommand*{\transpose}{\bgroup\@transpose}
+\newcommand*{\@transpose}[1][0]{\mathpalette\@@transpose{#1}\egroup}
+\newcommand*{\@@transpose}[2]{\setbox0=\hbox{\m@th$#1\mkern-#2mu\intercal$}\raise\dp0\box0}
+\makeatother
+
+% NEVER RE-define \or and \and used in \author
+
+\DeclareMathOperator*{\argmin}{arg\, min}
+\DeclareMathOperator*{\argmax}{arg\, max}
+\DeclareMathOperator*{\argsup}{arg\, sup}
+\DeclareMathOperator*{\arginf}{arg\, inf}
+
+\newcommand{\conv}{\mathrm{conv}}
+
+\newcommand{\iid}{\; \overset{\mathrm{i.i.d.}}{\sim} \;}
+
+% inspired by texab.sty
+
+\DeclareMathOperator{\PRSymbol}{\mathrm{P}}
+\DeclareMathOperator{\ERWSymbol}{\mathbb{E}}
+
+% Defaults: P and E
+\newcommand{\PR}[2][\PRSymbol]{#1 \left( {#2} \right)}
+\newcommand{\PRi}[3][\PRSymbol]{#1_{#2} \left( {#3} \right)}
+\newcommand{\condPR}[3][\PRSymbol]{{#1} \left({#2} \;\middle|\; {#3} \right)}
+\newcommand{\condPRi}[4][\PRSymbol]{{#1}_{#2} \left( {#3} \;\middle|\; {#4} \right)}
+
+\newcommand{\ERW}[2][\ERWSymbol]{#1 \left[ {#2} \right]}
+\newcommand{\ERWi}[3][\ERWSymbol]{#1_{#2} \left[ {#3} \right]}
+\newcommand{\condERW}[3][\ERWSymbol]{#1 \left[ {#2} \;\middle|\; {#3} \right]}
+\newcommand{\condERWi}[4][\ERWSymbol]{{#1}_{#2} \left[ {#3} \;\middle|\; {#4} \right]}
+
+\newcommand{\VAR}[2][\mathrm{Var}]{#1 \left( {#2} \right)}
+
+
+% <#1, #2>
+\newcommand{\spri}[1]{\left\langle {#1} \right\rangle}
+\newcommand{\spr}[2]{\left\langle {#1} \, , {#2} \right\rangle}
+
+% ==============================================================================
+% LETTERS                                                                      
+% ==============================================================================
+
+% boldface
+\newcommand{\Af}{\mathbb{A}}
+\newcommand{\Bf}{\mathbb{B}}
+\newcommand{\Cf}{\mathbb{C}}
+\newcommand{\Df}{\mathbb{D}}
+\newcommand{\Ef}{\mathbb{E}}
+\newcommand{\Ff}{\mathbb{F}}
+\newcommand{\Gf}{\mathbb{G}}
+\newcommand{\Hf}{\mathbb{H}}
+% \newcommand{\If}{\mathbb{I}} % conflict with \If
+\newcommand{\Jf}{\mathbb{J}}
+\newcommand{\Kf}{\mathbb{K}}
+\newcommand{\Lf}{\mathbb{L}}
+\newcommand{\Mf}{\mathbb{M}}
+\newcommand{\Nf}{\mathbb{N}}
+\newcommand{\Of}{\mathbb{O}}
+\newcommand{\Pf}{\mathbb{P}}
+\newcommand{\Qf}{\mathbb{Q}}
+\newcommand{\Rf}{\mathbb{R}}
+\newcommand{\Sf}{\mathbb{S}}
+\newcommand{\Tf}{\mathbb{T}}
+\newcommand{\Uf}{\mathbb{U}}
+\newcommand{\Vf}{\mathbb{V}}
+\newcommand{\Wf}{\mathbb{W}}
+\newcommand{\Xf}{\mathbb{X}}
+\newcommand{\Yf}{\mathbb{Y}}
+\newcommand{\Zf}{\mathbb{Z}}
+
+% calligraphic
+\newcommand{\Ac}{\mathcal{A}}
+\newcommand{\Bc}{\mathcal{B}}
+\newcommand{\Cc}{\mathcal{C}}
+\newcommand{\Dc}{\mathcal{D}}
+\newcommand{\Ec}{\mathcal{E}}
+\newcommand{\Fc}{\mathcal{F}}
+\newcommand{\Gc}{\mathcal{G}}
+\newcommand{\Hc}{\mathcal{H}}
+\newcommand{\Ic}{\mathcal{I}}
+\newcommand{\Jc}{\mathcal{J}}
+\newcommand{\Kc}{\mathcal{K}}
+\newcommand{\Lc}{\mathcal{L}}
+\newcommand{\Mc}{\mathcal{M}}
+\newcommand{\Nc}{\mathcal{N}}
+\newcommand{\Oc}{\mathcal{O}}
+\newcommand{\Pc}{\mathcal{P}}
+\newcommand{\Qc}{\mathcal{Q}}
+\newcommand{\Rc}{\mathcal{R}}
+\newcommand{\Sc}{\mathcal{S}}
+\newcommand{\Tc}{\mathcal{T}}
+\newcommand{\Uc}{\mathcal{U}}
+\newcommand{\Vc}{\mathcal{V}}
+\newcommand{\Wc}{\mathcal{W}}
+\newcommand{\Xc}{\mathcal{X}}
+\newcommand{\Yc}{\mathcal{Y}}
+\newcommand{\Zc}{\mathcal{Z}}
+
+% fraktur
+\newcommand{\Ak}{\mathfrak{A}}
+\newcommand{\Bk}{\mathfrak{B}}
+\newcommand{\Ck}{\mathfrak{C}}
+\newcommand{\Dk}{\mathfrak{D}}
+\newcommand{\Ek}{\mathfrak{E}}
+\newcommand{\Fk}{\mathfrak{F}}
+\newcommand{\Gk}{\mathfrak{G}}
+\newcommand{\Hk}{\mathfrak{H}}
+\newcommand{\Ik}{\mathfrak{I}}
+\newcommand{\Jk}{\mathfrak{J}}
+\newcommand{\Kk}{\mathfrak{K}}
+\newcommand{\Lk}{\mathfrak{L}}
+\newcommand{\Mk}{\mathfrak{M}}
+\newcommand{\Nk}{\mathfrak{N}}
+\newcommand{\Ok}{\mathfrak{O}}
+\newcommand{\Pk}{\mathfrak{P}}
+\newcommand{\Qk}{\mathfrak{Q}}
+\newcommand{\Rk}{\mathfrak{R}}
+\newcommand{\Sk}{\mathfrak{S}}
+\newcommand{\Tk}{\mathfrak{T}}
+\newcommand{\Uk}{\mathfrak{U}}
+\newcommand{\Vk}{\mathfrak{V}}
+\newcommand{\Wk}{\mathfrak{W}}
+\newcommand{\Xk}{\mathfrak{X}}
+\newcommand{\Yk}{\mathfrak{Y}}
+\newcommand{\Zk}{\mathfrak{Z}}
+
+% mathtt
+\newcommand{\At}{\mathtt{A}}
+\newcommand{\Bt}{\mathtt{B}}
+\newcommand{\Ct}{\mathtt{C}}
+\newcommand{\Dt}{\mathtt{D}}
+\newcommand{\Et}{\mathtt{E}}
+\newcommand{\Ft}{\mathtt{F}}
+\newcommand{\Gt}{\mathtt{G}}
+\newcommand{\Ht}{\mathtt{H}}
+\newcommand{\It}{\mathtt{I}}
+\newcommand{\Jt}{\mathtt{J}}
+\newcommand{\Kt}{\mathtt{K}}
+\newcommand{\Lt}{\mathtt{L}}
+\newcommand{\Mt}{\mathtt{M}}
+\newcommand{\Nt}{\mathtt{N}}
+\newcommand{\Ot}{\mathtt{O}}
+\newcommand{\Pt}{\mathtt{P}}
+\newcommand{\Qt}{\mathtt{Q}}
+\newcommand{\Rt}{\mathtt{R}}
+\newcommand{\St}{\mathtt{S}}
+\newcommand{\Tt}{\mathtt{T}}
+\newcommand{\Ut}{\mathtt{U}}
+\newcommand{\Vt}{\mathtt{V}}
+\newcommand{\Wt}{\mathtt{W}}
+\newcommand{\Xt}{\mathtt{X}}
+\newcommand{\Yt}{\mathtt{Y}}
+\newcommand{\Zt}{\mathtt{Z}}
+
+
+% often used subscript/superscript
+\newcommand{\Xn}{X^{(n)}}
+\newcommand{\Yn}{X^{(n)}}
+\newcommand{\Fn}{\Ff_{n}}
+

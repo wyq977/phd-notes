@@ -1,2 +1,2 @@
 $ENV{'TEXINPUTS'}='./tex//:' . $ENV{'TEXINPUTS'}; 
-$ENV{'BSTINPUTS'}='./tex//:' . $ENV{'BSTINPUTS'};
+$ENV{'BSTINPUTS'}='./bst//:' . $ENV{'BSTINPUTS'};
