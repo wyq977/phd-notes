@@ -1,0 +1,127 @@
+\documentclass[aos,preprint]{imsart}
+
+\input{macro}
+
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue,colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{caption}                             % show plain tex
+\usepackage{fancyvrb}                            % extended verbatim environments
+\fvset{fontsize=\normalsize}                     % default font size for fancy-verbatim en
+% https://stackoverflow.com/questions/55036409/latex-verbatimhow-to-show-the-file-directoy-created-by-tree-command
+\usepackage[utf8]{inputenc}
+\usepackage{pmboxdraw}
+
+\begin{document}
+
+\title{\LaTeX\ Project Management}
+
+A consistent boilerplate for \LaTeX\ projects,
+I choose AOS for regular articles, please check 
+\url{https://vtex-soft.github.io/texsupport.ims-aos/} for more details
+
+The references are managed externally by Zotero and BBT,
+exported to BibTex format, then included via \verb|natbib|.
+
+\section{Project Structure}
+
+\subsection{Shared Files}
+
+For example, I would like to have AOS template as the default but do not wish
+to include the \texttt{.cls} in each folder.
+This can be achieved locally when writing in Texifier.
+Most importantly, I can now sourced my \texttt{macro.tex} anywhere.
+
+Ideally, my bib should also be centralized.
+
+% TODO: add sync. latex shared folders
+
+\subsection{Single File Project}
+
+This is the default with one-file project, easy to track.
+
+\begin{Verbatim}
+    ├── fig
+    │   ├── plots.pdf
+    ├── main.bib
+    ├── main.tex
+    ├── main.pdf
+    ├── marco.tex             % All my collected macros
+    ├── custom-style.cls/def/sty/bst
+\end{Verbatim}
+
+\subsection{Multi-Files Project}
+
+Below is a larger \LaTeX\ with different chapters:
+
+\begin{Verbatim}
+    ├── chapters
+    │   ├── 01-blabla.tex
+    ├── fig
+    │   ├── R/Python.pdf
+    │   ├── TikZ.tex
+    │   ├── TikZ.pdf
+    │   ├── Asymptote.asy
+    │   ├── Asymptote.pdf
+    ├── main.bib
+    ├── main.tex
+    ├── main.pdf
+    ├── marco.tex             % All my collected macros
+    ├── custom-style.cls/def/sty/bst
+\end{Verbatim}
+
+% TODO: how to adjust figure size and fonts sizes
+% TODO: BibTex or BibLaTex?
+
+\section{Mathematical Notation}
+
+It has always been a hassle to organise mathematical notation across different sources,
+in fact, I would go so far as to argue that it is the most annoying thing
+when one starts reading a book or an article.
+
+However, there \textit{must be} some notational conflicts beyond primary school
+simply due to the fact that the limited number of alphabets (\textbf{26}).
+For example, ``$\mathbb{E}$'' might be energy in physics
+while it could refer to expectation or scores in probability.
+
+Another difficulty is that the authors often assume some familiarity in the
+topics
+\emph{also} I am expected to read in some logical or chronological order.
+In reality, I am constantly jumping back and forth between one literature to
+another.
+
+\begin{align*}
+    \Af, \Bf, \Cf, \Df, \Ef, \Ff, \Gf, \Hf, \Jf, \Kf, \Lf, \Mf, \Nf, \Of, \Pf,
+\Qf, \Rf, \Sf, \Tf, \Uf, \Vf, \Wf, \Xf, \Yf, \Zf      \\
+    \Ac, \Bc, \Cc, \Dc, \Ec, \Fc, \Gc, \Hc, \Ic, \Jc, \Kc, \Lc, \Mc, \Nc, \Oc,
+\Pc, \Qc, \Rc, \Sc, \Tc, \Uc, \Vc, \Wc, \Xc, \Yc, \Zc \\
+    \Ak, \Bk, \Ck, \Dk, \Ek, \Fk, \Gk, \Hk, \Ik, \Jk, \Kk, \Lk, \Mk, \Nk, \Ok,
+\Pk, \Qk, \Rk, \Sk, \Tk, \Uk, \Vk, \Wk, \Xk, \Yk, \Zk
+\end{align*}
+$$
+    \arginf, \argsup, \argmax, \argmin, \conv
+$$
+
+This stackexchange answer: \url{https://tex.stackexchange.com/a/58124}
+is probably the most comprehensive answer to which fonts are shown in \LaTeX.
+
+\begin{tabular}{ccl}
+  \textbf{Symbol} & \textbf{Usage} & \textbf{Comments}                                 \\
+  $\Bf$           & \verb|\*f|     & blackboard bold except \verb|\If| due to conflict \\
+  $\Bc$           & \verb|\*c|     & calligraphic font                                 \\
+  $\Bk$           & \verb|\*k|     & Fraktur font                                      \\
+\end{tabular}
+
+
+\subsection{Choose the Right Notation and Shortcuts}
+
+I am not even talking about the difference due to differences in fonts and italic or roman.
+It is just a very sad thing that we don't even have a unified way of saying probability is just sad.
+Take probability for example and return to the most basic case of tossing a
+coin 
+where the sample space is $\Ac = \{H, T\}$. I have come across:
+
+\begin{align*}
+    P() \quad \mathrm{P}() \quad \mathrm{Pr}() \quad \mathsf{P}() \quad
+\mathbf{Prob}().
+\end{align*}
+
+\end{document}
