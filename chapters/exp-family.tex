@@ -4,8 +4,8 @@ Before writing this section, I sometimes came across expressions such as
 $p(x) = A \dd{x}$ or $p(x) = A' m(\dd{x})$ in defining exponential family.
 It relates to the fundamental concept of measure and a density in measure theory.
 When I see $\dd{x}$ in evaluating integral, e.g. $f(x) = \int_\Rf x \dd{x} = x^2$,
-it usually refers to the Lebesgue measure. 
-In the case of $m(\dd{x})$, it generally emphasize that you are integrating 
+it usually refers to the Lebesgue measure.
+In the case of $m(\dd{x})$, it generally emphasize that you are integrating
 with respect to a general measure $m$.
 
 Wait, then what are we talking in defining distribution?
@@ -16,28 +16,28 @@ Wait, then what are we talking in defining distribution?
 The exponential family is a collection of parametric models with very elegant properties.
 Peter and Hao utilized it to arrive some nice results about
 the optimality of \E-variables, mainly relying on the duality.
-We called a model belonging to the exponential family 
+We called a model belonging to the exponential family
 if the underlying distributions can be written below.
 
-    
+
 \begin{define}[Exponential Family]
-    \begin{align}\label{eq:exp=family}
-        p_\beta(u) 
-        :=& \exp\left(\beta^T t(u) - \psi(\beta)\right) p_0(u)m(\dd{u}) \\
-        =& \frac{1}{Z(\beta)} \exp(\beta^T y) p_0(y) m(\dd{y}).
-    \end{align}
+	\begin{align}\label{eq:exp=family}
+		p_\beta(u)
+		:= & \exp\left(\beta^T t(u) - \psi(\beta)\right) p_0(u)m(\dd{u}) \\
+		=  & \frac{1}{Z(\beta)} \exp(\beta^T y) p_0(y) m(\dd{y}).
+	\end{align}
 \end{define}
 
 \begin{itemize}
-    \item $u$: \emph{random variable}, $d \times 1$ vector in $\Uc \subset \Rf^d$
-    \item $t(u)$: \emph{sufficient statistics},
-    \item $\beta$: \emph{canonical parameter}, $d \times 1 $ vector in $\Bt \subset \Rf^d$
-    \item $\psi(\beta)$: \emph{cumulant function}
-    \item $p_0(y)$: the \emph{carrying density}, defined with respect to some 
-        \emph{carrying measure} $m(\dd{y})$ on $\Uc$.
+	\item $u$: \emph{random variable}, $d \times 1$ vector in $\Uc \subset \Rf^d$
+	\item $t(u)$: \emph{sufficient statistics},
+	\item $\beta$: \emph{canonical parameter}, $d \times 1 $ vector in $\Bt \subset \Rf^d$
+	\item $\psi(\beta)$: \emph{cumulant function}
+	\item $p_0(y)$: the \emph{carrying density}, defined with respect to some
+	      \emph{carrying measure} $m(\dd{y})$ on $\Uc$.
 
-        We write the \emph{carrying measure} explicitly $m(\dd{u})$.
-    \item $Z(\beta)$: the \emph{partition function}, $Z(\beta) = \exp(\psi(\beta))$
+	      We write the \emph{carrying measure} explicitly $m(\dd{u})$.
+	\item $Z(\beta)$: the \emph{partition function}, $Z(\beta) = \exp(\psi(\beta))$
 \end{itemize}
 
 \Yongqi{Is the space for $u$ and $t(u)$ the same?}
@@ -48,106 +48,105 @@ Cumulant generating function $\phi(\beta)$: The first and second \emph{cumulant}
 Also $\psi(\beta)$ is differentiable infinitely often (? true for all?).
 
 \begin{define}[Canonical Parameter Space]
-    Canonical parameter space $\Bt$ is the set of parameter $\beta$ 
-    where the following integration is finite
-    \begin{align*}
-        \Bt := \left\{\beta: \int_{\Uc} \exp(\beta^T t(u)) p_0(u)m(\dd{u}) <\infty \right\}.
-    \end{align*}
+	Canonical parameter space $\Bt$ is the set of parameter $\beta$
+	where the following integration is finite
+	\begin{align*}
+		\Bt := \left\{\beta: \int_{\Uc} \exp(\beta^T t(u)) p_0(u)m(\dd{u}) <\infty \right\}.
+	\end{align*}
 
-        $m(\dd{u})$ will either be Lebesgue measures or counting measures for discrete cases.
-        In the first case, `$m(\dd{u})$' reduces to `$\dd{u}$',
-        which can be handled using standard multivariable calculus.
-        While in the latter, the above integral can be 
-        written as a summation.
+	$m(\dd{u})$ will either be Lebesgue measures or counting measures for discrete cases.
+	In the first case, `$m(\dd{u})$' reduces to `$\dd{u}$',
+	which can be handled using standard multivariable calculus.
+	While in the latter, the above integral can be
+	written as a summation.
 \end{define}
 
 \begin{remark}
-    Every exponential family has a canonical parameterization with carrier density $p_0$
-    such that the canonical parameter space contains the origin, i.e. $0 \in \Bt$. 
-    (Section 18.4.3 in MDL)
+	Every exponential family has a canonical parameterization with carrier density $p_0$
+	such that the canonical parameter space contains the origin, i.e. $0 \in \Bt$.
+	(Section 18.4.3 in MDL)
 \end{remark}
 
 \begin{proof}
-    If $0 \not\in \Bt$ or $p_0$ is not a carrier density, we can pick any $\beta_0 \in \Bt$ 
-    and set 
-    \begin{align*}
-        p_0' 
-    \end{align*}
+	If $0 \not\in \Bt$ or $p_0$ is not a carrier density, we can pick any $\beta_0 \in \Bt$
+	and set
+	\begin{align*}
+		p_0'
+	\end{align*}
 
-    Now the 
+	Now the
 \end{proof}
 
 \begin{define}[Regular Exponential Family]
-    If the canonical parameter space of exponential families are nonempty open set, 
-    we call such families \emph{regular}.
+	If the canonical parameter space of exponential families are nonempty open set,
+	we call such families \emph{regular}.
 \end{define}
 
 \begin{define}[Full Exponential Family]
-    The family is called \emph{full} if the dimension of $\beta$ equals the dimension of $\Bt$.
+	The family is called \emph{full} if the dimension of $\beta$ equals the dimension of $\Bt$.
 \end{define}
 
 \begin{define}[Order]
-    The order of an exponential family is the minimal dimension of $t(u)$ such that we can express 
-    the family using \refEq{eq:exp=family}.
+	The order of an exponential family is the minimal dimension of $t(u)$ such that we can express
+	the family using \refEq{eq:exp=family}.
 \end{define}
 
 \begin{define}[Minimal Exponential Family]
-    An exponential family is referred to as \emph{minimal} if: 
-    a) there are no linear constraints among the components of the parameter vector $\beta$;
-    b) there are no linear constraints among the components of the sufficient statistic $t(u)$
-    (in the latter case, with probability one under the measure $m$).
+	An exponential family is referred to as \emph{minimal} if:
+	a) there are no linear constraints among the components of the parameter vector $\beta$;
+	b) there are no linear constraints among the components of the sufficient statistic $t(u)$
+	(in the latter case, with probability one under the measure $m$).
 \end{define}
 
 \begin{example}[Non-minimal distribution]
-    The simplest would be a multinomial distribution with parameter $()$. 
-    The PMF can be written as
-    \begin{align*}
-        s
-    \end{align*}
+	The simplest would be a multinomial distribution with parameter $()$.
+	The PMF can be written as bit
+	\begin{align*}
+		s
+	\end{align*}
 \end{example}
 
 We can reparameterize the probability distribution even in the case of minimal distribution\todo{add example}.
-Given a (?arbitrary) set $\Theta$ and a mapping $\Phi: \Theta \to \Bt$, 
+Given a (?arbitrary) set $\Theta$ and a mapping $\Phi: \Theta \to \Bt$,
 we consider the densities with canonical parameters replaced by $\Phi(\theta)$
 \begin{align*}
-    p_\theta(u) := \exp(\Phi(\theta)^T t(u) - \phi(\Psi(\theta))).
+	p_\theta(u) := \exp(\Phi(\theta)^T t(u) - \phi(\Psi(\theta))).
 \end{align*}
 Here $\Phi$ is a one-to-one mapping whose image is all of $\Bt$.
 
 If $\Phi$'s image is a strict subset of $\Bt$ ($\Phi(\Theta) \subset \Bt$),
 it is then OK to reparameterize on that subset.
 If it can not be reducible,
-we refer this exponential family as curved. 
+we refer this exponential family as curved.
 
-
-We are also interested in cases in which the image of Φ is a strict subset of N . If
-this subset is a linear subset, then it is possible to transform the representation into an
+We are also interested in cases in which the image of $\psi$ is a strict subset of N.
+If this subset is a linear subset, then it is possible to transform the representation into an
 exponential family on that subset. When the representation is not reducible in this way, we
 refer to the exponential family as a curved exponential family.
 
 \begin{define}[Curved Exponential Family]
-TBH
-% Φ(θ):
-% There are some important examples in which the density (pmf) has the basic Exponential family
-% form f (x |θ) = e
-% k
-% i=1 ηi (θ)Ti (X)−ψ(θ)h(x), but the assumption that the dimensions of Θ, and that
-% of the range space of (η1(θ),· · · , ηk (θ)) are the same is violated. More precisely, the dimension of
-% Θ is some positive integer q strictly less than k.
+	TBH
+	% Φ(θ):
+	% There are some important examples in which the density (pmf) has the basic Exponential family
+	% form f (x |θ) = e
+	% k
+	% i=1 ηi (θ)Ti (X)−ψ(θ)h(x), but the assumption that the dimensions of Θ, and that
+	% of the range space of (η1(θ),· · · , ηk (θ)) are the same is violated. More precisely, the dimension of
+	% Θ is some positive integer q strictly less than k.
 \end{define}
 
 \begin{example}[Normal distribution with variance equalling to mean]
-    Let $u \in \Rf \sim \Nc(\mu, \mu^2)$, $\mu \not=0$. The density of $u$ is
-    \begin{align*}
-        p_\mu(u) 
-        &= \abs{\mu}^{-1}(2\pi)^{-1/2} \exp(-\frac{1}{2}(\frac{u-\mu}{\mu})^2) \\
-        &= (2\pi)^{-1/2} \exp(-\frac{u^2}{2\mu^2} + \frac{u}{\mu} - \frac{1}{2} + \log(\abs{\mu})) \\
-        &= \exp(\beta^T t(u) - \psi(\beta)).
-    \end{align*}
+	Let $u \in \Rf \sim \Nc(\mu, \mu^2)$, $\mu \not=0$. The density of $u$ is
+	\begin{align*}
+		p_\mu(u)
+		 & = \abs{\mu}^{-1}(2\pi)^{-1/2} \exp(-\frac{1}{2}(\frac{u-\mu}{\mu})^2)                     \\
+		 & = (2\pi)^{-1/2} \exp(-\frac{u^2}{2\mu^2} + \frac{u}{\mu} - \frac{1}{2} + \log(\abs{\mu})) \\
+		 & = \exp(\beta^T t(u) - \psi(\beta)).
+	\end{align*}
 
-    The $\beta^T = (-1/2\mu^2, 1/\mu)$, 
-    the sufficient statistics $t(u) = (u^2, u)$. 
-    The dimension of the sufficient statistic is more than the dimension of $\beta$ for curved exp. family.
+	The $\beta^T = (-1/2\mu^2, 1/\mu)$,
+	the sufficient statistics $t(u) = (u^2, u)$.
+	The dimension of the sufficient statistic is more than the dimension of $\beta$ for curved exp. family.
 \end{example}
 
 
@@ -155,20 +154,20 @@ TBH
 
 I have found some other versions of the same statement regarding minimal exponential family:
 \begin{itemize}
-    \item A minimal exponential family is where the $t(u)$ are linearly independent
-    \item A minimal exponential family is one where representation reaches the \emph{order}
+	\item A minimal exponential family is where the $t(u)$ are linearly independent
+	\item A minimal exponential family is one where representation reaches the \emph{order}
 \end{itemize}
 
 All share the same statement regarding the linear dependency of sufficient statistics $t(u)$,
-only Michael I. Jordan's Chapter 8 stated on $\beta$. 
+only Michael I. Jordan's Chapter 8 stated on $\beta$.
 I wonder if linear dependency in $\beta$ implies linear dependency in $t(u)$, i.e.
 \begin{align*}
-    a^T \beta = C \; \Leftrightarrow \; b^Tt(u) = C'
+	a^T \beta = C \; \Leftrightarrow \; b^Tt(u) = C'
 \end{align*}
 
-He also claimed that non-minimal families can always be reduced to minimal families 
+He also claimed that non-minimal families can always be reduced to minimal families
 via a suitable transformation and reparameterization.
- 
+
 If an exponential family is not minimal, it is
 called \emph{overcomplete}. Both minimal and overcomplete representations are useful
 
@@ -178,68 +177,68 @@ called \emph{overcomplete}. Both minimal and overcomplete representations are us
 
 \subsection{Simple Case}
 \begin{itemize}
-    \item Why I think this is the carrier probability with some measure $v$ $p_{\bm{\mu}^*} = p_{\bm{0}, \bm{\mu}^*} \quad q_{\bm{0},\bm{\mu}^*} = q = q_{\bm{\mu}^*}$:
+	\item Why I think this is the carrier probability with some measure $v$ $p_{\bm{\mu}^*} = p_{\bm{0}, \bm{\mu}^*} \quad q_{\bm{0},\bm{\mu}^*} = q = q_{\bm{\mu}^*}$:
 
-    It is rather simple when you write down $\bm{\beta}=\bm{0}$
-    \begin{align*}
-        p_{\bm{0};\bm{\mu}^*}(u) &:= 
-            \frac{1}{Z_p(\bm{0};\bm{\mu}^*)}\exp(\bm{0}^T t(u))\cdot p_{\bm{\mu}^*}(u) \\
-            &= \frac{p_{\bm{\mu}^*}(u)}{Z_p(\bm{0};\bm{\mu}^*)} \\
-            &= \frac{p_{\bm{\mu}^*}(u)}{\int\exp(\bm{0}^T t(u)) p_{\bm{\mu}^*}(u)\dd{\nu}} 
-            = p_{\bm{\mu}^*}(u)
-    \end{align*}
+	      It is rather simple when you write down $\bm{\beta}=\bm{0}$
+	      \begin{align*}
+		      p_{\bm{0};\bm{\mu}^*}(u) & :=
+		      \frac{1}{Z_p(\bm{0};\bm{\mu}^*)}\exp(\bm{0}^T t(u))\cdot p_{\bm{\mu}^*}(u)                               \\
+		                               & = \frac{p_{\bm{\mu}^*}(u)}{Z_p(\bm{0};\bm{\mu}^*)}                            \\
+		                               & = \frac{p_{\bm{\mu}^*}(u)}{\int\exp(\bm{0}^T t(u)) p_{\bm{\mu}^*}(u)\dd{\nu}}
+		      = p_{\bm{\mu}^*}(u)
+	      \end{align*}
 
-    \item A naive question follows: what is the distribution $p_{\bm{\mu}^*}(u)$? 
-    Is it in the mean-value parameterization or canonical form?
+	\item A naive question follows: what is the distribution $p_{\bm{\mu}^*}(u)$?
+	      Is it in the mean-value parameterization or canonical form?
 \end{itemize}
 
 \subsection{General Case}
 
 \begin{itemize}
-    \item Why Hao explicitly denote the mean of the carrier density in \cite{grunwaldSafeTesting2024}：
+	\item Why Hao explicitly denote the mean of the carrier density in \cite{grunwaldSafeTesting2024}:
 \end{itemize}
 
 We first discuss the Gaussian location family where the mean $\bm{\mu}^*\in\Mt_p=\Rf^d$.
 The null distribution will be family with $\bm{\mu}^*$ and a positive semidefinite covariance matrix $\Sigma_p$
-and the alternative $\Qc=\{Q\}$ would be Gaussian distribution with the same $\bm{mu}^*$ and 
+and the alternative $\Qc=\{Q\}$ would be Gaussian distribution with the same $\bm{mu}^*$ and
 a covariance matrix $\Sigma_p \not= \Sigma_q$.
 
-The notation $D_{\textsc{Gauss}}$ in Eq. (3.2.1) in \cite{haoEvaluesAnytimevalidInference2025} is 
+The notation $D_{\textsc{Gauss}}$ in Eq. (3.2.1) in \cite{haoEvaluesAnytimevalidInference2025} is
 just the KL divergence. Here $X=U=(X_1,\dots,X_d)$ is the $d$-dimensional random vector with
 distribution $p$ or $q$
 
 \begin{align*}
-    D_{\textsc{Gauss}}(B) &= \KL{P}{Q} \\
-    &:= \int_{\Uc} p(X) \log \frac{p(X)}{q(X)}
-    = \ERWi{p}{\log\frac{p(X)}{q(X)}} \\
-    &= \ERWi{p}{\log\frac{(2\pi)^{-d/2} \det(\Sigma_p)^{-1/2}\exp(-\frac{1}{2}(X-\bm{\mu}^*)^T \Sigma_p^{-1}(X-\bm{\mu}^*))}
-    {(2\pi)^{-d/2} \det(\Sigma_q)^{-1/2}\exp(-\frac{1}{2}(X-\bm{\mu}^*)^\top \Sigma_q^{-1}(X-\bm{\mu}^*))}} \\
-    &= \ERWi{p}{\log\frac{\det(\Sigma_q)^{-1/2} \exp(\Sigma_p^{-1})}{\det(\Sigma_q)^{-1/2}\exp(\Sigma_q^{-1})}} \qq{Wrong!}
+	D_{\textsc{Gauss}}(B) & = \KL{P}{Q}                                                                                                             \\
+	                      & := \int_{\Uc} p(X) \log \frac{p(X)}{q(X)}
+	= \ERWi{p}{\log\frac{p(X)}{q(X)}}                                                                                                               \\
+	                      & = \ERWi{p}{\log\frac{(2\pi)^{-d/2} \det(\Sigma_p)^{-1/2}\exp(-\frac{1}{2}(X-\bm{\mu}^*)^T \Sigma_p^{-1}(X-\bm{\mu}^*))}
+	{(2\pi)^{-d/2} \det(\Sigma_q)^{-1/2}\exp(-\frac{1}{2}(X-\bm{\mu}^*)^\top \Sigma_q^{-1}(X-\bm{\mu}^*))}}                                         \\
+	                      & = \ERWi{p}{\log\frac{\det(\Sigma_q)^{-1/2} \exp(\Sigma_p^{-1})}{\det(\Sigma_q)^{-1/2}\exp(\Sigma_q^{-1})}} \qq{Wrong!}
 \end{align*}
 
 For more details, check \url{https://statproofbook.github.io/P/mvn-kl.html} for cases where the means are different.
 
-Why Eq. (3.4.2) holds? The part I don't understand is that 
+Why Eq. (3.4.2) holds? The part I don't understand is that
 why putting a prior will equal to $p_{\bm{\mu}^*}$
 
 \begin{align*}
-    S_{\textsc{cond}} := \frac{q_{W_1}(U^{(n)} \;|\; Z)}{p_{W_0}(U^{(n)} \;|\; Z)}
-    \stackrel{?}{=} \frac{q_{\bm{\mu}^*}(U^{(n)} \;|\; Z)}{p_{\bm{\mu}^*}(U^{(n)} \;|\; Z)}
+	S_{\textsc{cond}} := \frac{q_{W_1}(U^{(n)} \;|\; Z)}{p_{W_0}(U^{(n)} \;|\; Z)}
+	\stackrel{?}{=} \frac{q_{\bm{\mu}^*}(U^{(n)} \;|\; Z)}{p_{\bm{\mu}^*}(U^{(n)} \;|\; Z)}
 \end{align*}
 
 The key is just simple derivation with the fact that $\hat{X}_{|n}:=\sum X_i/n \sim \Nc(n\bm{\mu}^*,n\Sigma_q)$.
 Setting $Z=\hat{X}_{|n}/\sqrt{n} \sim \Nc(\sqrt{n}\bm{\mu}^*,\Sigma_q)$, we have
 \begin{align*}
-    q_{W_1}(X^{(n)} \;\mid\; Z) &:= \frac{q_{W_1}(X^{(n)}, Z)}{q_{W_1}(Z)} = \frac{q_{W_1}(X^{(n)})}{q_{W_1}(Z)} 
-    \stackrel{iid}{=} \frac{\prod^n_{i=1}q_{W_1}(X_i)}{q_{W_1}(Z)}\\
-    &= \frac{\prod(2\pi)^{-d/2}(\det \Sigma_q)^{-1} \exp(-1/2 (X_i-\bm{\mu}^*)^\top \Sigma_q^{-1} (X_i - \bm{\mu}^*))}
-    {(2\pi)^{-d/2}(\det \Sigma_q)^{-1} \exp(-1/2(Z -\sqrt{n} \bm{\mu}^*)^\top \Sigma_q^{-1} (Z -\sqrt{n} \bm{\mu}^*))}\\
-    &= \frac{\exp(\sum_{i=1}^n X_i^\top\Sigma_q^{-1}X_i - 2 \sqrt{n}{\bm{\mu}^*}^\top\Sigma_q^{-1}Z 
-    + n {\bm{\mu}^*}^\top \Sigma_q^{-1}\bm{\mu}^*)}
-    {\exp(Z^\top\Sigma_q^{-1}Z - 2 \sqrt{n}{\bm{\mu}^*}^\top\Sigma_q^{-1}Z 
-    + n {\bm{\mu}^*}^\top \Sigma_q^{-1}\bm{\mu}^*)} \\
-    &= \exp(\sum_{i=1}^n (X_i - Z)^\top \Sigma_q^{-1} (X_i - Z))
-    % {}\qq{ignoring non-exp part}
+	q_{W_1}(X^{(n)} \;\mid\; Z) & := \frac{q_{W_1}(X^{(n)}, Z)}{q_{W_1}(Z)} = \frac{q_{W_1}(X^{(n)})}{q_{W_1}(Z)}
+	\stackrel{iid}{=} \frac{\prod^n_{i=1}q_{W_1}(X_i)}{q_{W_1}(Z)}                                                                                  \\
+	                            & = \frac{\prod(2\pi)^{-d/2}(\det \Sigma_q)^{-1} \exp(-1/2 (X_i-\bm{\mu}^*)^\top \Sigma_q^{-1} (X_i - \bm{\mu}^*))}
+	{(2\pi)^{-d/2}(\det \Sigma_q)^{-1} \exp(-1/2(Z -\sqrt{n} \bm{\mu}^*)^\top \Sigma_q^{-1} (Z -\sqrt{n} \bm{\mu}^*))}                              \\
+	                            & = \frac{\exp(\sum_{i=1}^n X_i^\top\Sigma_q^{-1}X_i - 2 \sqrt{n}{\bm{\mu}^*}^\top\Sigma_q^{-1}Z
+		+ n {\bm{\mu}^*}^\top \Sigma_q^{-1}\bm{\mu}^*)}
+	{\exp(Z^\top\Sigma_q^{-1}Z - 2 \sqrt{n}{\bm{\mu}^*}^\top\Sigma_q^{-1}Z
+	+ n {\bm{\mu}^*}^\top \Sigma_q^{-1}\bm{\mu}^*)}                                                                                                 \\
+	                            & = \exp(\sum_{i=1}^n (X_i - Z)^\top \Sigma_q^{-1} (X_i - Z))
+	% {}\qq{ignoring non-exp part}
 \end{align*}
 
 The equality follows due to the joint distribution $X^{(n)}$ and $Z$ is simply $X^{(n)}$.
@@ -250,88 +249,22 @@ What makes the \E-process-ness? th
 
 Why the $S_{\textsc{seq}} = S_{\textsc{seq,rip}}$ in Thm. 2?
 
-\subsection{Discussion with Peter at 21.05.2025}
-
-Papers discussed: PNAS and general case
-
-For the simple case (the Gaussian location family in 3.2.1 in \cite{haoEvaluesAnytimevalidInference2025}), 
-my interpretation is as followed:
-If negative semidefnite $\Sigma_q-\Sigma_p$, then we reduced to the simple case where the RIPr \E-variable is not only
-in $\conv(\Pc)$ (the convex hull of the null dist.) but rather a element of $\Pc$ itself.
-
-Otherwise, we can find a prior on $\Pc$ with sharp variance $\Nc(\bm{\mu}^*, (\Sigma_q-\Sigma_p)/n)$.
-The results in turn suggests that we cast a sharp prior on $\Pc$ with the same mean.
-However, extra argument about the alternative $Q$, I think we move to the distributions from $Q$ 
-that shares the same sufficient statistics. 
-This is still the part where I am having some doubts. 
-I am still sure is that what does it mean to operate on a `enlarged' or `modified' 
-alternative even if the alternative $\Qc=\{Q\}$ being just Gaussian with same mean and a different variance.
-
-Another point is in the Anti-Simple case, then $S_{Q,\textsc{seq,rip}}^{(n)} =1$. 
-First of all, the superscript $^{(n)}$ says it is considering a sequential settings 
-but $X^{(i)}$ is \emph{singular} following either null dist. or alternative dist.
-This $S=1$ breaks simply when we are considering two $X$ following the same distribution,
-we then test whether $X' = (X, Y) \iid P \in \Pc$ or alternative.
-
-\textbf{Data spilting in UI} \quad In a sense, the spilting is done sequentially or done across $n$
-data points in contrast to the $D_0$ $D_1$ in the original paper. Now we are talking about the UI in (3.2.14)
-I think! The classical on would be $L = L_0(\hat{\theta}_1)/L_0(\hat{\theta}_0)$
-
-\begin{align*}
-    S_{\breve{\bm{\mu}},\textsc{UI}}^{(n)} = 
-        \frac{\prod_{i=1}^n q_{\breve{\bm{\mu}}|_{i-1}(U_{(i)})}}
-        {p_{\breve{\bm{\mu}}|_n(U^{(n)})}}
-\end{align*}
-
-We have a regular ML estimator likelihood in the denominator after looking at the whole sequence $n$.
-For the nominator, we have a product of the ML likelihood for each time $i$. 
-In the end, we have effectively losing just $U_{(1)}$ in calculating likelihood.
-
-\textbf{Beyond NP} \quad We discussed about the similarities among the loss function in the ERM scheme 
-and in this paper. The ERM loss is always with respect to some data (empirical) while
-here we are concerning about a data-dependent loss?
-
-The problem or rather common difficulty with p-value in NP paradigm is that 
-why do we report p-value at all?
-What does it mean for a small p-value when $p\ll\alpha$?
-
-Peter proposed a alternative as in we should report E-value instead. 
-I think also the notation of seeing $\alpha$ as the error probability is somewhat challenged.
-
-\textbf{Inspiration} \quad In vaccination study, we see a extremely small p-value on null
-but we are not allowed to make \emph{new} decision without setting up new hypothesises and 
-new studies. In other words, if we looked at a promising data \emph{post-hoc}, 
-there is really not much we can do based on the original data. 
-But with \E-value, he argued that new decision can be based/conditioned on the data.
-
-Is $l$ in Eq. 1 \cite{grunwaldNeymanPearsonEvalues2024} just a new $\alpha$?
-
-In this loss function $L(\kappa, a)$, $\kappa$ is the true state of nature that we don't know?
-We just assumed if the data is coming from null or alternative.
-
-In all, I think the main idea is to change from Type-I error safe to Type-I risk safe.
-I think section 2's main take home message is that any maximally compatible decision rule must 
-be a \E-variable
-
-This is cited from Micheal I Jordan's notes: 
-\url{https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter8.pdf}
-
 \subsection{One-dimensional special case}
 
 \begin{align*}
-    &\Gc := \{g_{\eta}(y), \eta \in A,  \in \Yc \}, \quad A \text{ and } \Yc \in \Rf^p \\
-    &g_{\eta}(y) := \exp\left(\eta y - \psi(\eta)\right) g_0(y) m(\dd{y})
+	 & \Gc := \{g_{\eta}(y), \eta \in A,  \in \Yc \}, \quad A \text{ and } \Yc \in \Rf^p \\
+	 & g_{\eta}(y) := \exp\left(\eta y - \psi(\eta)\right) g_0(y) m(\dd{y})
 \end{align*}
 
 \begin{remark}[Carrying density in p.3 efron]
-    Any $g_{\eta_0}(y) \in \Gc$ could be the carrier density and the members of $\Gc$
-    are absolutely continuos with respect to each other, 
-    i.e. their null measure sets agree.
+	Any $g_{\eta_0}(y) \in \Gc$ could be the carrier density and the members of $\Gc$
+	are absolutely continuos with respect to each other,
+	i.e. their null measure sets agree.
 \end{remark}
 
 \begin{remark}
-    \textit{Cumulant generating function} for $\psi(\eta)$ originates from
-    the old techniques for finding expectations, variances and higher-order moments.
+	\textit{Cumulant generating function} for $\psi(\eta)$ originates from
+	the old techniques for finding expectations, variances and higher-order moments.
 \end{remark}
 
 \subsection{Moment Relationships}
@@ -339,25 +272,25 @@ This is cited from Micheal I Jordan's notes:
 We can differentiate $\exp(\psi(\eta)) = \int_{\Yc} \exp(\eta y) g_0(y)m(\dd{y})$
 
 \begin{align*}
-    \dot{\psi}(\eta) \exp(\psi(\eta)) &= \int_{\Yc} y\exp(\eta y) g_0(y) m(\dd{y}) \\
-    \ERWi{g_0}{y} = \dot{\psi}(\eta) &= \int_{\Yc} y\exp(\eta y - \psi(\eta)) g_0(y) m(\dd{y}) 
+	\dot{\psi}(\eta) \exp(\psi(\eta)) & = \int_{\Yc} y\exp(\eta y) g_0(y) m(\dd{y})              \\
+	\ERWi{g_0}{y} = \dot{\psi}(\eta)  & = \int_{\Yc} y\exp(\eta y - \psi(\eta)) g_0(y) m(\dd{y})
 \end{align*}
 
 Differentiating $\exp(\psi(\eta))$ twice gives:
 \begin{align*}
-    (\ddot{\psi}(\eta) + \dot{\psi}(\eta)) \exp(\psi(\eta))
-        &= \int_{\Yc} y^2 \exp(\eta y) g_0(y) m(\dd{y}) \\
-    \VAR{y} = \ddot{\psi}(\eta) &= \int_{\Yc} (y^2 - y)\exp(\eta y - \psi(\eta)) g_0(y) m(\dd{y})
+	(\ddot{\psi}(\eta) + \dot{\psi}(\eta)) \exp(\psi(\eta))
+	                            & = \int_{\Yc} y^2 \exp(\eta y) g_0(y) m(\dd{y})                   \\
+	\VAR{y} = \ddot{\psi}(\eta) & = \int_{\Yc} (y^2 - y)\exp(\eta y - \psi(\eta)) g_0(y) m(\dd{y})
 \end{align*}
 
 
 Efron's book (Chap. 2)
 \begin{align*}
-    &\Gc := \{g_{\eta}(y), \eta \in A, y \in \Yc \}, \quad A \text{ and } \Yc \in \Rf^p \\
-    &g_{\eta}(y) := \exp\left(\eta^T y - \psi(\eta)\right) g_0(y) m(\dd{y})
+	 & \Gc := \{g_{\eta}(y), \eta \in A, y \in \Yc \}, \quad A \text{ and } \Yc \in \Rf^p \\
+	 & g_{\eta}(y) := \exp\left(\eta^T y - \psi(\eta)\right) g_0(y) m(\dd{y})
 \end{align*}
 \begin{itemize}
-    \item $g_0(y)$: \textit{carrying density} w.r.t. some \textit{carrying measure} $m(\dd{y})$ on $\Yc$
-    \item $A$ is the \textit{canonical parameter space}:
-    \item $\psi(\eta)$ is the \textit{normalizing function} or \textit{cumulant generating function} (CGF)
+	\item $g_0(y)$: \textit{carrying density} w.r.t. some \textit{carrying measure} $m(\dd{y})$ on $\Yc$
+	\item $A$ is the \textit{canonical parameter space}:
+	\item $\psi(\eta)$ is the \textit{normalizing function} or \textit{cumulant generating function} (CGF)
 \end{itemize}

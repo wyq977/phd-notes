@@ -1,0 +1,190 @@
+\newpage
+
+\section{Meetings}
+
+\subsection*{25.08.2025}
+Practical goal:
+\begin{itemize}
+	\item Compare speed of conditional E in BiasedUrn and R: about 3x performance, not worth it to import
+	\item Add save E into the package, not done yet but the styles are already similar to the safestats
+	      pacage
+\end{itemize}
+
+This week's goal theory-wise
+\begin{itemize}
+	\item Just write down again the KL for Gaussian family for repetition.
+	\item Restate the connection between integral and sequential product of UI:
+	      haven't found the literature yet
+	\item Try to re-state the simple and anti-simple case
+	\item What is the seq-RIPr and seq-COND?
+	\item Why do we need to have a general KL measure in general paper
+	\item Read carefully how the maximum is found in the log-optimal paper
+	\item Reproduce with safestats packages for the
+	\item UMP in math. stat. course lecture notes.
+	\item I wanna write down $\dd{\nu}$ and $\dd{X}$ and all that.
+\end{itemize}
+
+\emph{The difference between the simple and anti-simple case} In short, the simple case
+is where $\Sigma_q-\Sigma_p$ is negative which mean we can find a RIPr via a prior (or a element)
+of $P$.
+
+\subsection*{15.08.2025} Sebastian did a great presentation regarding testing
+quantile given filtrations. I would formulate here and also add a picture.
+
+The question in mind is to test whether data $X$ is from a hypothesis $\Hc$ that
+is non-parametric:
+\begin{align*}
+	\Hc = \left\{P \in \Pc(X) \mid \ERWi{p}{\phi_i(X)=0}, \i=1,2,\dots,d\right\} \\
+	\text{where } \Pc(X) \text{ is all distribution on } X.
+\end{align*}
+
+The simplest instance where testing $X$ with the same mean $\mu$ where
+$\phi_1(X)=X-\mu$.
+Larson has proven that the `optimal' \E-variable must be in the form:
+\begin{align*}
+	S := 1 +\sum_{i=1}^d \lambda_i \phi_i(X)
+\end{align*}
+
+Sebastian is mainly interested in the cases if there is any gain in \E-variables
+compared to a coraser filtrations.
+Imagine we have conditioned on the original data $X_i, i=1,2,\dots$, you would think
+that the hypothesis case constructed as below:
+\begin{align}
+	\Hc  & = \left\{P \in \Pc(X) \mid \condERW{Y_2}{X_1} = \alpha \right\} \\
+	\Hc' & = \left\{P \in \Pc(X) \mid \condERW{Y_2}{Y_1} = \alpha \right\}
+\end{align}
+where $Y_i = 1_{X_i \leq q}$. He showed that both $\Hc$ and $\Hc'$ are convex
+and $\Hc$'s closed convex hull is not the same, otherwise it would be kind of pointless.
+
+\adjustimage{max size={0.5\textheight}{\textwidth},keepaspectratio}{fig/2025-08-15.jpeg}
+
+\subsection*{14.08.2025}
+
+This is a short discussion regarding UI, specifically about the difference
+between prequential and integral representation.
+
+Supposed iid data $\Dc=\{X_1,X_2,\dots,X_n\}$ and we denote
+the data up to time $i$ by $X^{(i)}=\{X_1,X_2\dots,X_i\}$.
+
+One way to instantiate UI by
+\begin{align*}
+	\frac{\prod_{i=1}^n P_{\tilde{\theta}_{alt\mid i-1}}(X_i)}{P_{\hat{\theta}_0}(X^{(n)})}
+\end{align*}
+where $\tilde{\theta}_{alt\mid i-1}$ is any estimator in alternative based on
+the first $i-1$ data points $X^{(i-1)}$
+and $\hat{\theta}_0=\argmax_{\theta\in\Theta_0} \prod_i p_{\theta}(X_i)$
+is the MLE estimator under the null.
+See more details in section 7 of UI paper.
+
+Notice that the sequence of the data $\Dc=\{X_1,\dots X_n\}$ really matters.
+Imagine you obtian $\Dc'$ with a rearranged sequence and thus slightly
+different $\tilde{\theta}$ and hence slightly different value at the
+denominator.
+
+Revisit factorization of probability, it's also called chain rule or general product rule:
+\begin{align*}
+	\PR{X_1,X_2,\dots,X_n} = \PR{X_1}\condPR{X_2}{X_1}\cdots \condPR{X_n}{X_1,X_2,\dots,X_{n-1}} \\
+	= \prod_{i=1}^n \condPR{X_i}{X^{(i-1)}}
+\end{align*}
+
+\begin{question}
+	Below is a mixture of all nonnegative test martingale/e-process?
+\end{question}
+
+\begin{align*}
+	\frac{\int p_{\theta}(X^{(n)}) w(\theta) \dd{\theta}}{P_{\hat{\theta}_{\mathrm{null}}}(X^{(n)})}
+\end{align*}
+
+\adjustimage{max size={0.5\textheight}{\textwidth},keepaspectratio}{fig/2025-08-14.jpeg}
+
+\subsection*{25.07.2025} I only briefly went over the conformal prediction and fisher's noncentral hypergeometric distribution.
+There were some discussions on what the conformal prediction is.
+
+Imagine you have a classifier for images (dogs, cat, etc.) and is trained via $N$ datasets.
+For the next prediction, we need something to quantify the uncententy to say that
+\begin{quote}
+	The label for $X_{N+1}$ I gave being $X$ (here could be any label), has
+\end{quote}
+
+Peter gave a algorithmic explanantion where the predicted labels are gaven for each label,
+then run through against the previous training datasets. Rank them, cut off the tailing $\alpha$
+percent then we can say we are confident about our prediction with $1-\alpha$.
+
+However, this is awfully similar to the permutation test, by Sebastian.
+Yeah it does look a lot like just ranking the prediction and give a p-value.
+
+Alexander also suggested using Gaussian for conformal prediction might be too confusing
+as the parameter and the prediction kind of just are the same thing.
+Maybe try Poisson example where parameter is in real number while the prediction is in $\Zf$.
+
+What I do not follow is the output of the classifier is a weighted matrix over all the labels.
+What is the ranking being done over? Is it
+
+\subsection*{21.05.2025}
+
+Papers discussed: PNAS and general case
+
+For the simple case (the Gaussian location family in 3.2.1 in \cite{haoEvaluesAnytimevalidInference2025}),
+my interpretation is as followed:
+If negative semidefnite $\Sigma_q-\Sigma_p$, then we reduced to the simple case where the RIPr \E-variable is not only
+in $\conv(\Pc)$ (the convex hull of the null dist.) but rather a element of $\Pc$ itself.
+
+Otherwise, we can find a prior on $\Pc$ with sharp variance $\Nc(\bm{\mu}^*, (\Sigma_q-\Sigma_p)/n)$.
+The results in turn suggests that we cast a sharp prior on $\Pc$ with the same mean.
+However, extra argument about the alternative $Q$, I think we move to the distributions from $Q$
+that shares the same sufficient statistics.
+This is still the part where I am having some doubts.
+I am still sure is that what does it mean to operate on a `enlarged' or `modified'
+alternative even if the alternative $\Qc=\{Q\}$ being just Gaussian with same mean and a different variance.
+
+Another point is in the Anti-Simple case, then $S_{Q,\textsc{seq,rip}}^{(n)} =1$.
+First of all, the superscript $^{(n)}$ says it is considering a sequential settings
+but $X^{(i)}$ is \emph{singular} following either null dist. or alternative dist.
+This $S=1$ breaks simply when we are considering two $X$ following the same distribution,
+we then test whether $X' = (X, Y) \iid P \in \Pc$ or alternative.
+
+\textbf{Data spilting in UI} \quad In a sense, the spilting is done sequentially or done across $n$
+data points in contrast to the $D_0$ $D_1$ in the original paper. Now we are talking about the UI in (3.2.14)
+I think! The classical on would be $L = L_0(\hat{\theta}_1)/L_0(\hat{\theta}_0)$
+
+\begin{align*}
+	S_{\breve{\bm{\mu}},\textsc{UI}}^{(n)} =
+	\frac{\prod_{i=1}^n q_{\breve{\bm{\mu}}|_{i-1}(U_{(i)})}}
+	{p_{\breve{\bm{\mu}}|_n(U^{(n)})}}
+\end{align*}
+
+We have a regular ML estimator likelihood in the denominator after looking at the whole sequence $n$.
+For the nominator, we have a product of the ML likelihood for each time $i$.
+In the end, we have effectively losing just $U_{(1)}$ in calculating likelihood.
+
+\textbf{Beyond NP} \quad We discussed about the similarities among the loss function in the ERM scheme
+and in this paper. The ERM loss is always with respect to some data (empirical) while
+here we are concerning about a data-dependent loss?
+
+The problem or rather common difficulty with p-value in NP paradigm is that
+why do we report p-value at all?
+What does it mean for a small p-value when $p\ll\alpha$?
+
+Peter proposed a alternative as in we should report E-value instead.
+I think also the notation of seeing $\alpha$ as the error probability is somewhat challenged.
+
+\textbf{Inspiration} \quad In vaccination study, we see a extremely small p-value on null
+but we are not allowed to make \emph{new} decision without setting up new hypothesises and
+new studies. In other words, if we looked at a promising data \emph{post-hoc},
+there is really not much we can do based on the original data.
+But with \E-value, he argued that new decision can be based/conditioned on the data.
+
+Is $l$ in Eq. 1 \cite{grunwaldNeymanPearsonEvalues2024} just a new $\alpha$?
+
+In this loss function $L(\kappa, a)$, $\kappa$ is the true state of nature that we don't know?
+We just assumed if the data is coming from null or alternative.
+
+In all, I think the main idea is to change from Type-I error safe to Type-I risk safe.
+I think section 2's main take home message is that any maximally compatible decision rule must
+be a \E-variable
+
+This is cited from Micheal I Jordan's notes:
+\url{https://people.eecs.berkeley.edu/~jordan/courses/260-spring10/other-readings/chapter8.pdf}
+
+
+\clearpage

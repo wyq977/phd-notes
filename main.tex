@@ -4,8 +4,8 @@
 
 \usepackage[colorlinks,citecolor=blue,urlcolor=blue,colorlinks=true,linkcolor=blue]{hyperref}
 \usepackage[authoryear]{natbib}                  % aos cite
-% \let\mkbibnamefamily\textsc                      % textsc in author names
-\usepackage{adjustbox} %quickly change ratio$
+\let\mkbibnamefamily\textsc                      % textsc in author names
+\usepackage{adjustbox}                           % quickly change ratio$
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
@@ -20,26 +20,18 @@
 \usepackage{graphicx}                            % allow embedded images
 \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 \graphicspath{{fig/}}                            % set of paths to search for images
-% \usepackage{fix-cm}
 \usepackage{bibentry}
 
 \usepackage[T1]{fontenc}                         % did nothing
 % \usepackage{lmodern}                             % will change font do not like it
 % \usepackage{enumerate}                           %i or I in numbered list
-% \usepackage[margin=3cm]{geometry}                % DO NOT CHANGE in aos
 % \usepackage{indentfirst}                         % indent first line after section
 
 %%%%%%%%%%%
 % PROJECT %
 %%%%%%%%%%%
 
-% show plain tex
-\usepackage{fancyvrb}                            % extended verbatim environments
-\fvset{fontsize=\normalsize}                     % default font size for fancy-verbatim environments
-% https://stackoverflow.com/questions/55036409/latex-verbatimhow-to-show-the-file-directoy-created-by-tree-command
-\usepackage[utf8]{inputenc}
-\usepackage{pmboxdraw}
-
+% custom commands just for this paper
 \newcommand{\hypN}{\mathcal{H}_0}
 \newcommand{\hypA}{\mathcal{H}_1}
 \newcommand{\E}{\texttt{E}}
@@ -59,12 +51,12 @@
 \begin{document}
 
 \begin{frontmatter}
-\title{Notes During PhD}
+	\title{Notes During PhD}
 
-\begin{aug}
-\author[A]{\fnms{Yongqi}~\snm{Wang} \ead[label=a]{yongqi@cwi.nl}}
-\address[A]{Centrum Wiskunde \& Informatica, Amsterdam, The Netherlands\printead[presep={\ }]{a}.}
-\end{aug}
+	\begin{aug}
+		\author[A]{\fnms{Yongqi}~\snm{Wang} \ead[label=a]{yongqi@cwi.nl}}
+		\address[A]{Centrum Wiskunde \& Informatica, Amsterdam, The Netherlands\printead[presep={\ }]{a}.}
+	\end{aug}
 
 \end{frontmatter}
 
@@ -72,22 +64,28 @@
 \tableofcontents
 
 \begin{abstract}
-    \noindent
-    This document is an ongoing colsdslection of my writing during my PhD.
+	\noindent
+	This document is an ongoing collection of my writing during my PhD.
 \end{abstract}
 
+\begin{align}
+	x = 213123
+\end{align}
 
-\input{chapters/0-TODO}
 
-\input{chapters/0-TLDR}
+\input{chapters/01-TODO}
+
+\input{chapters/02-Meeting}
+
+\input{chapters/03-TLDR}
 
 \input{chapters/RIPr}
 
-\input{chapters/app-integral}
+\input{chapters/e-process}
+
+\input{chapters/integral}
 
 \input{chapters/exp-family}
-
-\input{chapters/9-setup}
 
 \clearpage
 

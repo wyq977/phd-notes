@@ -5,8 +5,8 @@
 \subsection{Li's Algorithm}
 
 Originally developed by \cite{liEstimationMixtureModels1999},
-the following algorithm is written based on the notes from 
-\cite{grunwaldSafeTesting2024, haoEvalues$k$sampleTests2024}. 
+the following algorithm is written based on the notes from
+\cite{grunwaldSafeTesting2024, haoEvalues$k$sampleTests2024}.
 To quote \cite{brindaAdaptiveEstimationGaussian2018},
 Li's inequality requires the family $\Qc$ to have a
 uniformly bounded density ratio.
@@ -18,41 +18,38 @@ and any distribution $Q \in \Qc$ is finite \footnote{Which should I use? $\Qc$ o
 (often call ``nondegenerate'' condition).
 
 \begin{algorithm}
-    \DontPrintSemicolon
-    \caption{Li's Algorithm}
-    \BlankLine
-    $Q_{(1)} = {\argmin}_{Q \in \Qc} D(P \Vert Q)$\;
-    \For{$m = 2, 3, \dots, K$}{
-        $Q := \alpha Q_{(m-1)} + (1 - \alpha) Q'$\;
-        $\alpha, Q' \leftarrow \argmin_{\alpha, Q'} D(P \Vert Q)$
-    }
+	\DontPrintSemicolon
+	\caption{Li's Algorithm}
+	\BlankLine
+	$Q_{(1)} = {\argmin}_{Q \in \Qc} D(P \Vert Q)$\;
+	\For{$m = 2, 3, \dots, K$}{
+		$Q := \alpha Q_{(m-1)} + (1 - \alpha) Q'$\;
+		$\alpha, Q' \leftarrow \argmin_{\alpha, Q'} D(P \Vert Q)$
+	}
 \end{algorithm}
 
-Here, the distribution $Q'$ and $\alpha$ is chosen (coupled) such that the divergence is minimized. 
+Here, the distribution $Q'$ and $\alpha$ is chosen (coupled) such that the divergence is minimized.
 The minimizer need not be unique.
 
 \textbf{Regularity condition on alternative}
 
-Li's algorithm is apparently greedy with high fluctuation in initial steps. 
+Li's algorithm is apparently greedy with high fluctuation in initial steps.
 Additionally, this task is computationally expensive, and it is not clear of the convexity.
 
 \textbf{Is the returned mixture in the convex hull?}
 
-The returned $Q_{(m)}$ is in the convex hull. 
+The returned $Q_{(m)}$ is in the convex hull.
 The first step returned a single element in $\Qc$ with the smallest KL divergence.
 Iteratively, the linear combination is still in the convex hull, i.e.
 \begin{align*}
-    Q_{(2)} & = \alpha_1 \cdot Q_{(1)} + (1 - \alpha_1)\cdot Q_{(1)}' \\
-    Q_{(2)} & = \alpha_2 \cdot Q_{(2)} + (1 - \alpha_2)\cdot Q_{(2)}' \\
-            & = \alpha_2 \cdot \alpha_1 \cdot Q_{(1)} +
-    \alpha_2 \cdot (1 - \alpha_1) \cdot Q_{(1)}' +
-    (1 - \alpha_2)\cdot Q_{(2)}'.
+	Q_{(2)} & = \alpha_1 \cdot Q_{(1)} + (1 - \alpha_1)\cdot Q_{(1)}' \\
+	Q_{(2)} & = \alpha_2 \cdot Q_{(2)} + (1 - \alpha_2)\cdot Q_{(2)}' \\
+	        & = \alpha_2 \cdot \alpha_1 \cdot Q_{(1)} +
+	\alpha_2 \cdot (1 - \alpha_1) \cdot Q_{(1)}' +
+	(1 - \alpha_2)\cdot Q_{(2)}'.
 \end{align*}
 
 It is clear that $Q_{(2)}$ or $Q_{(m)}$ would still be a convex combination of
 elements in $\Qc$.
 
-
 \subsection{Cisszar Algorithm}
-
-Originally proposed by

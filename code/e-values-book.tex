@@ -37,7 +37,7 @@
 % %     maxbibnames=99,
 % %     doi=false,isbn=false,url=false,eprint=false
 % ]{biblatex}
- \usepackage{natbib}
+\usepackage{natbib}
 
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
 \usepackage{booktabs}       % professional-quality tables
@@ -45,18 +45,18 @@
 \usepackage{microtype}      % microtypography
 \usepackage{fancyhdr}
 
-\ifdefined\TimesFont 
-\usepackage{times} % use times font
+\ifdefined\TimesFont
+	\usepackage{times} % use times font
 \fi
 
-\ifdefined\ParSkip 
-\usepackage{parskip} % use par skip
+\ifdefined\ParSkip
+	\usepackage{parskip} % use par skip
 \fi
 
 % Theorems and such
- \newtheorem{theorem}{Theorem}
+\newtheorem{theorem}{Theorem}
 \numberwithin{theorem}{chapter}
- \newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{definition}[theorem]{Definition}
@@ -76,7 +76,7 @@
 \newcommand{\maximize}{\mathop{\mathrm{maximize}}}
 \newcommand{\st}{\mathop{\mathrm{subject\,\,to}}}
 
- 
+
 
 
 
@@ -189,174 +189,174 @@
 %}
 
 \newtcolorbox{proofframe}[2][]{
-    enhanced,
-    breakable=true,
-    sharp corners=all,
-    top=0mm, 
-    left=4mm,
-    enlarge top by=2em,
-    enlarge bottom by=0.5em,
-    left skip=1.5em,
-    right skip=1.5em,
-    borderline={0.2em}{0pt}{gray!20}, 
-    boxrule=0pt,
-    colback=gray!5,
-    coltitle=black,
-    colbacktitle=gray!5,
-    colframe=gray!5,
-    parbox=false,
-    fonttitle=\bfseries,
-    before upper={\vskip -0cm},
-    title={{\begin{tikzpicture}[baseline=(title.base)]
-            \node[rectangle, fill=gray!20, sharp corners, inner sep=1.5mm] (title) {#2};
-          \end{tikzpicture}}
-          },
-    toptitle=-0.4cm,
+	enhanced,
+	breakable=true,
+	sharp corners=all,
+	top=0mm,
+	left=4mm,
+	enlarge top by=2em,
+	enlarge bottom by=0.5em,
+	left skip=1.5em,
+	right skip=1.5em,
+	borderline={0.2em}{0pt}{gray!20},
+	boxrule=0pt,
+	colback=gray!5,
+	coltitle=black,
+	colbacktitle=gray!5,
+	colframe=gray!5,
+	parbox=false,
+	fonttitle=\bfseries,
+	before upper={\vskip -0cm},
+	title={{\begin{tikzpicture}[baseline=(title.base)]
+						\node[rectangle, fill=gray!20, sharp corners, inner sep=1.5mm] (title) {#2};
+					\end{tikzpicture}}
+		},
+	toptitle=-0.4cm,
 }
 
 \renewenvironment{proof}[1][]{%
-    \begin{proofframe}{#1}\relax%
-    }{\end{proofframe}}
+	\begin{proofframe}{#1}\relax%
+		}{\end{proofframe}}
 
- 
-    
+
+
 
 \renewenvironment{fact}[1][]{%
-   \refstepcounter{theorem}
-    \ifstrempty{#1}% 
-    {\mdfsetup{% 
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70]{Fact~\thetheorem};}} 
-    }%
-    {\mdfsetup{%
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70] {Fact~\thetheorem:~#1};}}% 
-    }% 
-    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
-    topline=true, frametitleaboveskip=-0.9em,}
-    \begin{mdframed}[]\relax% 
-    }{\end{mdframed}
+	\refstepcounter{theorem}
+	\ifstrempty{#1}% 
+	{\mdfsetup{% 
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70]{Fact~\thetheorem};}}
+	}%
+	{\mdfsetup{%
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70] {Fact~\thetheorem:~#1};}}% 
+	}% 
+	\mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+		topline=true, frametitleaboveskip=-0.9em,}
+	\begin{mdframed}[]\relax% 
+		}{\end{mdframed}
 }
 
 
 \renewenvironment{theorem}[1][]{%
-   \refstepcounter{theorem}
-    \ifstrempty{#1}% 
-    {\mdfsetup{% 
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70]{Theorem~\thetheorem};}} 
-    }%
-    {\mdfsetup{%
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70] {Theorem~\thetheorem:~#1};}}% 
-    }% 
-    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
-    topline=true, frametitleaboveskip=-0.9em,}
-    \begin{mdframed}[]\relax% 
-    }{\end{mdframed}
+	\refstepcounter{theorem}
+	\ifstrempty{#1}% 
+	{\mdfsetup{% 
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70]{Theorem~\thetheorem};}}
+	}%
+	{\mdfsetup{%
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70] {Theorem~\thetheorem:~#1};}}% 
+	}% 
+	\mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+		topline=true, frametitleaboveskip=-0.9em,}
+	\begin{mdframed}[]\relax% 
+		}{\end{mdframed}
 }
 
 \renewenvironment{lemma}[1][]{%
-    \refstepcounter{theorem}
-    \ifstrempty{#1}% 
-    {\mdfsetup{% 
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70]{Lemma~\thetheorem};}} 
-    }%
-    {\mdfsetup{%
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70] {Lemma~\thetheorem:~#1};}}% 
-    }% 
-    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
-    topline=true, frametitleaboveskip=-0.9em,}
-    \begin{mdframed}[]\relax% 
-    }{\end{mdframed}
+	\refstepcounter{theorem}
+	\ifstrempty{#1}% 
+	{\mdfsetup{% 
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70]{Lemma~\thetheorem};}}
+	}%
+	{\mdfsetup{%
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70] {Lemma~\thetheorem:~#1};}}% 
+	}% 
+	\mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+		topline=true, frametitleaboveskip=-0.9em,}
+	\begin{mdframed}[]\relax% 
+		}{\end{mdframed}
 }
 
 
 \renewenvironment{example}[1][]{%
-    \refstepcounter{theorem}
-    \ifstrempty{#1}% 
-    {\mdfsetup{% 
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70]{Example~\thetheorem};}} 
-    }%
-    {\mdfsetup{%
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70] {Example~\thetheorem:~#1};}}% 
-    }% 
-    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
-    topline=true, frametitleaboveskip=-0.9em,}
-    \begin{mdframed}[]\relax% 
-    }{\end{mdframed}
+	\refstepcounter{theorem}
+	\ifstrempty{#1}% 
+	{\mdfsetup{% 
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70]{Example~\thetheorem};}}
+	}%
+	{\mdfsetup{%
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70] {Example~\thetheorem:~#1};}}% 
+	}% 
+	\mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+		topline=true, frametitleaboveskip=-0.9em,}
+	\begin{mdframed}[]\relax% 
+		}{\end{mdframed}
 }
 
 
 \renewenvironment{definition}[1][]{%
-    \refstepcounter{theorem}
-    \ifstrempty{#1}% 
-    {\mdfsetup{% 
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70]{Definition~\thetheorem};}} 
-    }%
-    {\mdfsetup{%
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70] {Definition~\thetheorem:~#1};}}% 
-    }% 
-    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
-    topline=true, frametitleaboveskip=-0.9em,}
-    \begin{mdframed}[]\relax% 
-    }{\end{mdframed}
+	\refstepcounter{theorem}
+	\ifstrempty{#1}% 
+	{\mdfsetup{% 
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70]{Definition~\thetheorem};}}
+	}%
+	{\mdfsetup{%
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70] {Definition~\thetheorem:~#1};}}% 
+	}% 
+	\mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+		topline=true, frametitleaboveskip=-0.9em,}
+	\begin{mdframed}[]\relax% 
+		}{\end{mdframed}
 }
 
 
 \renewenvironment{corollary}[1][]{%
-    \refstepcounter{theorem}
-\ifstrempty{#1}% 
-    {\mdfsetup{% 
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70]{Corollary~\thetheorem};}} 
-    }%
-    {\mdfsetup{%
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70] {Corollary~\thetheorem:~#1};}}% 
-    }% 
-    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
-    topline=true, frametitleaboveskip=-0.9em,}
-    \begin{mdframed}[]\relax% 
-    }{\end{mdframed}
+	\refstepcounter{theorem}
+	\ifstrempty{#1}% 
+	{\mdfsetup{% 
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70]{Corollary~\thetheorem};}}
+	}%
+	{\mdfsetup{%
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70] {Corollary~\thetheorem:~#1};}}% 
+	}% 
+	\mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+		topline=true, frametitleaboveskip=-0.9em,}
+	\begin{mdframed}[]\relax% 
+		}{\end{mdframed}
 }
 
 
 \renewenvironment{proposition}[1][]{%
-    \refstepcounter{theorem}
-    \ifstrempty{#1}% 
-    {\mdfsetup{% 
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70]{Proposition~\thetheorem};}} 
-    }%
-    {\mdfsetup{%
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70] {Proposition~\thetheorem:~#1};}}% 
-    }% 
-    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
-    topline=true, frametitleaboveskip=-0.9em,}
-    \begin{mdframed}[]\relax% 
-    }{\end{mdframed}
+	\refstepcounter{theorem}
+	\ifstrempty{#1}% 
+	{\mdfsetup{% 
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70]{Proposition~\thetheorem};}}
+	}%
+	{\mdfsetup{%
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70] {Proposition~\thetheorem:~#1};}}% 
+	}% 
+	\mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+		topline=true, frametitleaboveskip=-0.9em,}
+	\begin{mdframed}[]\relax% 
+		}{\end{mdframed}
 }
 
 
@@ -364,22 +364,22 @@
 
 
 \newenvironment{axiom}[1][]{%
-    \refstepcounter{theorem}
-    \ifstrempty{#1}% 
-    {\mdfsetup{% 
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70]{Axiom~\thetheorem};}} 
-    }%
-    {\mdfsetup{%
-    frametitle={% 
-        \tikz
-        \node[anchor=east,rectangle,fill=theoremcolor!70] {Axiom~\thetheorem:~#1};}}% 
-    }% 
-    \mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
-    topline=true, frametitleaboveskip=-0.9em,}
-    \begin{mdframed}[]\relax% 
-    }{\end{mdframed}
+	\refstepcounter{theorem}
+	\ifstrempty{#1}% 
+	{\mdfsetup{% 
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70]{Axiom~\thetheorem};}}
+	}%
+	{\mdfsetup{%
+			frametitle={% 
+					\tikz
+					\node[anchor=east,rectangle,fill=theoremcolor!70] {Axiom~\thetheorem:~#1};}}% 
+	}% 
+	\mdfsetup{innertopmargin=0.2em,linecolor=theoremcolor!70, linewidth=0.2em, nobreak=true,
+		topline=true, frametitleaboveskip=-0.9em,}
+	\begin{mdframed}[]\relax% 
+		}{\end{mdframed}
 }
 
 
@@ -419,9 +419,9 @@
 \newcommand{\cG}{\mathcal{G}}
 \newcommand{\cK}{\mathcal{K}}
 \newcommand{\cQ}{\mathcal{Q}}
-\newcommand{\cM}{\mathcal{M}} 
-\newcommand{\cN}{\mathcal{N}} 
-\newcommand{\cX}{\mathcal{X}} 
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cX}{\mathcal{X}}
 \newcommand{\cL}{\mathcal{L}}
 \newcommand{\fM}{\mathbb{M}}
 \newcommand{\cZ}{\mathcal{Z}}
@@ -441,15 +441,15 @@
 \newcommand{\Ptt}{\mathtt{P}}
 \newcommand{\Rtt}{\mathtt{R}}
 
- 
+
 %%% ADDED BY RW
-\renewcommand{\d}{\mathrm{d}}  
+\renewcommand{\d}{\mathrm{d}}
 \newcommand{\E}{\mathbb{E}}    % expectation 
 \newcommand{\R}{\mathbb{R}}  % real numbers 
-\newcommand{\cR}{\mathcal{R}}   
+\newcommand{\cR}{\mathcal{R}}
 \newcommand{\N}{\mathbb{N}}    % natural numbers
 \usepackage{dsfont}
-\newcommand{\id}{\mathds{1}} 
+\newcommand{\id}{\mathds{1}}
 \newcommand{\lawis}{\buildrel \mathrm{d} \over \sim}
 \newcommand{\laweq}{\buildrel \mathrm{d} \over =}
 \newcommand{\var}{\mathrm{var}}
@@ -472,10 +472,10 @@
 
 
 
- 
+
 
 \newcommand{\iEEE}{\mathit{i}\mathcal{E}}
- 
+
 
 
 %%%% These are only used in the Appendix.   
@@ -493,13 +493,13 @@
 \usepackage{diagbox}
 \usepackage{pdflscape}
 \usepackage{pgfplots}
-\usepackage{multirow}  
+\usepackage{multirow}
 \usepgfplotslibrary{fillbetween}
 \pgfplotsset{compat=1.18}
 
 %%%%%% USEFUL IN RISK MEASURES
 
-\newcommand{\VaR}{\mathrm{VaR}} 
+\newcommand{\VaR}{\mathrm{VaR}}
 \newcommand{\ES}{\mathrm{ES}}
 
 

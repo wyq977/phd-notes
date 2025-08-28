@@ -1,0 +1,32 @@
+\clearpage
+
+\section{Nonnegative martingales and E-process}
+
+\subsection{Stuff}
+Being integrable or not, I think, is the main contribution from \cite{wangExtendedVillesInequality2024}.
+
+\begin{question}
+	Which class of random processes is bigger? \E-processes or martingales?
+\end{question}
+
+If the e-process is defined by the stuff upper bounded NNSM, then martingales is a bigger?
+Or should I say for a set of distribution $\Qc$ we can always find some NNSM
+upper bounding the $e_t$??
+
+\subsection{Notation}
+We limit ourself to discrete time only $n\in\Nf_0=\{0,1,2\dots\}$, usually written as $n\geq 0$.
+Fix a probability triplet $(\Omega,\Ac,\Pc)$ and $\Fc_t$, a sigma-field at time $t$, defines
+a filtration, $\Fc_0\subseteq\Fc_1\subseteq\Fc_2\subseteq\cdots\Ac$.
+We call $\Fc_t$ the canonical filtration and $X=\{X_n\}_{n\geq 0}$ a stochastic
+process adapted to $\Fc$ if $X_n$ is $\Fc_n$-measurable.
+
+\begin{define}
+	An \E-process for a family $\Pc$ of probability measures, namely $\Pc$-\E-process,
+	is a nonnegative process $E$, adapted to some filtrations such that
+	\begin{align*}
+		\ERWi{\Pt}{E_{\tau}} \leq 1 \qq{for every stopping time} \tau
+	\end{align*}
+\end{define}
+
+It can also be defined as any nonnegative process that is upper bounded,
+for every $P\in\Pc$, by a $P$-martingale starting at one.
