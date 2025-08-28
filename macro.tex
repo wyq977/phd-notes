@@ -1,4 +1,6 @@
-% Updated: 2025-05-13
+% Updated: 2025-06-02
+% v0.1: remove \transpose, use T instead 
+% v0.2: 
 
 \RequirePackage{amsbsy}       % for \boldsymbol
 \RequirePackage{amssymb}      % for \intercal
@@ -29,21 +31,24 @@
 \newtheorem{prop}[thm]{Proposition}
 \newtheorem{eigenschappen}{Properties}
 \newtheorem{coro}[thm]{Corollary}
+\theoremstyle{definition}
 \newtheorem{define}[thm]{Definition}
 \newtheorem{example}[thm]{Example}
 \newtheorem{remark}[thm]{Remark}
+\newtheorem{question}[thm]{Question}
 \newtheorem{exercise}{Exercise}[section]
 
 % ==============================================================================
 % OPERATORS                                                                    
 % ==============================================================================
 
+% use T instead of \transpose
 % https://tex.stackexchange.com/questions/587275/the-transpose-correct-or-mostly-agreed-upon-notation-concern
-\makeatletter
-\newcommand*{\transpose}{\bgroup\@transpose}
-\newcommand*{\@transpose}[1][0]{\mathpalette\@@transpose{#1}\egroup}
-\newcommand*{\@@transpose}[2]{\setbox0=\hbox{\m@th$#1\mkern-#2mu\intercal$}\raise\dp0\box0}
-\makeatother
+% \makeatletter
+% \newcommand*{\transpose}{\bgroup\@transpose}
+% \newcommand*{\@transpose}[1][0]{\mathpalette\@@transpose{#1}\egroup}
+% \newcommand*{\@@transpose}[2]{\setbox0=\hbox{\m@th$#1\mkern-#2mu\intercal$}\raise\dp0\box0}
+% \makeatother
 
 % NEVER RE-define \or and \and used in \author
 

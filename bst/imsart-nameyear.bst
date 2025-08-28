@@ -22,6 +22,20 @@
 %% 2010-03-19 - fixed sorting.
 %% 2011-01-07 - inserted options: sort, nameyear, alpha, number.
 %% 2013-01-28 - added: arxiv, mrnumber. Changed tags.
+%% 2025-05-19 - added: date
+
+MACRO {jan} {"January"}
+MACRO {feb} {"February"}
+MACRO {mar} {"March"}
+MACRO {apr} {"April"}
+MACRO {may} {"May"}
+MACRO {jun} {"June"}
+MACRO {jul} {"July"}
+MACRO {aug} {"August"}
+MACRO {sep} {"September"}
+MACRO {oct} {"October"}
+MACRO {nov} {"November"}
+MACRO {dec} {"December"}
 
 ENTRY
   { address

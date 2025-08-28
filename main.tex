@@ -1,19 +1,17 @@
 \documentclass[aos,preprint]{imsart}
-% \usepackage[T1]{fontenc}                         % font
-% \usepackage{lmodern}
-\usepackage[font=small,labelfont=bf]{caption}
 
 \input{macro}
 
 \usepackage[colorlinks,citecolor=blue,urlcolor=blue,colorlinks=true,linkcolor=blue]{hyperref}
 \usepackage[authoryear]{natbib}                  % aos cite
-\let\mkbibnamefamily\textsc                      % textsc in author names
-\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+% \let\mkbibnamefamily\textsc                      % textsc in author names
+\usepackage{adjustbox} %quickly change ratio$
+\usepackage{caption}
 \usepackage{subcaption}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 \usepackage[normalem]{ulem}                      % sout
 \usepackage{todonotes}                           % todo
 \usepackage[mode=buildnew]{standalone}
-\usepackage{standalone}
 \usepackage{enumitem}
 \usepackage{xurl}                                % long url break
 \setlist[itemize]{itemsep=\parskip}              % adjusts vertical space in itemize
@@ -22,7 +20,11 @@
 \usepackage{graphicx}                            % allow embedded images
 \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
 \graphicspath{{fig/}}                            % set of paths to search for images
+% \usepackage{fix-cm}
+\usepackage{bibentry}
 
+\usepackage[T1]{fontenc}                         % did nothing
+% \usepackage{lmodern}                             % will change font do not like it
 % \usepackage{enumerate}                           %i or I in numbered list
 % \usepackage[margin=3cm]{geometry}                % DO NOT CHANGE in aos
 % \usepackage{indentfirst}                         % indent first line after section
@@ -42,7 +44,7 @@
 \newcommand{\hypA}{\mathcal{H}_1}
 \newcommand{\E}{\texttt{E}}
 \newcommand{\CS}[1]{\textsc{CS}_{\alpha, ({#1})}}
-\newcommand{\KL}[2]{\mathrm{D}_{\mathrm{KL}}({#1} \Vert {#2})}
+\newcommand{\KL}[2]{\mathrm{D}_{\mathrm{KL}}({#1} \,\Vert\, {#2})}
 
 \newcommand{\meanspace}{\ensuremath{{\mathtt M}}}
 \newcommand{\canspace}{\ensuremath{\mathtt{B}}}
@@ -52,6 +54,7 @@
 
 \newcommand{\Yongqi}[1]{\todo[inline, color=green!10]{  #1 }}
 
+\providecommand{\p}{\texttt{p}}
 
 \begin{document}
 
@@ -73,13 +76,18 @@
     This document is an ongoing collection of my writing during my PhD.
 \end{abstract}
 
-\input{chapters/0-preface}
 
-\input{chapters/1-intro}
+\input{chapters/0-TODO}
+
+\input{chapters/0-TLDR}
+
+\input{chapters/RIPr}
 
 \input{chapters/app-integral}
 
 \input{chapters/exp-family}
+
+\input{chapters/9-setup}
 
 \clearpage
 
