@@ -2,6 +2,115 @@
 
 \section{Meetings}
 
+\subsection*{26.09.2025}
+
+There are quite a lot of things that I need to check after this. 
+Nick presented on conformal prediction where my take-away about is that 
+one could relate the
+
+Another theme is still the contingency table. 
+There is something strange about the NML sequential 
+in which the estimation is on the entire sequence.
+
+Another problem that I need to write down is that for a given prior $\pi$
+and Bayesian updating on the blocks, is the multiplication equal to the 
+global one.
+
+Simpler proof: 
+1) write something in closed form, e.g. exponential
+2) compare it to the proof of seq-RIPr and RIPr in general case.
+3) but I think the seq-COND is not there yet?
+
+I need to refresh on NP-lemma, product measure, outer measure, push-forward measure
+and etc.
+
+I also wanna do a step-by-step guide on plotting and figure in a standalone repo.
+
+\subsection*{05.09.2025}
+
+\subsubsection*{What I did this week}
+
+In terms of coding, what I did is transform the big genotype $G$ and phenotype $P$ data
+into a small subset. There are mainly two reasons:
+1) 455k SNPs exceeds our scope of multiple testing, and we really need a handful
+of interesting targets
+2) the 44 SNPs in the small dataset are not ``significant''
+
+1) Run Fisher exact test with \texttt{PLINK --assoc fisher}
+2) Rank them by p-value, FDR control ($0.05$) 
+3) Obtain about 125 SNPs with very small $p$
+
+Noted that this is for the 4688 sample points where we are simply testing 
+with Fisher exact test for association. 
+Furthermore, I synthesise sequential dataset by shuffling into blocks 
+of 50 whose ratio of case between control is close to global.
+
+\begin{table}[h]
+\centering
+\caption{rs17375018: Fisher's Exact Test p-value of $9.08 \times 10^{-9}$.}
+\begin{tabular}{lrr}
+\toprule
+ & SNP+ ($a$) & SNP- ($b$)\\
+\midrule
+case ($1$) & 1779 & 866 \\
+ctrl ($0$) & 4089 & 2626 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+One might think that in a global significant SNPs, the pseudo-sequential
+data blocks would likely yield significant results. 
+However, we observed multiple $p_i = 1$, e.g., on tables as below.
+\begin{table}[h]
+\centering
+\begin{tabular}{lrr}
+\toprule
+ & $a$ & $b$\\
+\midrule
+$1$ & 46 & 29 \\
+$0$ & 16 & 9 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Furthermore, we are trying to calculate the probability of 
+$p_{\mathrm{fisher}}=1$ for the pseudo blocks.
+Start with the simple one and use union bound. 
+
+\begin{align*}
+	\condPR{\frac{n'_{a1}}{n'_{a0}} \approx \frac{n_1}{n_0}}{
+	n'_a, n'_b, \frac{n_a}{n_b} \approx \frac{n_a'}{n_b'}
+	} 
+\end{align*}
+
+For now, we consider the cases, $\approx$ is $=$ avoiding situations
+where non-integers appears and ceiling/flooring functions are applied.
+
+\begin{itemize}
+	\item Check out this \url{https://scholar.google.com/citations?user=UnrY-40AAAAJ&hl=en}
+	\item \url{https://en.wikipedia.org/wiki/Boole%27s_inequality}
+\end{itemize}
+
+\subsection*{29.08.2025}
+
+I mainly talked about the gap between the test supermartingale and \E-process.
+I was confused but Peter corrected me, saying even though you can find a 
+supermartingale upper bounding the \E-process.
+
+In the simple null case, they are the same. However, in the composite settings,
+it is not, for each $P\in\Pc$, there is a test supermartingale but
+there is not a single one for all $P\in\Pc$.
+In fact, it's very easy to give examples where a random process is \E-process 
+but not supermartingale.
+% TODO: add counter-example
+
+He mentioned examples from UI, which is very straightforward to show it's \E 
+and Alex also said something about the canonical filtrations, by Ramdas, in
+the t-test.
+
+Seb talks about Gaussian channelling, a paper on 2004 with 3rd derivative 
+and information theory. Interesting, worth a look.
+
 \subsection*{25.08.2025}
 Practical goal:
 \begin{itemize}

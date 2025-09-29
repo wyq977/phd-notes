@@ -2,6 +2,19 @@
 
 \section{Nonnegative martingales and E-process}
 
+\begin{define}[inadmissible]
+	For some $t\in\Nf_0$, and some distribution $P\in\Pc$, there exist $P(p'_t < p_t) >0$.
+\end{define}
+The argument is the same for \E-process with `greater' rather than `smaller'
+
+
+Gap between necessary and sufficient conditions
+\begin{example}
+	Let $U$ be a uniform random variable in $[0,1]$ and $\Qc$ is the set of 
+	probability measures where $X_1$ is Bernoulli and $X_2,X_3,\dots=0$.
+	Let thje
+\end{example}
+
 \subsection{Stuff}
 Being integrable or not, I think, is the main contribution from \cite{wangExtendedVillesInequality2024}.
 
@@ -20,6 +33,8 @@ a filtration, $\Fc_0\subseteq\Fc_1\subseteq\Fc_2\subseteq\cdots\Ac$.
 We call $\Fc_t$ the canonical filtration and $X=\{X_n\}_{n\geq 0}$ a stochastic
 process adapted to $\Fc$ if $X_n$ is $\Fc_n$-measurable.
 
+
+
 \begin{define}
 	An \E-process for a family $\Pc$ of probability measures, namely $\Pc$-\E-process,
 	is a nonnegative process $E$, adapted to some filtrations such that
@@ -30,3 +45,18 @@ process adapted to $\Fc$ if $X_n$ is $\Fc_n$-measurable.
 
 It can also be defined as any nonnegative process that is upper bounded,
 for every $P\in\Pc$, by a $P$-martingale starting at one.
+
+
+Focus on the section 5-8 in \cite{ramdasAdmissibleAnytimevalidSequential2022}.
+
+\begin{define}[Admissibiliy]
+	
+\end{define}
+
+Have to check Prop. 36 first where the set $Q$ is reduced to simpler subclass:
+1) null with Lebesgue densities up to finite time
+2) discrete distributions with iid.
+
+Lemma 38: subGaussian with one atom. We can always create a subGaussian 
+RV that has point mass in some ball $(a,b)$ while behaving like 
+Gaussian outside

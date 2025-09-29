@@ -8,13 +8,18 @@ it usually refers to the Lebesgue measure.
 In the case of $m(\dd{x})$, it generally emphasize that you are integrating
 with respect to a general measure $m$.
 
-Wait, then what are we talking in defining distribution?
+We skipped defining the carrier density and its measure for now.
 
+
+\begin{itemize}
+	\item Correct carrying density
+	\item Check if cumulant function can be differentiated infinitely
+\end{itemize}
 
 \section{Exponential Family}
 
 The exponential family is a collection of parametric models with very elegant properties.
-Peter and Hao utilized it to arrive some nice results about
+Peter and Hao utilised it to arrive some nice results about
 the optimality of \E-variables, mainly relying on the duality.
 We called a model belonging to the exponential family
 if the underlying distributions can be written below.
@@ -22,59 +27,63 @@ if the underlying distributions can be written below.
 
 \begin{define}[Exponential Family]
 	\begin{align}\label{eq:exp=family}
-		p_\beta(u)
-		:= & \exp\left(\beta^T t(u) - \psi(\beta)\right) p_0(u)m(\dd{u}) \\
-		=  & \frac{1}{Z(\beta)} \exp(\beta^T y) p_0(y) m(\dd{y}).
+		p_\beta(U)
+		:= & \exp\left(\beta^T t(U) - \psi(\beta)\right) r(U) \\
+		=  & \frac{1}{Z(\beta)} \exp(\beta^T X) r(U).
 	\end{align}
 \end{define}
 
 \begin{itemize}
-	\item $u$: \emph{random variable}, $d \times 1$ vector in $\Uc \subset \Rf^d$
-	\item $t(u)$: \emph{sufficient statistics},
-	\item $\beta$: \emph{canonical parameter}, $d \times 1 $ vector in $\Bt \subset \Rf^d$
+	\item $U$: \emph{random variable}
+	\item $X=t(U)$: \emph{sufficient statistics}
+	\item $\beta$: \emph{canonical parameter}
 	\item $\psi(\beta)$: \emph{cumulant function}
-	\item $p_0(y)$: the \emph{carrying density}, defined with respect to some
-	      \emph{carrying measure} $m(\dd{y})$ on $\Uc$.
-
-	      We write the \emph{carrying measure} explicitly $m(\dd{u})$.
-	\item $Z(\beta)$: the \emph{partition function}, $Z(\beta) = \exp(\psi(\beta))$
+	\item $r(y)$: the \emph{carrying density}
+	\item $Z(\beta)$: the \emph{partition function}, $\psi(\beta)=\log Z(\beta)$
 \end{itemize}
-
-\Yongqi{Is the space for $u$ and $t(u)$ the same?}
 
 \subsection{Basic Properties}
 
-Cumulant generating function $\phi(\beta)$: The first and second \emph{cumulant} is mean and variance.
-Also $\psi(\beta)$ is differentiable infinitely often (? true for all?).
+Cumulant generating function $\psi(\beta)$: The first and second \emph{cumulant} is mean and variance.
+$\psi(\beta)$ is differentiable infinitely.
+
+\begin{define}[Minimal]
+	We say an exponential family representation is \emph{minimal}.
+	If not minimal, there is $t_{k}$ that can be represented
+	by the linear combination of $t_{j}$ for $j\not=k$, requiring 1 less parameter.
+\end{define}
+
+We usually assume minimal if not mentioned.
 
 \begin{define}[Canonical Parameter Space]
 	Canonical parameter space $\Bt$ is the set of parameter $\beta$
 	where the following integration is finite
 	\begin{align*}
-		\Bt := \left\{\beta: \int_{\Uc} \exp(\beta^T t(u)) p_0(u)m(\dd{u}) <\infty \right\}.
+		\Bt := \left\{\beta: \int_{\Uc} \exp(\beta^T t(U)) r(U) <\infty \right\}.
 	\end{align*}
 
-	$m(\dd{u})$ will either be Lebesgue measures or counting measures for discrete cases.
-	In the first case, `$m(\dd{u})$' reduces to `$\dd{u}$',
-	which can be handled using standard multivariable calculus.
-	While in the latter, the above integral can be
-	written as a summation.
+%	$m(\dd{u})$ will either be Lebesgue measures or counting measures for discrete cases.
+%	In the first case, `$m(\dd{u})$' reduces to `$\dd{u}$',
+%	which can be handled using standard multivariable calculus.
+%	While in the latter, the above integral can be
+%	written as a summation.
 \end{define}
 
 \begin{remark}
 	Every exponential family has a canonical parameterization with carrier density $p_0$
-	such that the canonical parameter space contains the origin, i.e. $0 \in \Bt$.
+	such that the canonical parameter space contains the origin, i.e. $\bm{0} \in \Bt$.
 	(Section 18.4.3 in MDL)
 \end{remark}
 
 \begin{proof}
-	If $0 \not\in \Bt$ or $p_0$ is not a carrier density, we can pick any $\beta_0 \in \Bt$
+	If $\bm{0} \not\in \Bt$ or $r(U)$ is not a carrier density, we can pick any $\beta_0 \in \Bt$
 	and set
 	\begin{align*}
-		p_0'
+		r'(U) = \frac{r(U)\exp(\beta t(U))}{\sum_U r(U)\exp(\beta t(U))}
 	\end{align*}
-
-	Now the
+	
+	Now the family corresponding to $r'$ with parameter $\beta'=\beta-\beta_0$ is identical
+	to the original family containing $\bm{0}$.
 \end{proof}
 
 \begin{define}[Regular Exponential Family]
@@ -174,6 +183,23 @@ called \emph{overcomplete}. Both minimal and overcomplete representations are us
 
 
 \subsection{Mean-value parameterization}
+
+We 
+
+
+\begin{define}[Matching pair]
+	Let $\Pc, \Qc$ be exponential family for random variable $U$.
+	We can they are \emph{matching pair} if 
+	\begin{itemize}
+		\item they are mutually absolutely continuous wrt each other
+		\item they have the same sufficient statistics $X$
+		\item their mean-value space, $\Mt_q\subseteq\Mt_p$
+		\item for every matching canonical parameterisation of $\Pc$ and $\Qc$, 
+				we have $\Bt_p\subseteq\Bt_q$
+	\end{itemize}
+\end{define}
+
+
 
 \subsection{Simple Case}
 \begin{itemize}
