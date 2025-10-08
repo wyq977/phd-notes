@@ -5,6 +5,7 @@
 \usepackage[colorlinks,citecolor=blue,urlcolor=blue,colorlinks=true,linkcolor=blue]{hyperref}
 \usepackage[authoryear]{natbib}                  % aos cite
 \let\mkbibnamefamily\textsc                      % textsc in author names
+\usepackage{fix-cm}
 \usepackage{adjustbox}                           % quickly change ratio$
 \usepackage{caption}
 \usepackage{subcaption}
@@ -22,8 +23,6 @@
 \graphicspath{{fig/}}                            % set of paths to search for images
 \usepackage{bibentry}
 \usepackage{booktabs}                            % toprule
-\usepackage[T1]{fontenc}                         % did nothing
-% \usepackage{lmodern}                             % will change font do not like it
 % \usepackage{enumerate}                           %i or I in numbered list
 % \usepackage{indentfirst}                         % indent first line after section
 
@@ -67,11 +66,6 @@
 	\noindent
 	This document is an ongoing collection of my writing during my PhD.
 \end{abstract}
-
-\begin{align}
-	x = 213123
-\end{align}
-
 
 \input{chapters/01-TODO}
 

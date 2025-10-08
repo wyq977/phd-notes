@@ -2,6 +2,55 @@
 
 \section{Meetings}
 
+\subsection*{07.10.2025}
+
+This is transcribed with AI
+
+Let's assume we are talking about a classification model that predicts if 
+a image is a cat or a dog or a human.
+
+\subsubsection*{Conformal Prediction vs. Bayesian Methods}
+\begin{itemize}
+    \item Bayesian posterior probabilities give number in $(0,1)$ to 3 labels that sums to 1.
+    \item A key difference is that conformal scores represent \emph{upper bounds} on probability and don't need to sum to one, which contrasts with standard probability theory.
+    \item e.g., the conformal on the cat or the dogs can be both $20\%$, sort of the upper bound, 
+    	while the human is 80\%, then it does not sum up to 1.
+    \item Bayesian can be overconfident because of a prior, even a non-informative one, introduces some strong assumptions.
+    \item Is there a real `FLAT' prior that provides no information?
+    \item Conformal prediction can be seen as a ``worst-case'' approach, whereas Bayesian methods are ``best-case.'' Conformal may sometimes be too pessimistic.
+\end{itemize}
+
+\subsubsection*{Distinction Between Research Areas}
+\begin{itemize}
+    \item Sebastian is on \emph{model evaluation} and \emph{calibration}, which is more aligned with Bayesian statistics. His goal is to find the best overall predictor or model from a set of candidates, e.g., which weather forecasters is the best among 100.
+    \item But conformal prediction focuses on the \emph{individual prediction} at each step, providing a set of possible outcomes with a certain confidence level (e.g., 95\%), without trying to determine the best underlying model.
+    \item I am still not sure about how one formulate the conformal prediction:
+    	Is it a sup over the training space?
+\end{itemize}
+
+\subsubsection*{Challenges with E-variables}
+\begin{itemize}
+    \item A major practical issue with sequential e-variables is that the cumulative product can be drastically reduced if multiplied by a single small e-value. This causes significant fluctuations.
+    \item A simple ``safeguard'' is proposed: mixing the e-variable with a constant, such as using $0.5 + 0.5 \times E$. This ensures the multiplier is always at least 0.5, preventing a total loss of evidence.
+    \item This is caused \emph{damping} and it's very popular in fin math where going to infinity
+    is often not realistic and too theoretical!
+    \item Using \emph{R\'enyi e-variables} is suggested as a potentially more sophisticated solution to this volatility problem.
+\end{itemize}
+
+\subsubsection*{Paper Writing and Next Steps}
+\begin{itemize}
+    \item The professor advises starting the writing process with a clear ``story'' and an outline, saving the polished introduction for the end.
+    \item The main story for their current paper is extending existing methods for 2x2 tables to handle more realistic scenarios where data arrives in a single, potentially asymmetric batch rather than in sequential pairs.
+    \item The immediate next step is to conduct an experiment using ``Rosanna's e-variable.'' This involves breaking their large data table into many small, sequential blocks, as this method performs best with small group sizes.
+\end{itemize}
+
+\subsubsection*{Potential Future Research Topics}
+\begin{itemize}
+    \item \emph{Stein's Method}: A technique for proving the central limit theorem that, unlike traditional methods, provides explicit error bounds for finite samples.
+    \item \emph{Prior-Marginal Asymptotic Symmetry}: A long-standing research question about the relationship where the marginal distribution of a sufficient statistic tends to mimic the shape of the prior distribution on the parameter (mean-value space). Stein's method might be a useful tool for developing a direct proof.
+	\item Show the above phenomenon in exponential case (Bernoulli), which has already been verified.
+\end{itemize}
+
 \subsection*{26.09.2025}
 
 There are quite a lot of things that I need to check after this. 
@@ -47,7 +96,7 @@ of 50 whose ratio of case between control is close to global.
 
 \begin{table}[h]
 \centering
-\caption{rs17375018: Fisher's Exact Test p-value of $9.08 \times 10^{-9}$.}
+%\caption{rs17375018: Fisher's Exact Test p-value of $9.08 \times 10^{-9}$.}
 \begin{tabular}{lrr}
 \toprule
  & SNP+ ($a$) & SNP- ($b$)\\
@@ -143,7 +192,7 @@ quantile given filtrations. I would formulate here and also add a picture.
 The question in mind is to test whether data $X$ is from a hypothesis $\Hc$ that
 is non-parametric:
 \begin{align*}
-	\Hc = \left\{P \in \Pc(X) \mid \ERWi{p}{\phi_i(X)=0}, \i=1,2,\dots,d\right\} \\
+	\Hc = \left\{P \in \Pc(X) \mid \ERWi{p}{\phi_i(X)=0}, i=1,2,\dots,d\right\} \\
 	\text{where } \Pc(X) \text{ is all distribution on } X.
 \end{align*}
 
