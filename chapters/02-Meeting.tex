@@ -2,9 +2,249 @@
 
 \section{Meetings}
 
-\subsection*{07.10.2025}
+\subsection*{Feb 2026 Work plan}
 
-This is transcribed with AI
+\begin{itemize}
+	\item Simulate Peter's idea: for batches $B_1, B_2, \dots, B_n$ of size 2, a `oracle' conditional e-variable,
+	divided by the expectation of $\mu$.
+	\item R implementation of fixed delta
+	\item re-do futility analysis with the 'right' e-variables (so you stop for futility if you can reject H1, using an e-variable that takes H1 to be the null hypothesis - this is in many cases not achievable by flipping the original e-variable
+ (only do it for conditional e-variable and NML e-variable, not for p-to-e calibration because we do not know how to make p-values with H1 as the null)
+ (discuss with Alexander how to treat the case H0: delta=0 vs H1: delta neq 0 because it's unclear how to make an e-variable for H1)
+\end{itemize}
+
+\subsection*{Double interpretation of Bayesian methods: Average vs learning}
+
+Looking at the product for a fixed $\delta$ and then integrating (viewed as averaging over unknown parameters).
+
+Integrating over the posterior for each block and then taking the product (viewed as learning).
+
+Let $S(X_i \mid \delta)$ be the SEQ-COND E-variable that we consider.
+Assume that we do not know the oracle alternative $\delta^*$ for now but there is some ways to \emph{learn} or \emph{average} them.
+
+Recall the factorization of joint distribution of $X^n=\{X_1,X_2,\dots,X_n\}$:
+\begin{align*}
+	P(X_1,X_2,\dots,X_n) = P(X_1) P(X_2\mid X_1) P(X_3\mid X_1,X_2) \cdots P(X_n\mid X^{n-1})
+	= \prod_{i=1}^n P(X_i \mid X^{i-1}).
+\end{align*}
+
+Note that this does not require \emph{iid}!
+
+For iid $X_i$:
+\begin{align*}
+	P(X^n) &= \prod_{i=1}^n P(X_i) = \int \pi(\delta) \prod_{i=1}^n P(X_i) \dd{\delta} \qq{Aveging} \\
+	&= \prod_{i=1}^n \int P(X_i \mid \delta) \pi(\delta \mid X^{i-1}) \dd{\delta} \qq{Learning}
+\end{align*}
+
+Note that it always holds that
+\begin{align*}
+	S(X^n) = \int S(X^n\mid\delta)\pi(\delta) \dd{\delta} = \prod_{i=1}^n S(X\mid \delta)
+\end{align*}
+
+\adjustimage{max size={0.5\textheight}{\textwidth},keepaspectratio}{fig/2025-11-27.jpeg}
+
+TODO: I would need to write this properly, especially in the misspecification case.
+
+The misspecified case is also interesting! in 2x2 cases.
+
+\subsection*{28.11.2025}
+
+\emph{Alex}: Will collab with Oslo uni hospital and clinical trial unit. Futility Analysis): Working on re-analyzing "Many Labs" (a reproducibility project) data using E-values and futility (a stopping rule for when a study is not yielding results). He described the difficulty in mathematically quantifying the "race" between the rejection process and the futility process
+
+The difficulty is between the planned blocks and a large practical stopping time and their relationship.
+
+\emph{Dante} CLT in KL distance and TAV and entropic CLT.
+
+\emph{Seb} Random and fixed design matrix in linear mixed effect model, full rankness of the design matrix.
+
+\subsection*{27.11.2025}
+
+Talk with Peter on the $2\times 2$ table problem again.
+
+\subsubsection*{Paper now!} Everything is one-shot now!
+
+\begin{itemize}
+	\item Data simulation comes a fixed oracle $(\theta_a^*, \theta_b^*)$ with a $\delta^*$.
+	Although the COND E-variable is for a fixed $\delta$, right now we are testing only from a point, rather than a whole curve.
+	\item Calibrated E-value should include the version from wiki.
+	\item No SEQ-COND in current set up for now, we do not `learn' the alternative but rather just average them out!
+	\item Turner's E should use a flat prior $\mathrm{Beta}(1,1)$.
+	\item Consider adding the $d/2\log n$ term to avoid confusion, readers should know that this is not sequential.
+	\item E-variable to be compared:
+	\begin{itemize}
+		\item Turner's
+		\item Oracle (just multiple) this is the SEQ-RIPr
+		\item COND (Not SEQ!): NML, Gaussian
+		\item UMP
+	\end{itemize}
+\end{itemize}
+
+\subsubsection*{Paper future!}
+
+\begin{itemize}
+	\item SEQ-COND
+	\item misspecification case: SEQ-COND and COND is different by a fraction $\frac{\VAR{R}}{\VAR{\theta^*}}$.
+\end{itemize}
+
+
+\subsubsection*{delta in General case paper is fixed}
+
+GRO(W) is only discussed in right haar case!
+
+Yunda's paper discussion about the $\delta$ or $\beta$, the canonical parameters of FNCH is always fixed.
+Therefore, the prior $W_1$ or $W_0$ on the alternative hypothesis is always w.r.t. a particular fixed $\delta$.
+
+
+\subsection*{21.11.2025}
+
+\emph{Dante} Rant about the KL divergence and its disconnection from the sample space, why not Wasserstein distance which is very popular in optimal transport.
+
+\emph{Peter} E-processes and Approximations. T-test and coarser filtrations $X_i-X_1$. I guess he also talked about the exp. family.
+
+for exponential families where the null and alternative share the same sufficient statistic, conditioning on the sufficient statistic yields an E-variable (expectation 1). 
+
+Problem: This process is generally not an E-process.
+
+Comparison: It performs better than Universal Inference (UI) but lacks the E-process property.
+
+\subsection*{Prequential Plug-in NML}
+
+Assume parametric model and simple null and alternative hypothesis.
+We observe iid data stream $X^t=\{X_1,X_2,\dots,X_t\}$.
+To make it even simpler, the support of $X$: $\Xc$ is finite.
+
+\begin{align*}
+	\Hc_0 &: X \sim P(X \mid \theta_0) \\
+	\Hc_1 &: X \sim P(X \mid \theta^*)
+\end{align*}
+
+Now let's look at the plug-in, for the first observation $X_1$.
+\begin{equation*}
+	S_{\mathrm{NML}}^1 = \frac{P(X_1 \mid \hat{\theta}(X_1))}{P(X_1 \mid \theta_0) \sum_{k\in\Xc} P(k \mid \hat{\theta}(k))},
+\end{equation*}
+where $\hat{\theta}(\cdot)$ is the MLE estimator.
+
+Check this is a E-variable:
+\begin{equation*}
+	\ERWi{0}{S^1_{\mathrm{NML}}} = 
+	\sum_{X\in\Xc} P(X\mid \theta_0) \cdot 
+		\frac{P(X\mid \hat{\theta}(X))}{P(X\mid\theta_0) \sum_{k\in\Xc} P(k \mid \hat{\theta}(k))}
+	= \sum_{X\in\Xc}\frac{P(X\mid\hat\theta(X))}{\sum_{k\in\Xc}P(k\mid\hat{\theta}(k))}
+	\leq 1.
+\end{equation*}
+
+For the second time point, we shift the $X_2$ over $\Xc$ and obtained a MLE estimator:
+\begin{equation*}
+	S_{\mathrm{NML}}^2 = \frac{P(X_2 \mid \hat{\theta}(X_1,X_2))}{
+		P(X_2 \mid \theta_0) \sum_{k\in\Xc} P(k \mid \hat{\theta}(X_1, k))
+	}
+\end{equation*}
+
+Going to time $t$
+\begin{equation*}
+	S_{\mathrm{NML}}^t = \frac{P(X_t \mid \hat{\theta}(X_1,X_2,\dots,X_t))}{
+		P(X_t \mid \theta_0) \sum_{k\in\Xc} P(k \mid \hat{\theta}(X_1,X_2,\dots, k))
+	}
+	= \frac{P(X_t \mid \hat{\theta}(X^t))} {
+		P(X_t \mid \theta_0) \sum_{k\in\Xc} P(k \mid \hat{\theta}(\tilde{X}^t))
+	}
+\end{equation*}
+
+Given the canonical filtration $\Fc_{t-1}$,
+\begin{equation*}
+	\condERWi{0}{S^t_{\mathrm{NML}}}{\Fc_{t-1}}
+	= \sum_{\Xc} \frac{P(X_t\mid \hat{\theta}(X_1,X_2,\dots,X_{t-1},X_t))}{
+	\sum_{k\in\Xc}P(k \mid \hat{\theta}(X_1,X_2,\dots,X_{t-1},k))
+	}
+\end{equation*}
+
+Noted that this is a form of SEQ-COND so expect a lot worse than COND (log linearly).
+Going back to the FNCH distribution, the support of $Y_a$ is luckily finite: $\Gamma=[\gamma_{\min}, \gamma_{\max}]$.
+Similarly, we observed iid stream data $Y^t=\{Y_1,Y_2,\dots,Y_t\}$, where $Y_i=(Y_{i,a},Y_{i,b})^\intercal$ are the counts of ones in group $a, b$.
+Numbers of ones in both group is denoted by $n_{i,1}=Y_{a,i}+Y_{b,i}$. 
+The sum up to time $t$ is denoted by $n_{1}^t=\sum_{i=1}^t n_{1,i}=\sum_{i=1}^t Y_{a,i}+Y_{b,i}$.
+As we assume group size is stationary, $n_a^t=n_a\cdot  t,n_b^t=n_b\cdot t$.
+We can write the NML conditional E-variable for $Y^1$:
+\begin{equation*}
+	S_{\mathrm{NML}}^1 = \frac{f_{\mathrm{FN}(n_a,n_b,n_{1,1},\hat{\delta}_{1})}(Y_{a,1})}{f_{\mathrm{FN}(n_a,n_b,n_{1,1},0)}(Y_{a,1}) \sum_{k\in\Gamma} f_{\mathrm{FN}(n_a,n_b,n_{1,1},\hat{\delta}_{1*})}(k)},
+	\quad \hat{\delta}_1 = \argmax_{\Rf} f_{\mathrm{FN}(n_a,n_b,n_{1,1},\delta)}(Y_{a,1})
+\end{equation*}
+
+For the second time point, the MLE estimator is based on $Y^2$ and the normalizing MLE in the denominator is based on shifting all possible values.
+\begin{equation*}
+	S_{\mathrm{NML}}^2 = \frac{f_{\mathrm{FN}(n_a,n_b,n_{2,1},\hat{\delta}_{2})}(Y_{a,2})}{f_{\mathrm{FN}(n_a,n_b,n_{2,1},0)}(Y_{a,2}) \sum f_{\mathrm{FN}(n_a,n_b,n_{2,1},\hat{\delta}_{2*})}(k)}.
+\end{equation*}
+
+\begin{align*}
+	&\hat{\delta}_2 = \argmax_{\Rf} f_{\mathrm{FN}(n_a^2,n_b^2,n_1^2,\delta)}(Y_{1,a}+Y_{2,a}) \\
+	&\hat{\delta}_2* = \argmax_{\Rf} f_{\mathrm{FN}(n_a^2,n_b^2,n_1^2,\delta)}(Y_{1,a}+k),
+\end{align*}
+where $k \in [\max(0,n_{2,1}-n_b), \min(n_a, n_{2,1})]$.
+
+\newpage
+
+\subsection*{14.11.2025}
+
+Jelle presented his paper on Multiple testing in e-value
+
+\url{https://arxiv.org/abs/2509.02517}.
+
+The main issue/difficulty is how does one overcome the large combinatorial number $2^N$ where $N$ is the number of hypothesis tested: By identifying the "worst-case" subset for a given size, the complexity drops from exponential to polynomial.
+
+You can also add DAG in hypothesis class: e.g. if 1 holds, 3 must hold.
+
+Post-hoc: the set of hypothesis can be chosen post-hoc! e.g., choosing a specific brain region) while maintaining valid error control.
+
+He compared with e-BH, Benjamini-Yekutieli and Su's. By reformulating existing methods through the E-closure principle, they could achieve uniform improvements (more rejections for the same error control).
+
+\subsection*{09.11.2025 Talk with Alex about Bayesian}
+
+Assume a single parametric family $p$ with prior $\pi$.
+Similarly we consider a stream of data $X^n=\{X_1,X_2,\dots,X_n\}$.
+
+In time step 1:
+\begin{align*}
+	p(X^1) &= p(X_1) = \int_{\Theta} p(X_1\mid\theta)\pi(\theta) \dd{\theta}\\
+	&= \condPR[p]{X_1}{\theta}
+\end{align*}
+
+At time step 2:
+\begin{align*}
+	p(X^2) &=p(X_1,X_2) = \int_{\Theta} p(X_1\mid\theta)p(X_2\mid\theta)\pi(\theta)\dd{\theta} \\
+	&= p(X_1)p(X_2\mid X_1) = \int_{\Theta} p(X_1\mid\theta)\pi(\theta) \dd{\theta} \int_{\Theta} p(X_2\mid\theta)\pi(\theta\mid  X_1) \dd{\theta}
+\end{align*}
+
+
+\subsection*{07.11.2025}
+
+Mostly just Lunteren conference. Sebastian Engelke's Talk: Sebastian Engelke gave a talk on predicting floods in Bern using generalized Pareto distributions and conditional models based on upstream measurements (rain, river flow).
+
+Stephan mention some interesting examples on the Bernoulli example!, Also there is a interesting bernoulli Fisher information gain example in Lunteren!
+
+Lukas presented the BAM problem for shifting means: Goal is to find a algorithm to identify best arm (unique) 
+
+Algorithm is called importance Sampling for Shifting Means.
+
+\textit{
+Abstract: We study an interactive testing environment in which the learner chooses one of K distributions to sample each timestep with the goal of finding the distribution with the highest expected mean with high probability in the least number of overall samples (the best-arm identification setting with known confidence). We coin the Shifting Means setting, a non-stationary setting where an offset is added to all samples which can change fully adversarially between timesteps and demonstrate how the known approaches of the Track-and-Stop algorithm and the Generalized Likelihood Ratio Test (GLRT) fail for Shifting Means. We propose generalized Importance Weights for Shifting Means, which we show to be delta-correct and sample efficient. We also present a lower bound and evaluate our results empirically.
+}
+\subsection*{10.10.2025}
+
+\emph{Wouter}: He mentioned his work in ALT paper, Lucas will give a talk in 2 weeks.
+Lucas will stay here for another year
+
+\emph{Dante}: He showed to Seb that E-variables/process is the same for
+random and fixed design. Also talked about something on the covariate in
+connecting to Nick's paper.
+
+\emph{Stephan}: RL, server cluster at ML
+
+\emph{Peter}: There is small issues with safestats packages in terms of
+Leiden's group,
+
+\emph{Alex}: subGaussian: The main challenge is determining the conditions under which a distribution remains subGaussian after conditioning, without simply assuming it is "conditionally subGaussian".
+
+\subsection*{07.10.2025}
 
 Let's assume we are talking about a classification model that predicts if 
 a image is a cat or a dog or a human.

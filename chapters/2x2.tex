@@ -1,0 +1,1004 @@
+\clearpage
+
+% \section{TODO}
+
+% \begin{enumerate}
+    % \item RIPr and convex optimization
+%     \item Formal on variable block distribution, filtrations, and sigma-algebra, $n_a, n_b$
+%     \item Add manual data for verification
+%     \item Benchmark \E-values calculated from UI, Turners, calibrator (from Fisher), conditional (1-shot) \\
+%     I called the conditional \E-variables looking at the entire sequence as one-shot, maybe a better in Hao's
+%     \item Draw a picture of $\gamma = 0.18$ is not the best, 
+%     this could be done in old code, right?
+%     Also, $0.18$ was calculated under $\theta_a = \theta_b$, prove that 
+%     both numerically and analytically
+%     \item Pseudo-algorithm for $S_{\textsc{cond}}$, 2 cond \E: one takes
+%     a single data block at a time 
+%     while the other take the whole sequence of $m$ points.
+%     The former is in the k-stream paper and later is in the general case paper.
+%     The later is optimal: same \E-power as RIPr asymptotically 
+%     but former is a bit worse. (After discussion)
+%     \item Draw a picture of $S_{\textsc{mix}}$ vs $S_{\textsc{cond}}$
+%     \item Write down growth rate difference in different cases (Draw also)
+%     \item Seq-RIPr, Bayesian Predictive Model, Not in exp. family
+%     \item Revisit the degenerate of the Prior in Theorem 2 \cite{turnerExactAnytimevalidConfidence2023}
+%     \item Carathéodory’s Theorem
+%     \item \sout{Write down $\hypN$ and $\hypA$ explicitly, especially for the boundary conditions}
+%     \item \sout{How to calculate RIPr: first derivative being zero or direct minimisation of KL?}
+%     \item \sout{Pseudo-algorithm for the calculation of CS}
+%     \item \sout{Why bootstrapping? to get the SE for stopping times}
+%     \item \sout{Pseudo-algorithm of calculate when $\E \geq 1/\alpha$}
+% \end{enumerate}
+
+% \subsection{Problem with previous methods}
+% \begin{enumerate}
+%     \item \verb|pilot = TRUE| does nothing
+%     \item Possible wrong calculation with highly unbalanced group design $n_a \ll n_b$
+% \end{enumerate}
+
+% \subsection{Must have}
+% \begin{enumerate}
+%     \item a function to calculate \E\ without simulation:\\
+%         balanced and unbalanced, just \verb|calculateSequential2x2E| maybe?
+%     \item calculate $\CS{m}$ for each $m$
+%     \item design: calculate \verb|nPlan| with $\delta$ and $1 - \mu$, same as calculate power $1 - \mu$ with \verb|nPlan| and $\delta$
+%     \item design: calculate $\delta$ with $1 - \mu$ and \verb|nPlan|
+% \end{enumerate}
+
+% \subsection{Nice to have}
+
+% \begin{enumerate}
+%     \item 2x2 in python in \url{https://github.com/jakorostami/expectation}
+%     \item calculate conditional \E-variable
+%     \item fast way to compute RIPr in each specified settings, especially for CS
+%     \item update GitHub CI/CD
+%     \item pre-commit
+%     \item unify \texttt{R} style
+% \end{enumerate}
+
+% \clearpage
+
+
+\section{SAVI Contingency Table}
+
+
+\subsection{Setup and notation}
+
+We denote the Kullback–Leibler divergence by $\KL{P}{Q} = \int \log(\dv*{P}{Q}) \dd{P}$
+where $\dv*{P}{Q}$ is the Radon-Nikodym derivative of $P$ with respect to $Q$ and 
+the integral is taken on the same probability space (not shown here).
+We will assume that the measures discussed here all have full support. 
+
+We start with a binary random variable $U$ 
+following Bernoulli distribution with parameter $\mu$,
+here $\mu$ is also the mean in mean-value parameterization.
+The density reads
+\begin{align*}
+    p_{\mu}(U)
+    &:= \mu^U \cdot (1 - \mu)^{1-U}, \quad U \in \{0,1\}, \quad \mu \in [0,1]
+\end{align*}
+
+By the standard properties of regular exponential families,
+we parameterize $\Pc$ in terms of the mean-value parameter space $\Mt_p$ and write
+\begin{align*}
+    \Pc = \{P_\mu: \mu \in \Mt_p\}, \quad \Mt_p = [0,1].
+\end{align*}
+
+The canonical parameterization for any $\mu \in \Mt_p$ is defined as
+\begin{align*}
+    p_{\beta}(U) = \frac{1}{Z_p(\beta)} \cdot \exp(\beta \cdot U) \cdot p_{\mu}(U),
+\end{align*}
+where $Z_p(\beta)$ is the normalizing constance and the canonical parameter space is 
+defined as $\Bt_p = \{\beta: Z_p(\beta) < \infty \} = \Rf$.
+    % \beta = \log(\frac{\mu}{1-\mu})
+
+Moving on to the 2-stream examples with different group size $n_a, n_b$.
+At each time point $i$, $n_a$ and $n_b$ copies of Bernoulli variables are collected,
+following the same distribution:
+\begin{align*}
+    U_a &= (U_{a,1}, U_{a,2},\cdots,U_{a,n_a})^T \sim \mathrm{Ber}(\bm{\mu}_a)\\
+    U_b &= (U_{b,1}, U_{b,2},\cdots,U_{b,n_n})^T \sim \mathrm{Ber}(\bm{\mu}_b)
+\end{align*}
+The sufficient statistics vector is denoted by $X = (\sum_j^{n_a}U_{a,j}, \sum_j^{n_b}U_{b,j})$. 
+$\Pc$ is extended by the i.i.d. assumption to 
+a set of distributions for random process $U_{(1)}, U_{(2)}, \dots$ 
+for $i \geq 1$, i.i.d. copies of $U_{(i)}=(U_{(i),a}, U_{(i),b})$.
+Using superscript, we denote the random process up to time $i$ by
+$U^{(n)} := (U_{(1)}, U_{(2)}, \dots U_{(n)})$ 
+and $X^{(n)} := (X_{(1)}, X_{(2)}, \dots X_{(n)})$ for the sufficient statistics respectively.
+
+The \emph{alternative} we consider first $\Qc = \{Q\}$ is simple with some oracle 
+$\bm{\mu}^* = (\bm{\mu}_a^*, \bm{\mu}_b^*)$. 
+\begin{align*}
+    \hypA: U_a \sim \mathrm{Ber}(\bm{\mu}_a^*), U_b \sim \mathrm{Ber}(\bm{\mu}_b^*) \quad 
+    \text{independent}.
+\end{align*}
+
+Under mean-value parameterization:
+\begin{align*}
+    \hypA: X_a \sim P_{\bm{\mu}_a^*}, X_b \sim P_{\bm{\mu}_b^*} \quad 
+    \text{independent}.
+\end{align*}
+
+The null distribution $\Pc$ is the set of distributions where group $a$ and $b$
+are equipped with the same parameter and hence composite:
+\begin{align*}
+    \hypN: X_a \sim P, X_b \sim P \quad 
+    \text{i.i.d. for some } P.
+\end{align*}
+
+\clearpage
+
+\subsection{E Zoos}
+
+\subsubsection{UI}
+
+Based on the general case paper and the UI slide.
+
+Let $\hat{\mu}_{\mid i-1}$ be any \emph{non-anticipating}\todo{What does it mean?}
+estimator based on the first $i-1$ observations and we
+denote the MLE estimator for the null as 
+$\hat{\mu}_{\mid n} = \argmax_{\mu\in\Theta_0} p_{\mu}(U^{{(n)}})$.
+
+\begin{align*}
+    S_{\textsc{UI}} := \frac{\prod_{i=1}^n q_{\hat{\mu}_{\mid i-1}} (U_{(i)})}{p_{\hat{\mu}_{\mid n}}(U^{(n)})}
+\end{align*}
+
+By i.i.d. assumption, the denominator reads the likelihood of $U^{(n)}$ given the MLE estimator.
+
+It is mentioned that \emph{prequential ML} method is used here.
+
+\Yongqi{Can I also used the MLE estimator in the numerator? I think so}
+
+\subsubsection{RIPr}
+
+By Theorem 1 in \cite{turnerExactAnytimevalidConfidence2023}, the GRO \E-variable
+reads:
+\begin{align*}
+    S_{\textsc{RIPr}} := \frac{p_{\mu^*}(U^{(n)})}{p_{\mu^\circ}(U^{(n)})},
+\end{align*}
+where the prior put mass 1 on the boundary and $\mu^\circ = (n_a\mu^*_a/n + n_b \mu^*_b/n)$.
+
+\begin{remark}
+    In 2-stream Bernoulli and the null hypothesis is 2 group is distributed with the same distribution $P \in \Pc$, 
+    $S_{\textsc{cond}} = S_{\textsc{RIPr}} = S_{\textsc{PSEUDO}} = S_{\textsc{MIX}}$,
+    which achieves GRO by corollary 1 of safe testing paper.
+\end{remark}
+
+\subsubsection{NML}
+
+Also look at the luckiness
+
+\subsubsection{COND}
+
+Add a section on Wald's ratio test
+
+We can first write the conditional \E-variable for a data block $X = U = (U_a, U_b)$:
+
+\begin{align*}
+    S_{\textsc{COND}} := \frac{q(X_a, X_b \mid X_a + X_b)}{p(X_a, X_b \mid X_a + X_b)} 
+    = \frac{q(X_a\mid X_a +X_b)}{p(X_a\mid X_a+X_b)} 
+    = \frac{f_{\textrm{FN}(n,n_a,Z,w)}(X_a)}{f_{\textrm{hyp}(n,n_a,Z)}(X_a)}.
+\end{align*}
+
+\begin{remark}
+    Right now, I finally realize 4.2.3 of Yunda's thesis where the \E is:
+    \begin{align*}
+        S_{\textsc{COND}} := \frac{p_{\bm{\mu}}(X^{k-1}\mid Z)}{p_{\spri{\mu}}(X^{k-1}\mid Z)}.
+    \end{align*}
+    Here the $Z:=\sum_{j=1}^k X_j$ is the sum of the sufficient statistics and
+    $X^{k-1}$ would be the sufficient statistics losing $1$ \emph{degree of freedom}.
+\end{remark}
+
+In our special case of Bernoulli streams, the conditional distribution corresponds to
+the Fisher's noncentral hypergeometric (FN) distribution and the denominator is
+simply the cases when odds ratio $\omega = 1$ (hypergeometric distribution).
+
+\begin{align*}
+    S_{\textsc{COND}} = \prod_{i=1}^n \frac{q(X_a^{(i)}\mid Z^{(i)})}{p(X_a^{(i)}\mid Z^{(i)})}
+    = \prod_{i=1}^n \frac{f_{\textrm{FN}(n,n_a,Z^{(i)},w)}(X_a^{(i)})}{f_{\textrm{hyp}(n,n_a,Z^{(i)})}(X_a^{(i)})}
+\end{align*}
+
+\subsection{Calibrator}
+
+First we run the standard Fisher's exact test and then obtain the \E-variable via 
+a calibrator $E = 1/\sqrt{q} - 1$.
+
+\clearpage
+
+\section{Questions and Comments}
+
+\subsection{Prior or turning distribution}
+
+We assume the oracle is some fixed point $\mu^*$
+Let $\pi$ be the prior distribution on the alternative distributions.
+The prior predictive distribution is defined as
+\begin{align*}
+    p(U) = \int p_{\mu}(U) \pi(\mu) \dd{\mu}.
+\end{align*}
+
+In the discussion with Ly on 02.05.2025, he pointed many names for 
+the above expression: 
+maximal likelihood distribution, the prior predictive distribution (Bayesian), and Bayes mixture (MDL).
+
+Additionally, he mentioned that we usually used \textsc{letters} ($X,A$) for 
+observables where \textsc{Greek letters} are reserved for unknown 
+($\pi, \theta, \Theta$), especially in Bayesian framework.
+
+In contrast to the belief's $\mu$ in Bayesian, MDL principle
+regards $\pi$ on $\mu$ rather as a turning tool, uninformative, 
+to approach the oracle point $\mu^*$ given incoming data.
+
+\subsection{Finding confidence sequence for case 1}
+First of all, can we find CS for this testing setup. 
+If so, the confidence set should be searched through the $\Theta_0$ 
+(dashed red line in \refFig{fig:case1_GRO}) or the entire $[0,1]^2$?
+
+\subsection{Convexity of \textsc{SPACES}}
+
+I am not sure why the modified settings where \cite{turnerExactAnytimevalidConfidence2023} and \cite{turnerGenericEvariablesExact2024} looks at the single outcome first and then extend to a single data block. 
+
+Calculating the KL divergence over the set of distributions $\mathcal{H}$ are convex while the calculation of KL over parameter space $\Theta$ is \textbf{ALSO} convex??
+
+\begin{quote}
+    % \textit{
+    note that we cannot draw this conclusion if $\hypN'$ is not convex; for then the distribution $p_{W^\circ}'$ may not correspond to the distribution $p_{W^\circ}$ in the original problem — this correspondence is only guaranteed if $p_{W^\circ}'$ coincides with some $p_{\theta}'$.
+    % }
+\end{quote}
+
+The part I am most confused about is the relationship between the convexity of the hypothesis space (original and modified) and parameter space. What we want is a $\hypN'$ that is compact and convex.
+
+\href{https://statproofbook.github.io/P/kl-conv.html}{Proof: Convexity of the Kullback-Leibler divergence}, it gives the proof of convexity in the pair of probability distributions $(p, q)$ in discrete cases but the same could be applied to continuous cases with integration.
+
+\subsection{What is effect size and why do we need it?}:
+\cite{turnerGenericEvariablesExact2024} deals with effect size by stating that $\hypA$ consists of hypotheses with a minimal effect size $\delta$ while the parameter space of interest is $\hypN(\delta)$ (null hypothesis spaces) in \cite{turnerExactAnytimevalidConfidence2023}. These has confused me a great deal but I will try to explain in my words:
+
+The effect size is the minimal difference between group a and group b 
+we would like to see when rejecting the null hypothesis.
+Since we are concerned with a parametric model of Bernoulli stream in both group,
+parameterized by $\theta_a$ and $\theta_a$. 
+The effect size would essentially be the divergence $d$ between $\theta_a$ and $\theta_b$
+in the parameter space.
+
+\subsection{Why puts a prior on the boundary only}
+
+$W_1^*$: Prior on $\Theta(\delta)$; $W_1'$: Prior over $\Theta_1^>(\delta)$.
+What are good reasons of putting all prior mass on the boundary?
+
+Pros:
+\begin{itemize}
+    \item Computationally simpler as we only calculate once on $\theta_a$ 
+    and we get $\theta_b = \theta_a + \delta$ for free.
+    \item If $(\theta_a^*, \theta_b^*)$ sits somewhere near the line, 
+    \E-variable growth rate is higher with larger prior support.
+    \item Theorem 2 in \cite{turnerExactAnytimevalidConfidence2023} guarantees a degenerate prior
+    on the boundary $\Theta(\delta)$
+\end{itemize}
+
+Cons:
+\begin{itemize}
+    \item If $d_{abs}(\theta_a^*, \theta_b^*) \gg \delta $, 
+    \E-value calculated from $W_1'$ is much larger than $W_1^*$
+\end{itemize}
+
+\sout{What does it mean to \emph{pick $\hypA$ restricted to $\Theta(\delta)$}?}
+
+In the discussion with Peter, he mentioned that the project $P^*$ might not be on the diagonal line unlike section \ref{sec:case1}. 
+It might just be a highly non-convex function that we can only solve by finding the min. of KL divergence after discretization. 
+He mentioned something about the projection not being straight but rather curve.
+
+I think I made a mistake here, when looking at the divergent case, 
+the null would be the divergence bigger than $\delta$ while the alternative would be else?
+
+{\color{red}
+can we plug in $\theta_b^\circ = \theta_a^\circ + \delta$ here? If so, 
+it would just be solving a cubic equation of $\theta_a^\circ$.
+}
+
+
+\subsection{Re-orientate at 01.04.2025}
+
+The biggest reason that I have been so disoriented is that I have so many documents, tests 
+scattered across platforms and places: \githubIssue, \personalRepo, \forkedRepo. 
+Originally, I wanna use Issue as a tracking board, personal repo for experiments, 
+and the forked repo for dev. 
+In the end, I became over-whammed by all and often found myself wasting energy, 
+organising thoughts even after just 1 day.
+
+Thus, I have decided that I will put everything related to 2x2 in this \LaTeX\ document.
+I will still use my \personalRepo for testing but I will not use \githubIssue any more.
+I will write exclusively here as I find writing with \LaTeX\ is still the simplest 
+when even a little bit of math is involved.
+I will use the item or numbered list here and \sout{strike through it} upon completion 
+or delete it when it is not longer relevant.
+
+\subsection{Discussion with Dante at 23.04.2025}
+
+The extended null hypothesis is meaningful now!
+
+In this setup that I call ``one-shot'' where the whole data $U_a, U_b$ is seen at once,
+the conditional \E-variable is optimal.
+
+The extension of the null hypothesis is meaningful, in this parametric Bernoulli family only:
+the extended null $\hypN'$ will be all distributions where all permutation $U$ are the same 
+and the marginal distributions of all (all exchangeable sequences).
+
+In other words, let $U'=(U_1,U_2,\dots,U_{n_a+n_b})$ and
+$\pi$ be any permutation operator on $\{1,\dots,n_a+n_b\}$.
+The null hypothesis is now extended to a much bigger one,
+namely, whether two streams $U_a, U_b$ are exchangeable,
+\begin{align*}
+    \hypN':=(U_1,U_2,\dots,U_{n_a+n_b}) \overset{d}{=} 
+    U_{\pi(1)},U_{\pi(2)},\dots,U_{\pi(n_a+n_b)}\}.
+\end{align*}
+
+Moreover, the marginal distribution of $U_j \overset{d}{=} U_i$ for any $i, j$ 
+but the conditional dependence is not assumed in $\hypN'$ any more 
+in contrast to independence assumed in the original $\hypN$
+where $U_i, U_j \iid P$. 
+
+Nevertheless, the $S_{\textsc{cond}}$ is still GRO-optimal, we can claim it is a 
+\textit{robust} \E-variable for a bigger problem.
+
+\subsection{28.07.2025}
+
+The goal to get a conditional \E-variable
+\begin{itemize}
+    \item with priors on log odds ratio: Jeffrey's, conjugate, Cauchy, Laplace, Gaussian
+    \item uniformly most powerful (UMP) test for a fixed $\alpha$, ask Sebastian
+    \item normalized maximal likelihood (NML), aligns with the MDL principle
+\end{itemize}
+
+The second amazingly achieves the most powerful test with a given test,
+related materials are in the reply to the safe testing but it is given in
+the context of unconditional one. So Peter was not sure about its look here.
+
+Compare it with the old one (unconditional one)
+\begin{itemize}
+    \item Turner's
+    \item Universal inference (MLE)
+    \item p-to-e calibrator ($e = 1/\sqrt{q} - 1$ maybe)
+\end{itemize}
+
+Previous results shows that the UI performs the worst, next to Turner's, 
+a simple calibrator works best, e.g. $f(p) = \kappa p^{\kappa-1}$ for some $\kappa \in(0,1)$ 
+and $f(p) = p^{-1/2}-1$.
+noted that the Fisher's exact test gives a very small p-value
+
+First step is to start with a fixed prior and fixed alternative.
+
+\subsection*{Confusion about the sequential-ness and conditional-ness}
+
+I was confused about the formulation between the sequential ratio and 
+the (what I called) global conditional \E-variables.
+
+Let $X,Y$ be Bernoulli variables with $p$ and $q$, then we can write the 
+conditional likelihood ratio test (Wald's) as follow:
+
+\begin{align*}
+    R^n := \prod_{i=1}^n \frac{f_1(X_i, Y_i \mid X_i + Y_i)}{f_0(X_i, Y_i \mid X_i + Y_i)}
+\end{align*}
+
+and $f_1(\cdot) := (1 + \theta)^{-1}$ and $f_0 = (1 + \theta^{-1})^{-1}$
+
+Here is the example of composite testing:
+\begin{align*}
+    \hypN: (X_1, Y_1), (X_2,Y_2),\dots \iid P \in \Pc_1 \: \textrm{v.s.} 
+    \hypA: (X_1, Y_1), (X_2,Y_2),\dots \iid P \in \Pc_{\theta}
+\end{align*}
+
+where $\Pc_1$ and $\Pc_{\theta}$ are distribution parametrized by odds ratio $\theta$.
+
+Now it is almost the same as before but just extended where each data point $(X_1, Y_1)$
+is replaced by a contingency table. 
+I think the reason I got so confused is here: 
+we are testing $m$ copies of tables $T_i$ and within that $T_i$,
+each table is a 2x2 table of $n_a, n_b$ Bernoulli streams with $p, q$.
+
+Using the notation $X^b_i, i = 1,\dots, n_a$ Ber and $X^a_i, i =1,\dots,n_b$ 
+The full expression reads:
+\begin{align*}
+    \frac{f_1(X_1^a, X_2^a,\dots X_{n_a}^a, X_1^b, X_2^b,\dots X_{n_b}^b \mid Y_a + Y_b)}
+    {f_0(X_1^a, X_2^a,\dots X_{n_a}^a, X_1^b, X_2^b,\dots X_{n_b}^b \mid Y_a + Y_b)}
+\end{align*}
+
+For a particular table $T_i$, I can just jump to the common doc, the hypothesis being tested is
+
+\begin{quote}
+    For all the 2x2 tables $T_i$, group a and group b frequency 
+    has no difference.
+\end{quote}
+
+\begin{align*}
+    \hypN: T_1, T_2, \dots \iid P \in \Pc_1 
+        \quad \textrm{v.s.} \quad
+    \hypA: T_1, T_2, \dots \iid P \in \Pc_{\theta}
+\end{align*}
+
+Questions to discuss tomorrow:
+
+\begin{itemize}
+    \item Is the \E-process-ness still here? \emph{YES}, by
+    \item Is the optional continuation still here, I think so 
+    \item For the mixture, $\theta$ gets Bayesian updating each time (numerical)
+    \item I think we assume group size $n_a, n_b$ is stationary right? Does the 
+    \item I remember there is some nice properties concerning the concave of the Fisher's information
+\end{itemize}
+
+\subsection*{Formulate this rigously: A small discussion with Peter about the general case paper}
+
+If we have 1-d regular exponential family with the same sufficient statistics, 
+let's assume we are talking about Turner's example.
+
+The GRO one is the conditional \E-variable and putting the prior on the curve (ark)
+results also in the RIPr one (GRO) \E-variable.
+
+Compared to this case (fixed odds ratio $\delta$ vs $1$, curve vs diagonal straight line),
+it is not clear that if we still get the optimal \E-variable if instead of a fixed $\delta$,
+we put a prior on the simplex, what sort of optimality we would get if there any.
+
+Would the conditional variable still be the optimal one?
+
+
+Let $f(k) = \binom{n_a}{k} \binom{n_b}{U-k}$ and $f'(k) = \frac{n_b!}{k!(n_a-k)!(U-k)!(n_b-U+k-n_a)!} = \binom{n_a - U + k}{n_a}$
+
+
+\begin{align*}
+    p_{n_a, n_b, u, \omega}(k) = \frac{\frac{n_b!}{k!(n_a-k)!(u-k)!(n_b-U+k-n_a)!}\omega^k}{\sum \frac{n_b!}{k!(n_a-k)!(u-k)!(n_b-U+k-n_a)!}\omega^j}
+\end{align*}
+
+
+We know $n_{11}$ is the $Y_a = k$ in our settings,
+
+
+
+
+
+% \subsection{Walking through the maze of notation}
+
+% Upon reading the literature, I find the notation between different papers quite different
+% and it has been difficult for me personally to understand. 
+% Here I will summarize the notations and their reasoning behind a particular representation.
+% We denote calendar time index by $t$ to avoid the abuse of dots in sequential 
+% or $k$-stream settings.
+
+% In \cite{turnerExactAnytimevalidConfidence2023, turnerGenericEvariablesExact2024}, 
+% sample follows some parameterized distributions 
+% $P \in \Pc := \{P_{\theta}: \theta \in \Theta\}$. 
+% The setup is restricted to 2 stream mostly where 
+% $Y_{t,a} \iid P_{\theta_a}, Y_{t,b} \iid P_{\theta_b}$.
+% % $\Theta_0, \Theta_1$ denote the parameter spaces of null and alternative hypothesis in $[0, 1]^2$. 
+
+% In the $k$-stream sample test paper (\cite{haoEvalues$k$sampleTests2024} or 
+% Ch. 4 in \cite{haoEvaluesAnytimevalidInference2025}). 
+% It should be noted that the results are considered in a block, hence the E process-ness
+% is OK in contrast to conditional and RIPr \E-variables in general paper.
+% The null distributions $\Pc$ is some exponential family with mean-value parameter space $\Mc$.
+% The null hypothesis \emph{relative to} $\Pc$ is 
+
+% $\hypN$ is the collection of distributions (Bernoulli here)
+% while $\Theta$ is parameter space in $[0, 1]^2$ 
+% (whose convexity can simply visualized in the unit square).
+% For example, $\Theta$ could be a convex set in the unit cube 
+% while the distribution $\mathcal{H}$ or $\mathcal{P}$ might not be.
+
+% In the case of Bernoulli distribution, which belongs to exponential family, 
+% we denote the mean-value parameters space by $\Mc$ which contains all 
+% $\mathtt{M} \in (0,1).$
+
+
+
+
+% \textbf{Data}:
+% A complete data block $Y$ of two streams $(Y_a, Y_b)$ is observed at each time-step, 
+% indexed by the superscript $^{(t)}$: 
+% \begin{align*}
+%     &Y_a = (Y^{(1)}_a, Y^{(2)}_a, \dots, Y^{(m)}_a),\\
+%     &Y_b = (Y^{(1)}_b, Y^{(2)}_b, \dots, Y^{(m)}_b).
+% \end{align*}
+% At time $t$, each data block $Y^{(t)} = (Y^{(t)}_{a}, Y^{(t)}_{b})$ 
+% comprises two vectors of binary random variables of length $n_a$ and $n_b$
+% , respectively, where all entries are i.i.d. according to the same Bernoulli distribution.
+% \begin{align*}
+%     &Y^{(t)}_{a,1}, \dots, Y^{(t)}_{a,n_a} \iid \mathrm{Ber}(\theta_a), \\
+%     &Y^{(t)}_{b,1}, \dots, Y^{(t)}_{b,n_b} \iid \mathrm{Ber}(\theta_b).
+% \end{align*}
+
+% Within each group, $X^{(t)}_{g} := \sum_{i=1}^{n_g} Y^{(t)}_{g,i}, \; g \in \{a, b\}$ 
+% is the sufficient statistic which is the number of ones in group g. 
+% By default, We will restrict our discussion to the balanced design $n_a = n_b = 1$, 
+% which greatly simplifies the setup into:
+% \begin{align*}
+%     Y^{(t)}_{a} \sim \mathrm{Ber}(\theta_a), \quad Y^{(t)}_{b} \sim \mathrm{Ber}(\theta_b).
+% \end{align*}
+
+% \clearpage
+
+% \section{Case 1: Testing against an equal mean}
+% \label{sec:case1}
+
+% We are interested in whether two \textit{independent} Bernoulli streams 
+% are equipped with equal means.
+% We are testing if there is any discrepancy at all, hence a two-sided test.
+% The GRO() \E-variable is the $S_{\textsc{mix}}$ below.
+
+% $\hypN$, null hypothesis (composite):
+% \begin{align*}
+%     &\Theta_0 = \{ (\theta_a, \theta_b) \in [0, 1]^2 : \theta_a = \theta_b \} \\
+%     &\hypN = \{P_{\theta_a, \theta_b} : (\theta_a, \theta_b) \in \Theta_0 \}
+% \end{align*}
+
+% $\hypA$, alternative hypothesis (simple):
+% \begin{align*}
+%     &\Theta_1 = \{ (\theta_a^*, \theta_b^*) \in [0, 1]^2 \} \\
+%     &\hypA = \{P_{\theta_a, \theta_b}:  (\theta_a^*, \theta_b^*) \in \Theta_1 \}
+% \end{align*}
+
+
+% \begin{figure*}[ht!]
+%     \centering
+%     \begin{subfigure}[t]{0.49\linewidth}
+%         \centering
+%         \includestandalone{fig/Visual-unrestricted-projection}
+%         \caption{The simple $\hypA$ is indicated by $C$ and 
+%         the restricted parameter space of $\hypN$ is indicated by the 
+%          dashed red line $AB$.
+%         The RIPr of $\hypA$ onto $\hypN$ is denoted by the red dot ($C'$).}
+%         \label{fig:case1_GRO}
+%     \end{subfigure}%
+%     ~ 
+%     \begin{subfigure}[t]{0.49\linewidth}
+%         \centering
+%         \includestandalone{fig/Visual-restricted-abs}
+%         \caption{Projection is skewed, as shown by the red dot.}
+%     \end{subfigure}
+%     \caption{Visualisation of a simple alternative against a composite null $\theta_a = \theta_b$}
+%     \label{fig:GRO_projection}
+% \end{figure*}
+
+% \subsection{Euclidean distance and KL divergence in mean-value space} 
+
+% Only in this special setup, the minimizer of Euclidean distance and KL divergence coincides.
+% The $C'$ is the point on line $AB$
+% that has the smallest Euclidean distance between $C$ ($CC' \perp AB$).
+% \begin{align*}
+%     C' = \inf_{P \in AB} d_2(P, C), \quad d_2(\cdot, \cdot) \textnormal{ is the Euclidean distance.}
+% \end{align*}
+
+% Luckily for us, it is exactly the same point RIPr.
+% \begin{align*}
+%     C' = \inf_{P \in AB} \KL{P}{C}, \quad \KL{\cdot}{\cdot} \textnormal{ is KL divergence.}
+% \end{align*}
+
+% In other composite settings, the RIPr of $\Qc$ onto $\Pc$ 
+% \textit{does} falls on the boundary but unfortunately it is no longer the $l^2$ 
+% projection 
+% \footnote{
+% $l^p$ usually refers to the sequence space where 
+% $L^p$ are the function space. 
+% }
+% any more.
+
+% \subsection{Case 1a: learn a simple alternative hypothesis}
+
+% Does putting a prior turns this into a composite alternative hypothesis?
+
+% \begin{remark}
+%     We must not think of $\pi$ on $\Theta$ as a prior distribution but rather
+%     a tuning parameter. Although the expression might resemble the Bayesian 
+%     framework, the interpretation differs.
+    
+%     As suggested by Ly, one should not think of the simple alternative
+%     $\Theta_1=\{(\theta_a^*,\theta_b^*)\in [0,1]^2\}$ with $\pi(\theta)$
+%     as if we somehow \textbf{know} how $\pi$ distributes in $\Theta$.
+%     Instead, $\pi$ is used here as a instrument to learn the true theta.
+%     In simulation, we acted with known a fixed $(\theta_a,\theta_b)$.
+
+%     The example Ly gave was very straightforward. In LASSO,
+%     $\lambda$ is used to reduce the number of coefficients.
+%     For example, the true model could be $y = \beta_3x_3 + \beta_{20}x_{20}$ with 
+%     some Gaussian noise. Note that $\lambda$ is not contained in the true model
+%     but only a medium for us to estimate the best model with corresponding constrains.
+
+%     Therefore, we shall not say the simple alternative is extended to the composite setting
+%     with a prior $\pi$. Instead, we are acting if we do not know the true alternative
+%     and learn it via $\pi$.
+% \end{remark}
+
+% Theorem 2 of \cite{turnerExactAnytimevalidConfidence2023} stated that 
+% if the point alternative is achieved by 
+% $(\theta_a^*, \theta_b^*)$ if $(\theta_a^*, \theta_b^*) \in \Theta_0$, 
+% meaning that the simple alternative sits within.
+
+% Here we first write the KL between $(\theta_a, \theta_b) \in \Theta_0$ and a point alternative $(\theta_a^*, \theta_b^*)$:
+
+% Eq. 10 in \cite{turnerExactAnytimevalidConfidence2023} is important as it states 
+% that no matter which estimators we used, 
+% we still get a \E-variable $\breve{\theta}_a \mid Y^{(j - 1)}$. 
+% My understanding is that we will still get a \E-variable 
+% as long as we condition on the previous filtration ($j - 1$) 
+% but I am \textit{unsure} about the optimality about it.
+
+% % \subsection{Case 1b: Extension to general null}
+
+% % Modification: represented by a $'$ is single-outcome, changing from data block to a single event with $n_a / n$ of being group $a$ and $n_b / n$ of being group $b$.
+% % \begin{equation*}
+% %     \hypN' := \{P_{\theta}(G, Y) \mid \theta \in \Theta_0\}, \quad G = \{a, b\}
+% % \end{equation*}
+
+% % Construction is through a group variable $G$ but I am not sure why it would make for a convex $\hypN'$ in the case of a non-convex $\hypN$.
+
+% \subsection{Finding the empirically best Beta prior}
+% This is done in a minimax-sense: 
+% one finds a $\gamma$ that is minimal among the worst case.
+% We are basically looking for the smallest $\gamma$ in the worst case (minimax).
+% But the problem is range of $\gamma$ could be vastly huge (unbounded) and 
+% I have no idea how to locate one that is uniformly good across $\Theta$.
+% % The worst case refers $\underset{(\theta_a, \theta_b) \in [0, 1]^2}{\max} E(\log()) - E()$.
+
+% \subsection{Finding CS}
+% The idea of CS is tight to the notion of effect size $\delta$,
+% CS is simply calculated as case 2 with effect size $\delta = 0$.
+
+% Let the confidence interval (CI) for level $1-\alpha$ at time $n$:
+% \begin{align*}
+%     \mathrm{CI}_{n, 1-\alpha} := \{\delta: S^{(n)}_{\delta} < 1 /  \alpha\},
+% \end{align*}
+% where $S_{\delta}^{(n)}$ is a \E-variable for null hypothesis $\Hc_{0,\delta}$,
+% this ``good'' \E-variable is calculated via finding the minimizer of KL, discussed later.
+
+% \begin{align*}
+%     \Hc_{0, \delta} = \{P_{\theta_a, \theta_b}: d_{abs}(\theta_a, \theta_b) = \delta\}
+% \end{align*}
+
+% \clearpage
+
+% \section{Case 2: Null hypothesis with linear boundary condition}
+
+% Other names: absolute difference, absolute risk, linear boundary condition...
+
+% For a divergence measure $d$ and a difference (effect size) $\delta$, 
+% $\Theta_0(\delta)$ refers to the boundary condition.
+% $\Theta_0^{<}(\delta)$ denotes the \textit{null} parameter spaces where $d \leq \delta$ 
+% and $\Theta_1^{>}(\delta)$ denotes the \textit{alternative} parameter spaces where $d > \delta$.
+% \Yongqi{
+%     We ignore the boundary where $d = \delta$ as $P$ and $Q$ are absolutely continuous 
+%     with respect to each other?
+% }
+
+% \textbf{Motivation}: Given a new drug, 
+% instead of testing whether the control (a) and treatment (b) groups experience the same effect,
+% a pharmaceutical company would like to determine 
+% whether this drug performs at least $\delta$ better than the control group. 
+% Here, $\delta$ represents the minimal relevant effect size.
+
+% We are doing a one-sided test here to see if group b is \textit{at least} $\delta$ better than group a. 
+% The ``better'' is measured in absolute difference in this case:
+% \begin{align*}
+%     d_{abs}(\theta_a, \theta_b) = \theta_b - \theta_a \in (-1, 1).   
+% \end{align*}
+% $d_{abs}$ in $[0, 1]^2$ ranges from $-1$ to $1$,
+% we consider the case where $\delta > 0$ 
+% as the same argument could be made for negative effect size by flipping the sign of $\delta$.
+% We remove boundary cases $\delta = \{0, 1\}$ to improve numerical stability.
+
+% $\hypN$, null hypothesis (composite): 
+% \begin{align*}
+%     &\Theta_0^<(\delta) = \{ (\theta_a, \theta_b) \in [0, 1]^2: d_{abs}(\theta_a, \theta_b) 
+%     < \delta \}
+% \end{align*}
+
+% $\hypA$, alternative hypothesis restricted:
+% \begin{align*}
+%     &\Theta_1^>(\delta) = \{ (\theta_a, \theta_b) \in [0, 1]^2: d_{abs}(\theta_a, \theta_b) > \delta \}
+% \end{align*}
+
+
+% Theorem 2 in \cite{turnerExactAnytimevalidConfidence2023} tells us the RIPr \E-variable
+% falls on the boundary domain.
+% Fortunately, the \E-variable of highest power can be solved by finding the roots of
+% the KL divergence, which is relatively easy here. 
+
+% \subsection{Finding confidence sequence}
+
+% Under $\alpha$ level and at time $m$, the exact (non-asymptotic) 
+% confidence sequence $\CS{m}$ are the set of $\delta$ that 
+% we have not been able to reject at time $m$ and level $\alpha$. 
+% To obtained a two-sided CS, we simply give a list of,
+% $\vec{\delta} = \{\delta_1, \delta_2, \dots, \delta_K \}$ ($K$: precision),
+% and record at which $\delta'$ (effect size) the calculated cross $1/\alpha$.
+% In the case of running intersection, we keep only the intersection.
+
+% Differentiating KL against $\theta_a^\circ$:
+% \Yongqi{This is very tricky as the differentiation depends on }
+% \begin{align*}
+%     \KL{\bm{\theta_1}}{\bm{\theta_0}}
+%     &:=n_a\mathbf{E}_{Y\sim p_{\theta_a^*}}\left[\log\frac{p_{\theta_a^*}(Y)}{p_{\theta_a}(Y)}\right]+n_b\mathbf{E}_{Y\sim p_{\theta_b^*}}\left[\log\frac{p_{\theta_b^*}(Y)}{p_{\theta_b}(Y)}\right] \\
+%     \dv{\mathrm{KL}}{\theta_a} 
+%     &= \dv{}{\theta_a} 
+%     n_a \qty(\theta_a^* \log \frac{\theta_a^*}{\theta_a} + (1-\theta_a^*) \log \frac{1-\theta_a^*}{1-\theta_a}) \\
+%     & \quad + n_b \left(\theta_b^* \log \frac{\theta_b^*}{\theta_b} + (1-\theta_b^*) \log \frac{1-\theta_b^*}{1-\theta_b}\right) 
+%      % \\
+%      % &=  n_a \left( - \frac{\theta_a^*}{\theta_a} + \frac{1-\theta_a^*}{1-\theta_a}\right) 
+%      % + n_b \cdot c \left(- \frac{\theta_b^*}{\theta_b} + \frac{1-\theta_b^*}{1-\theta_b}\right)
+% \end{align*}
+
+% \texttt{minimizeKL} gives us the solution of the following equation numerically,
+% which is the derivative of the KL above\footnote{
+%     If $\delta \in (-1, 0)$, calculation is over $(-\delta, 1)$ to ensure the parameters falls in $[0, 1]$
+% }:
+% \begin{align*}
+%     n_{a} \left(-\frac{\theta_{a}^{*}} {\theta_{a}^{\circ}}+\frac{1-\theta_{a}^{*}} {1-\theta_{a}^{\circ}} \right) +
+%     n_{b} \cdot c \cdot\left(-\frac{\theta_{b}^{*}} {\theta_{b}^{\circ}}+\frac{1-\theta_{b}^{*}} {1-\theta_{b}^{\circ}} \right)=0.
+% \end{align*}
+
+
+
+% \textit{Efficiency:} Solving $(\theta_a^\circ, \theta_b^\circ)$ becomes a cubic equation 
+% when the solution only falls on the boundary by Theorem 2.
+% It is 10x faster to use \verb|polyroot()| than \verb|stat::uniroot()| but 
+% the trade-off is that the coefficients have to be provided for \verb|polyroot()|,
+% which is bad for readability.
+
+% Changes to be made:
+% Use \verb|Re| to get the real roots of \verb|polyroot()| solution.
+
+
+
+% \clearpage
+
+% \section{Case 3: Null hypothesis with log odds ratio boundary condition}
+
+% The distance here is calculated as 
+% $d_{lOR}(\theta_a, \theta_b) = \log(\frac{\theta_b}{1 - \theta_b} \cdot \frac{1 - \theta_a}{\theta_a})$,
+% the log odds ratio difference ranging from $-\infty$ to $\infty$.
+
+% \subsection{Why CS is one-sided?}
+
+% \begin{figure*}[h]
+%     \centering
+%     \begin{subfigure}[t]{0.49\linewidth}
+%         \centering
+%         \includestandalone[width=\linewidth]{fig/Ex-restricted-abs}
+%         \caption{$d_{abs}(\theta_a, \theta_b) = \theta_b - \theta_a$}
+%         \label{fig:abs diff}
+%     \end{subfigure}%
+%     ~ 
+%     \begin{subfigure}[t]{0.49\linewidth}
+%         \centering
+%         \includestandalone[width=\linewidth]{fig/Ex-restricted-lOR}
+%         \caption{$d_{lOR}(\theta_a, \theta_b) = \log(
+%             \frac{\theta_b}{1 - \theta_b} \cdot \frac{1 - \theta_a}{\theta_a}
+%             )$}
+%     \end{subfigure}
+%     \caption{
+%     Examples of restricted alternative hypothesis parameter spaces for several values of two divergence measures.
+%     $\Theta_0$ denotes the null hypothesis parameter space (dashed red line);
+%     $\Theta_1^+(\delta)$, denoted by the shaded area,
+%     is the restricted alternative hypothesis parameter space with difference larger than $\delta$ in $d_{abs}$ or $d_{lOR}$.
+%     }
+% \end{figure*}
+
+% \clearpage
+
+% \section{Case 4: Conditional \E-variable}
+% \label{sec:cond}
+
+% This is based on Dante's presentation on the Wald's RIPr (perturbed RIPr) and
+% the Turner's RIPr along with the Example 9 in Ch. 4 in \cite{haoEvaluesAnytimevalidInference2025}.
+
+% \textbf{Setup}: We have binary random variables $X, Y \in \{0, 1\}$, 
+% $X \sim \mathrm{Ber}(\theta_a)$, $Y \sim \mathrm{Ber}(\theta_b)$.
+% (We do not assume independent for now).
+% \begin{align*}
+%     \PR{X = 1} &= \theta_a, \, \PR{X = 0} = 1 - \theta_a \\
+%     \PR{Y = 1} &= \theta_b, \, \PR{Y = 0} = 1 - \theta_b
+% \end{align*}
+
+
+
+
+% Let $u = \frac{\theta_a}{1-\theta_a}\big/\frac{\theta_b}{1-\theta_b} \in (0, \infty)$ 
+% be the odds ratio between group a and b.
+% It should be noted that $u$ along will not recover $(\theta_a, \theta_b)$ 
+% hence we might need a nuisance parameter to recover CS.
+
+% \begin{align*}
+%     \condPR{X = 1, Y = 1}{X + Y = 2} &= 1 \\
+%     \condPR{X = 1, Y = 0}{X + Y = 1} &= \frac{1}{1+u} \\
+%     \condPR{X = 0, Y = 1}{X + Y = 1} &= \frac{u}{1+u} \\
+%     \condPR{X = 0, Y = 0}{X + Y = 0} &= 1
+% \end{align*}
+
+% The key idea is \textit{enlarged} the distributions via reparameterization. 
+% We can reparameterize the original distribution with $\alpha, \beta$
+% to obtain the `marginalized' probability:
+% \begin{align*}
+%     \PR{X = 1, Y = 1} &= \alpha \\
+%     \PR{X = 1, Y = 0} &= (1 - \alpha - \beta) \cdot \frac{1}{1+u} \\
+%     \PR{X = 0, Y = 1} &= (1 - \alpha - \beta) \cdot \frac{u}{1+u} \\
+%     \PR{X = 0, Y = 0} &= \beta
+% \end{align*}
+
+% \textit{Why the $\alpha, \beta$ and $\alpha', \beta'$ in two figures for perturbed RIPr?}
+% This is to stress that the reparameterization can take any value.
+
+% The original null hypothesis distribution family we consider is:
+% \begin{align*}
+%     \Pc = \bigcup_{u\in(0,\infty)} \Pc_{u}.
+% \end{align*}
+
+% Through reparameterization, we have the following enlarged family (\textit{proof needed}):
+% \begin{align*}
+%     \Pc_u^* = \{\mathrm{P}' \ll \Pc_u \mid 
+%         \forall A \in \sigma: 
+%         \condPR[\mathrm{P}']{A}{e} = \condERW{1_A}{e}, \mathrm{P}'\text{-a.s.}\}
+% \end{align*}
+
+% \Yongqi{What is the sigma algebra $\sigma$ and $e$ ?}
+
+% The nice thing about this conditional is that we get a \E-variable that are close to 
+% the GRO-optimal one but it works for any distribution constructed via the sufficient statistics
+% while Turner's RIPr is only optimal in independent setting. 
+% This is reminiscent of \cite{haoEvaluesAnytimevalidInference2025}'s argument 
+
+% \emph{Why the mean of the NML is expected as 1?}
+
+% The expectation is taken wrt the $Y_a$ and $Y_b$ follow the same Bernoulli? 
+% Or is it composite with all same odds ratio?
+
+% \begin{equation}
+%     E_\textrm{NML}(Y_a) = \frac{1}{f_{\textrm{hyp}(n,n_a,u)}(Y_a)}\frac{f_{\textrm{FN}(n,n_a,u,\hat{w}(Y_a)}(Y_a)}{\sum_{k=\gamma_{\min}}^{\gamma_{\max}} f_{\textrm{FN}(n,n_a,u,\hat{w}(k))}(k)}
+% \end{equation}
+
+% Why this is \E-variable? Because the $E_{NML}$ would be just the NML density should 
+% $Y_a$ follows the null hypothesis:
+% \begin{align*}
+%     \ERWi{Y_a \sim \hypN}{E_\textrm{NML}(Y_a)} 
+%     &= \ERWi{Y_a \sim \hypN}{\condERWi{Y_a \mid U \sim \textrm{hyp}}{E_\textrm{NML}}{U}} \\
+%     &= \ERWi{Y_a \sim \hypN}{\sum_{k = \gamma_{\min}}^{\gamma_{\max}} f_{\textrm{hyp}(n,n_a,u)}(k) 
+%         \cdot E_\textrm{NML}} \\
+%     &= \ERWi{Y_a \sim \hypN}{\sum_{k = \gamma_{\min}}^{\gamma_{\max}}
+%         \frac{f_{\textrm{FN}(n,n_a,u,\hat{w}(k)}(k)}{\sum_{k=\gamma_{\min}}^{\gamma_{\max}} f_{\textrm{FN}(n,n_a,u,\hat{w}(k))}(k)} } = 1
+% \end{align*}
+
+
+
+
+
+
+
+% \subsection{Calculate stopping time and \E-value given confidence level and effect size}
+
+% This is central to all the calculations and we call this function \verb|getStopE|.
+% In safestats, it is called \verb|calculateSequential2x2E| with the arg \verb|simSettings == TRUE|.
+
+% \begin{algorithm}
+% \caption{Computation of \E-value given effect size and confidence level}
+% \KwIn{Data $Y$; effect size $\delta$; confidence level $\alpha$; prior $W_a$ on $\theta_a$; grid size $G$}
+% \KwOut{Stopping time $\tau$; final \E-value}
+
+% Initialize $e_0, \tau, \E_{\tau}$\;
+
+% Set a discrete uniform grid $\bm{g}$ on $(0, 1)$ of resolution $G$\;
+
+% Set $\bm{g}_a \gets \bm{g} \cdot (1 - \delta)$\;
+
+% Set $\bm{g}_b \gets \bm{g}_a + \delta$\;
+
+% Compute $\theta_a \gets \bm{g}_a^\transpose \cdot W_{a}$\;
+
+% Compute $\theta_a \gets \theta_a + \delta$\;
+
+% Compute $\theta_0 \gets ({n_a} \cdot \theta_a + n_b \cdot \theta_b)/(n_a + n_b)$\;
+
+% \For{$t \gets 1$ \KwTo $m$}{
+%     Compute $e$ using likelihood ratio with $\theta$s\;
+    
+%     Update $e_t \gets e_{t-1} \cdot e$\;
+    
+%     \If{$e_t \geq 1 / \alpha$}{
+%         Output $\tau \gets t$, $\E_\tau \gets e_t$\;
+%         \textbf{break}\;
+%     }
+
+%     Update posterior density $W_a$ using $Y^{(t)}$\;
+
+%     Compute $\theta_a \gets \bm{g}_a^\transpose \cdot W_{a}$\;
+    
+%     Compute $\theta_a \gets \theta_a + \delta$\;
+
+%     Compute $\theta_0 \gets ({n_a} \cdot \theta_a + n_b \cdot \theta_b)/(n_a + n_b)$\;
+% }
+
+% \If(\tcp*[f]{No \E crossing $1/\alpha$}){$\tau = 0$}{
+%     Output $\tau \gets m$, $\E_\tau \gets e_m$\;
+%     \textbf{break}\;
+% }
+
+% \end{algorithm}
+
+
+
+% It is generally the same with log odds ratio boundary condition except 
+% \verb|stats::optim| is used to find $\theta_a^{RIPr}$.
+
+% \begin{algorithm}
+% \DontPrintSemicolon
+% % set up aux. functions
+% \SetKwFunction{calculateLikelihood}{calculateLikelihood}
+% \SetKwFunction{updateBreveTheta}{updateBreveTheta}
+% \SetKwFunction{minimizeKL}{minimizeKL}
+
+% \caption{Calculation of confidence sequence for absolute difference constraint}
+% \KwData{Data $Y$, confidence level $\alpha$, precision $K$, restricted effect size $\delta$,\\
+%         \Indp prior $W_1^*$ on $\Theta(\delta)$: 
+%         $W^*_{1,a} \sim \mathrm{Beta}(a_1, a_2), W^*_{1,b} \sim \mathrm{Beta}(b_1, b_2)$.}
+% \KwResult{Confidence sequences, {\color{red}two-sided}}
+% \BlankLine
+
+% \For{$j = 1, 2, \dots, K$}{
+%     % initialize $U_{0, a} = U_{0, b} \leftarrow 0$ (number of $1$s in each data block)\;
+%     $e_0 \leftarrow 1$\;
+%     $\breve{\theta}_a \leftarrow \updateBreveTheta(0, 0, a_1, a_2)$\;
+%     $\breve{\theta}_b \leftarrow \updateBreveTheta(0, 0, b_1, b_2)$\;
+%     $\theta_a^\circ \longleftarrow$ \minimizeKL{$\delta_j$, $\breve{\theta}_a$, $\breve{\theta}_b$}\;
+%     $\theta_b^\circ \longleftarrow \theta_a^\circ + \delta_j$ \;
+%     \For{$i = 1, 2, \dots, m$}{
+%         $q_i \leftarrow 
+%             \calculateLikelihood(Y^{(i)}_a, Y^{(i)}_b, \breve{\theta}_a, \breve{\theta}_b)$\;
+%         $p_i \leftarrow 
+%             \calculateLikelihood(Y^{(i)}_a, Y^{(i)}_b, \theta_a^\circ, \theta_b^\circ)$\;
+%         $e_i \leftarrow e_{i-1} \cdot \frac{q_i}{p_i}$\;
+%         % count $U_{i, a}, U_{i, b}$ in each block $Y_{i, a}, Y_{i, b}$\;
+%         \If {$e_i \geq \frac{1}{\alpha}$ \textbf{and} running intersection}{
+%             break, reject $\delta_j$\;
+%         }
+%         $\breve{\theta}_a \leftarrow \updateBreveTheta(
+%             \sum_{j=1}^i Y_a^{(j)}, n_a\cdot i - \sum_{j=1}^i Y_a^{(j)}, a_1, a_2
+%             )$\;
+%         $\breve{\theta}_a \leftarrow \updateBreveTheta(
+%             \sum_{j=1}^i Y_b^{(j)}, n_b\cdot i - \sum_{j=1}^i Y_b^{(j)}, b_1, b_2
+%             )$\;
+%         $\theta_a^\circ \longleftarrow$ \minimizeKL{$\delta_j$, $\breve{\theta}_a$, $\breve{\theta}_b$}\;
+%         $\theta_b^\circ \longleftarrow \theta_a^\circ + \delta_j$ \;
+%     }
+% }
+% \end{algorithm}
+
+
+% \subsection{Calculating planned blocks with effect size and power}
+
+% \begin{algorithm}
+% \DontPrintSemicolon
+% \SetKwFunction{minimizeKL}{minimizeKL}
+
+% \caption{Calculation of nPlan given delta and beta}
+% \KwIn{Data $Y$, effect size $\delta$, confidence level $\alpha$, prior $W_a$ for $\theta_a$, 
+%     grid size $G$, \\ 
+%     simulation time $M$, max stopping times $t_{max}$
+% }
+% \KwOut{currentWorstCaseQuantile}
+% \BlankLine
+% Set up a discretized grid for $\theta_a$ with $\delta, G$: $grid_a$\;
+% Initialize worst case quantile: $q \leftarrow 0$ \;
+% Initialize worst case power: $p \leftarrow 1$ \;
+% \For{$t = 1, 2, \dots, G$}{
+%     Initialize vectors of length $M$: stoppingTimes <- stopEs <- finalEs \;
+%     $\theta_a \leftarrow grid_a[t]$ \;
+%     $\theta_b \leftarrow fun(\theta_a)$ \;
+%     \For{$i = 1, 2, \dots, M$}{
+%         Sample $y_a$ of length $t_{max}$ from binomial distribution, $B(n_a, \theta_a)$\;
+%         Sample $y_b$ of length $t_{max}$ from binomial distribution, $B(n_b, \theta_b)$\;
+%         stoppingTimes <- stopEs <- finalEs <- getStopE(ya, yb)\;
+%     }
+%     Calculate current quantile: $q_t \leftarrow mean(stoppingTimes)$\;
+%     Calculate current power $p_t$ as the percentages stopEs >= 1/alpha\;
+%     \If{$p_t \leq p$}{
+%         $p \leftarrow p_t$
+%     }
+%     \If{$q_t \geq q$}{
+%         $q \leftarrow q_t$
+%     }
+% }
+% \end{algorithm}

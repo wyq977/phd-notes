@@ -1,0 +1,69 @@
+\documentclass[12pt]{standalone}
+
+% tikz
+\usepackage{lmodern}                                       % solve font issue
+\usepackage[T1]{fontenc}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\usetikzlibrary{arrows}
+\usetikzlibrary{arrows.meta}
+\usepgfplotslibrary{fillbetween}                           % LaTeX and plain TeX
+\pgfplotsset{width=203pt,height=203pt,compat=1.15}         % compatibility for PGFPlots 1.15
+
+
+% color
+\definecolor{zzttqq}{rgb}{0.6,0.2,0}
+\definecolor{xdxdff}{rgb}{0.49,0.49,1}
+\definecolor{ududff}{rgb}{0.3,0.3,1}
+\definecolor{qqwuqq}{rgb}{0,0.39,0}
+\definecolor{cqcqcq}{rgb}{0.75,0.75,0.75}
+
+\begin{document}
+\begin{tikzpicture}[line cap=round, line join=round, >=triangle 45]
+    \begin{axis} [
+            xmin=0,xmax=1,xtick={1},xtick style={draw=none},
+            ymin=0,ymax=1,ytick={1},ytick style={draw=none},
+            extra x ticks={0},
+            xlabel=$\theta_a$, ylabel=$\theta_b$, ylabel style={rotate=-90},
+            axis equal=true,
+            enlargelimits=false,
+        ]
+    % \clip(-0.5,-0.5) rectangle (1.1,1.2);
+    \fill [fill=cqcqcq,fill opacity=0.1] (0,0) -- (0,1) -- (1,1) -- (1,0) -- cycle;
+
+    % Dashed diagonal line
+    \draw [line width=1pt, color=red, opacity=0.5, dashed] (0,0) -- (1,1);
+
+    \draw [line width=0.5pt, color=ududff, opacity=0.9, dashed] (0.2,0.6) -- (0.4,0.4);
+    
+    % Rectangle borders
+    \draw [line width=1pt, color=black] (0,0) -- (0,1);
+    \draw [line width=1pt, color=black] (1,1) -- (1,0);
+    \draw [line width=1pt, color=black] (1,0) -- (0,0);
+    \draw [line width=1pt, color=black] (0,1) -- (1,1);
+
+    % Labels
+    \begin{scriptsize}
+        \draw (0.75,0.75) node {\Large $\Theta_0$};
+
+        \draw (0.22,0.67) node {$(\theta_a^*, \theta_b^*)$};
+
+        \draw [fill=ududff] (0.2,0.6) circle (1.5pt);
+
+        \draw [fill=red] (0.4,0.4) circle (1.5pt);
+
+        \draw (0.65,0.4) node {
+            $(\frac{\theta_a^* + \theta_b^*}{2}, \frac{\theta_a^* + \theta_b^*}{2})$
+        };
+
+        
+        \draw (0.19,0.55) node {$C$};
+        \draw (0.37,0.35) node {$C'$};
+        \draw (0.05,0.05) node {$A$};
+        \draw (0.95,0.95) node {$B$};
+    \end{scriptsize}
+\end{axis}
+\end{tikzpicture}
+\end{document}
