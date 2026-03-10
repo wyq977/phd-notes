@@ -4,18 +4,10 @@
 
 \subsection{Li's Algorithm}
 
-Originally developed by \cite{liEstimationMixtureModels1999},
-the following algorithm is written based on the notes from
-\cite{grunwaldSafeTesting2024, haoEvalues$k$sampleTests2024}.
-To quote \cite{brindaAdaptiveEstimationGaussian2018},
-Li's inequality requires the family $\Qc$ to have a
-uniformly bounded density ratio.
+Originally developed by \cite{liEstimationMixtureModels1999}, the following algorithm is written based on the notes from \cite{grunwaldSafeTesting2024, haoEvalues$k$sampleTests2024}.
+To quote \cite{brindaAdaptiveEstimationGaussian2018}, Li's inequality requires the family $\Qc$ to have a uniformly bounded density ratio.
 
-Li obtains the RIPr in a greedy manner where the KL divergence between
-distribution $Q$ onto the convex hull of a set of distributions $\Qc$
-(composite null) is minimized. It is assumed that the KL divergence between $Q$
-and any distribution $Q \in \Qc$ is finite \footnote{Which should I use? $\Qc$ or $\Qf$}
-(often call ``nondegenerate'' condition).
+Li obtains the RIPr in a greedy manner where the KL divergence between distribution $Q$ onto the convex hull of a set of distributions $\Qc$ (composite null) is minimized. It is assumed that the KL divergence between $Q$ and any distribution $Q \in \Qc$ is finite \footnote{Which should I use? $\Qc$ or $\Qf$} (often call ``nondegenerate'' condition).
 
 \begin{algorithm}
 	\DontPrintSemicolon
@@ -49,7 +41,4 @@ Iteratively, the linear combination is still in the convex hull, i.e.
 	(1 - \alpha_2)\cdot Q_{(2)}'.
 \end{align*}
 
-It is clear that $Q_{(2)}$ or $Q_{(m)}$ would still be a convex combination of
-elements in $\Qc$.
-
-\subsection{Cisszar Algorithm}
+It is clear that $Q_{(2)}$ or $Q_{(m)}$ would still be a convex combination of elements in $\Qc$.

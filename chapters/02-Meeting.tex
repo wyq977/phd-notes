@@ -2,16 +2,81 @@
 
 \section{Meetings}
 
+\subsection*{09.03.2026 with Peter}
+
+\begin{itemize}
+	\item Expand a example to $\delta$ stay the same and $\theta_a,\theta_b$ jump in the unit square
+	\item Just try the method Peter for a bit, and show it this week maybe
+	\item I should really look into whether learning, especially Bayesian learning will make the end product different, i.e.
+	$\prod_i^n S_{\mathrm{COND}}(Y_i) = \prod_i^n S_{\mathrm{COND}}(Y_{\pi(i)})$ for a different permutation $\pi$
+	\item Lots of new ideas in the list pdf!
+	\item $d/\log(n)$ rate ?
+\end{itemize}
+
 \subsection*{Feb 2026 Work plan}
 
 \begin{itemize}
 	\item Simulate Peter's idea: for batches $B_1, B_2, \dots, B_n$ of size 2, a `oracle' conditional e-variable,
 	divided by the expectation of $\mu$.
 	\item R implementation of fixed delta
-	\item re-do futility analysis with the 'right' e-variables (so you stop for futility if you can reject H1, using an e-variable that takes H1 to be the null hypothesis - this is in many cases not achievable by flipping the original e-variable
- (only do it for conditional e-variable and NML e-variable, not for p-to-e calibration because we do not know how to make p-values with H1 as the null)
- (discuss with Alexander how to treat the case H0: delta=0 vs H1: delta neq 0 because it's unclear how to make an e-variable for H1)
+	\item \emph{Discuss with Alex} re-do futility analysis with the 'right' e-variables (so you stop for futility if you can reject $\hypA$, using an e-variable that takes $\hypA$ to be the null hypothesis - this is in many cases not achievable by flipping the original e-variable
+ (only do it for conditional e-variable and NML e-variable, not for p-to-e calibration because we do not know how to make p-values with $\hypA$ as the null)
+ (discuss with Alexander how to treat the case $\hypN: \delta=0$ vs $\hypA: \delta \neq 0$ because it's unclear how to make an e-variable for H1)
 \end{itemize}
+
+\paragraph*{Peter's idea of optimization}
+
+We are only in the two streams case and use the same notation as the \E-table paper by Sebastian.
+
+
+1. This amounts to finding the avergered of $\mu$ (or $\delta$)?
+
+2. COND-NML divided by a sup.
+
+For time/batches $t=1,\dots,N$, we calculated the COND-NML \E-variable for each $t$.
+This is superscript, using the data up to $t\in [N]$.
+
+Then we got the $S^t_{\mathrm{c(NML)}}$, which is not a \E-process.
+We obtained another sequence of pseudo \E-variable $S_t=S^t_{\mathrm{c(NML)}}/S^{t-1}_{\mathrm{c(NML)}}$.
+
+To normalize, another sequence $C_t$ is obtained via:
+\begin{equation*}
+	C_t = \sup_{\mu\in [0,1]} P_{\theta}(ya, yb) * S^t
+\end{equation*}
+
+%
+%# but this is not a E-variable, so normalize it via a
+%# C_t, which is proportional to
+%# range ya', yb' from [0, 0] to [na_t, na_t]
+%# we have a S^t'
+%# using data = [ya' + \sum^{t-1} ya_i, yb' + \sum^{t-1} yb_i]
+%# group size = [\sum na_i, \sum nb_i]
+%# and maximum over all theta from 0 to 1 (bernouli parameters)
+%# C_t = sup_{\theta} P_{\theta}(ya', yb') * S^t'
+%# which is the expectation
+
+\subsection*{01.03.2026 Meta E}
+
+Some long discussion on if we are doing sequential analysis at all...
+
+The z-test team is facing with a extreme outlier:
+
+H0: 
+
+\subsection*{27.02.2026}
+
+Dante's talk on his work Rao-Blackwellization of \E-variable.
+The basic idea is that conditioning on the sufficient statistics $T(X)$ can \emph{improve}.
+
+There're a few consequences:
+\begin{itemize}
+	\item One can limit the search space to functions relating to $T(X)$ to be more efficient
+\end{itemize}
+
+He gave some examples where one can point out if $\E$ is GRO or not: exchangeable sequences.
+
+One thing to note is bound and if the expectation holds.
+Log-utility function which we often use is then
 
 \subsection*{Double interpretation of Bayesian methods: Average vs learning}
 
