@@ -2,15 +2,59 @@
 
 \section{Meetings}
 
+
+\subsection*{12.03.2026}
+
+This week has been quite busy with hands-on stuff, mostly drawing for the ML2 project.
+For the python project, I am glad that things are now more organized (hopefully), but the organization or development need to stem from the User's perspective.
+
+For example, he or she would like to just run the test ASAP given the data and the model/methods.
+Therefore, a ideal interaction would be
+\begin{verbatim}
+	import MyAmazingTest as mat
+	data = pd.read_csv() # [10, 232]
+	test = mat.turner() # ump()
+	
+	print(test.e_value)
+\end{verbatim}
+
+For me personally, a good separation of what the pkg \emph{MUST} contain or not is critical:
+\begin{itemize}
+	\item IO and data validation
+	\item calculation method, caller in FP or OOP favor both valid
+	\item (optional) plotting
+	\item (optional) simulation data
+\end{itemize}
+
+Stuff like plotting should not be as rigid, and it would nice to just have a proper output as standarized variables (data frame or numpy arrays).
+This leaves more room for optimization and tweaking later.
+
+This is also true for simulation and large repetition.
+Writing 100 codes of caching function might ultimately be a waste of time.
+In the end, we need to think like the USER!
+
+\paragraph*{Discussing future math stuff with Dante}
+
+\begin{quote}
+	Thou shalt not linger in the comfort of thine data analysis!
+\end{quote}
+
+\begin{itemize}
+	\item Asympototic and compound \E
+	\item Exponential conditional likelihood
+	\item Forecasting
+	\item \E-closure
+\end{itemize}
+	
 \subsection*{09.03.2026 with Peter}
 
 \begin{itemize}
 	\item Expand a example to $\delta$ stay the same and $\theta_a,\theta_b$ jump in the unit square
 	\item Just try the method Peter for a bit, and show it this week maybe
 	\item I should really look into whether learning, especially Bayesian learning will make the end product different, i.e.
-	$\prod_i^n S_{\mathrm{COND}}(Y_i) = \prod_i^n S_{\mathrm{COND}}(Y_{\pi(i)})$ for a different permutation $\pi$
+	$\prod_i^n S_{\mathrm{COND}}(Y_i) = \prod_i^n S_{\text{COND}}(Y_{\pi(i)})$ for a different permutation $\pi$
 	\item Lots of new ideas in the list pdf!
-	\item $d/\log(n)$ rate ?
+	\item $d/2\log(n)$ rate ?
 \end{itemize}
 
 \subsection*{Feb 2026 Work plan}
