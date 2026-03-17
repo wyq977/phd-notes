@@ -3,6 +3,46 @@
 \section{Meetings}
 
 
+\subsection*{ALex verificaiton with $1/R_{01}$}
+
+\Alexander{Alex, write whatever u feel like}
+
+For a given 2x2 table (one table only now),
+group size are denoted by $n_a, n_b$, $y_a, y_b$ is the number of $1$ while $n_1=y_a+y_b$.
+
+In short, we have the Fisher’s noncentral hypergeometric distribution given the sufficient statistics
+\begin{equation*}
+	f_{\mathrm{FN}(n_a,n_b,n_1,\delta)}(y_a) 
+	= \frac{\binom{n_a}{y_a} \binom{n_b}{n_1-y_a} e^{\delta y_a}}{\sum_{\gamma^{-}}^{\gamma^{+}} \binom{n_a}{k} \binom{n_b}{n_1 - k} e^{\delta k}}
+\end{equation*}
+where $\gamma^{-} = \max{0, n_1-n_b}$ and $\gamma^{+}=\min{n_1, n_a}$ is the domain for $y_a$, which is a $1$-dimensional exp. family.
+
+If $\delta=0$ it reduces to central hypergeometric distribution:
+\begin{equation*}
+	sdsssssssssssss
+\end{equation*}
+
+\begin{itemize}
+	\item R: \verb|BiasedUrn::dFNCHypergeo(x = ya, m1 = na, m2 = nb, n = n1, odds = odds)| odds=$\exp(\delta)$ \\
+	$x$ is the number of $1$s in group a, $m_1,m_2$ is the group size, $n$ is the total number of $1$s.
+	\url{https://www.rdocumentation.org/packages/BiasedUrn/versions/1.07/topics/BiasedUrn-Multivariate}
+	\item Python: \verb|scipy.stats.nchypergeom_fisher(k=ya, M=na+nb, n=na, N=n1, odds)| \\
+	\url{https://docs.scipy.org/doc/scipy/tutorial/stats/discrete_nchypergeom_fisher.html}
+\end{itemize}
+
+The \emph{conditional \E-value} with a fixed $\delta$ is
+\begin{equation*}
+	S_{n_a,n_b,n_1,\delta}(y_a) = \frac{f_{\mathrm{FN}(n_a,n_b,n_1,\delta)}(y_a)}{f_{\mathrm{FN}(n_a,n_b,n_1,0)}(y_a)}.
+\end{equation*}
+
+
+The `Bayes' is w.r.t. a (truncated) Gaussian with zero mean and scale $\delta$,
+\begin{equation*}
+	\int_{\Rf} S_{n_a,n_b,n_1,\delta}(y_a) \cdot \pi(\delta) \dd{\delta}
+\end{equation*}
+
+See: \url{https://github.com/wyq977/e-table/blob/yongqi/src/e_table/methods/bayes.py}
+
 \subsection*{12.03.2026}
 
 This week has been quite busy with hands-on stuff, mostly drawing for the ML2 project.
