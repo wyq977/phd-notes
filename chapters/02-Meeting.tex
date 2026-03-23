@@ -3,7 +3,22 @@
 \section{Meetings}
 
 
-\subsection*{ALex verificaiton with $1/R_{01}$}
+\subsection*{20.03.2026}
+
+The discussion with Seb and Peter is mainly about fixing and finalizing.
+
+Also discuss about possible venues.
+
+We should think from the users' perspectives.
+
+\begin{itemize}
+	\item 1 group is trying to optimize for power so use UMP each one and multiply them together they wanna publish
+	\item 1 is trying to seq-cond without learning (essentially fixed a point mass on 1 $\delta_{\min}$)
+	\item 1 is trying to do learning then seq bayesian
+	\item Put a prior on maybe on $(0, \infty)$ or $(\delta_{\min}, \infty)$.
+\end{itemize}
+
+\subsection*{ALex verification with $1/R_{01}$}
 
 \Alexander{Alex, write whatever u feel like}
 
@@ -18,9 +33,10 @@ In short, we have the Fisher’s noncentral hypergeometric distribution given th
 where $\gamma^{-} = \max{0, n_1-n_b}$ and $\gamma^{+}=\min{n_1, n_a}$ is the domain for $y_a$, which is a $1$-dimensional exp. family.
 
 If $\delta=0$ it reduces to central hypergeometric distribution:
-\begin{equation*}
-	sdsssssssssssss
-\end{equation*}
+\begin{align*}
+	f_{\delta}(y_a) &= \exp(\delta \cdot y_a - A(\delta)) h(y_a)
+\end{align*}
+
 
 \begin{itemize}
 	\item R: \verb|BiasedUrn::dFNCHypergeo(x = ya, m1 = na, m2 = nb, n = n1, odds = odds)| odds=$\exp(\delta)$ \\
