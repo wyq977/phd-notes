@@ -3,7 +3,7 @@
 % \section{TODO}
 
 % \begin{enumerate}
-    % \item RIPr and convex optimization
+% \item RIPr and convex optimization
 %     \item Formal on variable block distribution, filtrations, and sigma-algebra, $n_a, n_b$
 %     \item Add manual data for verification
 %     \item Benchmark \E-values calculated from UI, Turners, calibrator (from Fisher), conditional (1-shot) \\
@@ -65,66 +65,66 @@
 \subsection{Setup and notation}
 
 We denote the Kullback–Leibler divergence by $\KL{P}{Q} = \int \log(\dv*{P}{Q}) \dd{P}$
-where $\dv*{P}{Q}$ is the Radon-Nikodym derivative of $P$ with respect to $Q$ and 
+where $\dv*{P}{Q}$ is the Radon-Nikodym derivative of $P$ with respect to $Q$ and
 the integral is taken on the same probability space (not shown here).
-We will assume that the measures discussed here all have full support. 
+We will assume that the measures discussed here all have full support.
 
-We start with a binary random variable $U$ 
+We start with a binary random variable $U$
 following Bernoulli distribution with parameter $\mu$,
 here $\mu$ is also the mean in mean-value parameterization.
 The density reads
 \begin{align*}
-    p_{\mu}(U)
-    &:= \mu^U \cdot (1 - \mu)^{1-U}, \quad U \in \{0,1\}, \quad \mu \in [0,1]
+	p_{\mu}(U)
+	 & := \mu^U \cdot (1 - \mu)^{1-U}, \quad U \in \{0,1\}, \quad \mu \in [0,1]
 \end{align*}
 
 By the standard properties of regular exponential families,
 we parameterize $\Pc$ in terms of the mean-value parameter space $\Mt_p$ and write
 \begin{align*}
-    \Pc = \{P_\mu: \mu \in \Mt_p\}, \quad \Mt_p = [0,1].
+	\Pc = \{P_\mu: \mu \in \Mt_p\}, \quad \Mt_p = [0,1].
 \end{align*}
 
 The canonical parameterization for any $\mu \in \Mt_p$ is defined as
 \begin{align*}
-    p_{\beta}(U) = \frac{1}{Z_p(\beta)} \cdot \exp(\beta \cdot U) \cdot p_{\mu}(U),
+	p_{\beta}(U) = \frac{1}{Z_p(\beta)} \cdot \exp(\beta \cdot U) \cdot p_{\mu}(U),
 \end{align*}
-where $Z_p(\beta)$ is the normalizing constance and the canonical parameter space is 
+where $Z_p(\beta)$ is the normalizing constance and the canonical parameter space is
 defined as $\Bt_p = \{\beta: Z_p(\beta) < \infty \} = \Rf$.
-    % \beta = \log(\frac{\mu}{1-\mu})
+% \beta = \log(\frac{\mu}{1-\mu})
 
 Moving on to the 2-stream examples with different group size $n_a, n_b$.
 At each time point $i$, $n_a$ and $n_b$ copies of Bernoulli variables are collected,
 following the same distribution:
 \begin{align*}
-    U_a &= (U_{a,1}, U_{a,2},\cdots,U_{a,n_a})^T \sim \mathrm{Ber}(\bm{\mu}_a)\\
-    U_b &= (U_{b,1}, U_{b,2},\cdots,U_{b,n_n})^T \sim \mathrm{Ber}(\bm{\mu}_b)
+	U_a & = (U_{a,1}, U_{a,2},\cdots,U_{a,n_a})^T \sim \mathrm{Ber}(\bm{\mu}_a) \\
+	U_b & = (U_{b,1}, U_{b,2},\cdots,U_{b,n_n})^T \sim \mathrm{Ber}(\bm{\mu}_b)
 \end{align*}
-The sufficient statistics vector is denoted by $X = (\sum_j^{n_a}U_{a,j}, \sum_j^{n_b}U_{b,j})$. 
-$\Pc$ is extended by the i.i.d. assumption to 
-a set of distributions for random process $U_{(1)}, U_{(2)}, \dots$ 
+The sufficient statistics vector is denoted by $X = (\sum_j^{n_a}U_{a,j}, \sum_j^{n_b}U_{b,j})$.
+$\Pc$ is extended by the i.i.d. assumption to
+a set of distributions for random process $U_{(1)}, U_{(2)}, \dots$
 for $i \geq 1$, i.i.d. copies of $U_{(i)}=(U_{(i),a}, U_{(i),b})$.
 Using superscript, we denote the random process up to time $i$ by
-$U^{(n)} := (U_{(1)}, U_{(2)}, \dots U_{(n)})$ 
+$U^{(n)} := (U_{(1)}, U_{(2)}, \dots U_{(n)})$
 and $X^{(n)} := (X_{(1)}, X_{(2)}, \dots X_{(n)})$ for the sufficient statistics respectively.
 
-The \emph{alternative} we consider first $\Qc = \{Q\}$ is simple with some oracle 
-$\bm{\mu}^* = (\bm{\mu}_a^*, \bm{\mu}_b^*)$. 
+The \emph{alternative} we consider first $\Qc = \{Q\}$ is simple with some oracle
+$\bm{\mu}^* = (\bm{\mu}_a^*, \bm{\mu}_b^*)$.
 \begin{align*}
-    \hypA: U_a \sim \mathrm{Ber}(\bm{\mu}_a^*), U_b \sim \mathrm{Ber}(\bm{\mu}_b^*) \quad 
-    \text{independent}.
+	\hypA: U_a \sim \mathrm{Ber}(\bm{\mu}_a^*), U_b \sim \mathrm{Ber}(\bm{\mu}_b^*) \quad
+	\text{independent}.
 \end{align*}
 
 Under mean-value parameterization:
 \begin{align*}
-    \hypA: X_a \sim P_{\bm{\mu}_a^*}, X_b \sim P_{\bm{\mu}_b^*} \quad 
-    \text{independent}.
+	\hypA: X_a \sim P_{\bm{\mu}_a^*}, X_b \sim P_{\bm{\mu}_b^*} \quad
+	\text{independent}.
 \end{align*}
 
 The null distribution $\Pc$ is the set of distributions where group $a$ and $b$
 are equipped with the same parameter and hence composite:
 \begin{align*}
-    \hypN: X_a \sim P, X_b \sim P \quad 
-    \text{i.i.d. for some } P.
+	\hypN: X_a \sim P, X_b \sim P \quad
+	\text{i.i.d. for some } P.
 \end{align*}
 
 \clearpage
@@ -137,11 +137,11 @@ Based on the general case paper and the UI slide.
 
 Let $\hat{\mu}_{\mid i-1}$ be any \emph{non-anticipating}\todo{What does it mean?}
 estimator based on the first $i-1$ observations and we
-denote the MLE estimator for the null as 
+denote the MLE estimator for the null as
 $\hat{\mu}_{\mid n} = \argmax_{\mu\in\Theta_0} p_{\mu}(U^{{(n)}})$.
 
 \begin{align*}
-    S_{\textsc{UI}} := \frac{\prod_{i=1}^n q_{\hat{\mu}_{\mid i-1}} (U_{(i)})}{p_{\hat{\mu}_{\mid n}}(U^{(n)})}
+	S_{\textsc{UI}} := \frac{\prod_{i=1}^n q_{\hat{\mu}_{\mid i-1}} (U_{(i)})}{p_{\hat{\mu}_{\mid n}}(U^{(n)})}
 \end{align*}
 
 By i.i.d. assumption, the denominator reads the likelihood of $U^{(n)}$ given the MLE estimator.
@@ -155,14 +155,14 @@ It is mentioned that \emph{prequential ML} method is used here.
 By Theorem 1 in \cite{turnerExactAnytimevalidConfidence2023}, the GRO \E-variable
 reads:
 \begin{align*}
-    S_{\textsc{RIPr}} := \frac{p_{\mu^*}(U^{(n)})}{p_{\mu^\circ}(U^{(n)})},
+	S_{\textsc{RIPr}} := \frac{p_{\mu^*}(U^{(n)})}{p_{\mu^\circ}(U^{(n)})},
 \end{align*}
 where the prior put mass 1 on the boundary and $\mu^\circ = (n_a\mu^*_a/n + n_b \mu^*_b/n)$.
 
 \begin{remark}
-    In 2-stream Bernoulli and the null hypothesis is 2 group is distributed with the same distribution $P \in \Pc$, 
-    $S_{\textsc{cond}} = S_{\textsc{RIPr}} = S_{\textsc{PSEUDO}} = S_{\textsc{MIX}}$,
-    which achieves GRO by corollary 1 of safe testing paper.
+	In 2-stream Bernoulli and the null hypothesis is 2 group is distributed with the same distribution $P \in \Pc$,
+	$S_{\textsc{cond}} = S_{\textsc{RIPr}} = S_{\textsc{PSEUDO}} = S_{\textsc{MIX}}$,
+	which achieves GRO by corollary 1 of safe testing paper.
 \end{remark}
 
 \subsubsection{NML}
@@ -176,18 +176,18 @@ Add a section on Wald's ratio test
 We can first write the conditional \E-variable for a data block $X = U = (U_a, U_b)$:
 
 \begin{align*}
-    S_{\textsc{COND}} := \frac{q(X_a, X_b \mid X_a + X_b)}{p(X_a, X_b \mid X_a + X_b)} 
-    = \frac{q(X_a\mid X_a +X_b)}{p(X_a\mid X_a+X_b)} 
-    = \frac{f_{\textrm{FN}(n,n_a,Z,w)}(X_a)}{f_{\textrm{hyp}(n,n_a,Z)}(X_a)}.
+	S_{\textsc{COND}} := \frac{q(X_a, X_b \mid X_a + X_b)}{p(X_a, X_b \mid X_a + X_b)}
+	= \frac{q(X_a\mid X_a +X_b)}{p(X_a\mid X_a+X_b)}
+	= \frac{f_{\textrm{FN}(n,n_a,Z,w)}(X_a)}{f_{\textrm{hyp}(n,n_a,Z)}(X_a)}.
 \end{align*}
 
 \begin{remark}
-    Right now, I finally realize 4.2.3 of Yunda's thesis where the \E is:
-    \begin{align*}
-        S_{\textsc{COND}} := \frac{p_{\bm{\mu}}(X^{k-1}\mid Z)}{p_{\spri{\mu}}(X^{k-1}\mid Z)}.
-    \end{align*}
-    Here the $Z:=\sum_{j=1}^k X_j$ is the sum of the sufficient statistics and
-    $X^{k-1}$ would be the sufficient statistics losing $1$ \emph{degree of freedom}.
+	Right now, I finally realize 4.2.3 of Yunda's thesis where the \E is:
+	\begin{align*}
+		S_{\textsc{COND}} := \frac{p_{\bm{\mu}}(X^{k-1}\mid Z)}{p_{\spri{\mu}}(X^{k-1}\mid Z)}.
+	\end{align*}
+	Here the $Z:=\sum_{j=1}^k X_j$ is the sum of the sufficient statistics and
+	$X^{k-1}$ would be the sufficient statistics losing $1$ \emph{degree of freedom}.
 \end{remark}
 
 In our special case of Bernoulli streams, the conditional distribution corresponds to
@@ -195,13 +195,13 @@ the Fisher's noncentral hypergeometric (FN) distribution and the denominator is
 simply the cases when odds ratio $\omega = 1$ (hypergeometric distribution).
 
 \begin{align*}
-    S_{\textsc{COND}} = \prod_{i=1}^n \frac{q(X_a^{(i)}\mid Z^{(i)})}{p(X_a^{(i)}\mid Z^{(i)})}
-    = \prod_{i=1}^n \frac{f_{\textrm{FN}(n,n_a,Z^{(i)},w)}(X_a^{(i)})}{f_{\textrm{hyp}(n,n_a,Z^{(i)})}(X_a^{(i)})}
+	S_{\textsc{COND}} = \prod_{i=1}^n \frac{q(X_a^{(i)}\mid Z^{(i)})}{p(X_a^{(i)}\mid Z^{(i)})}
+	= \prod_{i=1}^n \frac{f_{\textrm{FN}(n,n_a,Z^{(i)},w)}(X_a^{(i)})}{f_{\textrm{hyp}(n,n_a,Z^{(i)})}(X_a^{(i)})}
 \end{align*}
 
 \subsection{Calibrator}
 
-First we run the standard Fisher's exact test and then obtain the \E-variable via 
+First we run the standard Fisher's exact test and then obtain the \E-variable via
 a calibrator $E = 1/\sqrt{q} - 1$.
 
 \clearpage
@@ -214,36 +214,36 @@ We assume the oracle is some fixed point $\mu^*$
 Let $\pi$ be the prior distribution on the alternative distributions.
 The prior predictive distribution is defined as
 \begin{align*}
-    p(U) = \int p_{\mu}(U) \pi(\mu) \dd{\mu}.
+	p(U) = \int p_{\mu}(U) \pi(\mu) \dd{\mu}.
 \end{align*}
 
-In the discussion with Ly on 02.05.2025, he pointed many names for 
-the above expression: 
+In the discussion with Ly on 02.05.2025, he pointed many names for
+the above expression:
 maximal likelihood distribution, the prior predictive distribution (Bayesian), and Bayes mixture (MDL).
 
-Additionally, he mentioned that we usually used \textsc{letters} ($X,A$) for 
-observables where \textsc{Greek letters} are reserved for unknown 
+Additionally, he mentioned that we usually used \textsc{letters} ($X,A$) for
+observables where \textsc{Greek letters} are reserved for unknown
 ($\pi, \theta, \Theta$), especially in Bayesian framework.
 
 In contrast to the belief's $\mu$ in Bayesian, MDL principle
-regards $\pi$ on $\mu$ rather as a turning tool, uninformative, 
+regards $\pi$ on $\mu$ rather as a turning tool, uninformative,
 to approach the oracle point $\mu^*$ given incoming data.
 
 \subsection{Finding confidence sequence for case 1}
-First of all, can we find CS for this testing setup. 
-If so, the confidence set should be searched through the $\Theta_0$ 
+First of all, can we find CS for this testing setup.
+If so, the confidence set should be searched through the $\Theta_0$
 (dashed red line in \refFig{fig:case1_GRO}) or the entire $[0,1]^2$?
 
 \subsection{Convexity of \textsc{SPACES}}
 
-I am not sure why the modified settings where \cite{turnerExactAnytimevalidConfidence2023} and \cite{turnerGenericEvariablesExact2024} looks at the single outcome first and then extend to a single data block. 
+I am not sure why the modified settings where \cite{turnerExactAnytimevalidConfidence2023} and \cite{turnerGenericEvariablesExact2024} looks at the single outcome first and then extend to a single data block.
 
 Calculating the KL divergence over the set of distributions $\mathcal{H}$ are convex while the calculation of KL over parameter space $\Theta$ is \textbf{ALSO} convex??
 
 \begin{quote}
-    % \textit{
-    note that we cannot draw this conclusion if $\hypN'$ is not convex; for then the distribution $p_{W^\circ}'$ may not correspond to the distribution $p_{W^\circ}$ in the original problem — this correspondence is only guaranteed if $p_{W^\circ}'$ coincides with some $p_{\theta}'$.
-    % }
+	% \textit{
+	note that we cannot draw this conclusion if $\hypN'$ is not convex; for then the distribution $p_{W^\circ}'$ may not correspond to the distribution $p_{W^\circ}$ in the original problem — this correspondence is only guaranteed if $p_{W^\circ}'$ coincides with some $p_{\theta}'$.
+	% }
 \end{quote}
 
 The part I am most confused about is the relationship between the convexity of the hypothesis space (original and modified) and parameter space. What we want is a $\hypN'$ that is compact and convex.
@@ -253,10 +253,10 @@ The part I am most confused about is the relationship between the convexity of t
 \subsection{What is effect size and why do we need it?}:
 \cite{turnerGenericEvariablesExact2024} deals with effect size by stating that $\hypA$ consists of hypotheses with a minimal effect size $\delta$ while the parameter space of interest is $\hypN(\delta)$ (null hypothesis spaces) in \cite{turnerExactAnytimevalidConfidence2023}. These has confused me a great deal but I will try to explain in my words:
 
-The effect size is the minimal difference between group a and group b 
+The effect size is the minimal difference between group a and group b
 we would like to see when rejecting the null hypothesis.
 Since we are concerned with a parametric model of Bernoulli stream in both group,
-parameterized by $\theta_a$ and $\theta_a$. 
+parameterized by $\theta_a$ and $\theta_a$.
 The effect size would essentially be the divergence $d$ between $\theta_a$ and $\theta_b$
 in the parameter space.
 
@@ -267,49 +267,49 @@ What are good reasons of putting all prior mass on the boundary?
 
 Pros:
 \begin{itemize}
-    \item Computationally simpler as we only calculate once on $\theta_a$ 
-    and we get $\theta_b = \theta_a + \delta$ for free.
-    \item If $(\theta_a^*, \theta_b^*)$ sits somewhere near the line, 
-    \E-variable growth rate is higher with larger prior support.
-    \item Theorem 2 in \cite{turnerExactAnytimevalidConfidence2023} guarantees a degenerate prior
-    on the boundary $\Theta(\delta)$
+	\item Computationally simpler as we only calculate once on $\theta_a$
+	      and we get $\theta_b = \theta_a + \delta$ for free.
+	\item If $(\theta_a^*, \theta_b^*)$ sits somewhere near the line,
+	      \E-variable growth rate is higher with larger prior support.
+	\item Theorem 2 in \cite{turnerExactAnytimevalidConfidence2023} guarantees a degenerate prior
+	      on the boundary $\Theta(\delta)$
 \end{itemize}
 
 Cons:
 \begin{itemize}
-    \item If $d_{abs}(\theta_a^*, \theta_b^*) \gg \delta $, 
-    \E-value calculated from $W_1'$ is much larger than $W_1^*$
+	\item If $d_{abs}(\theta_a^*, \theta_b^*) \gg \delta $,
+	      \E-value calculated from $W_1'$ is much larger than $W_1^*$
 \end{itemize}
 
 \sout{What does it mean to \emph{pick $\hypA$ restricted to $\Theta(\delta)$}?}
 
-In the discussion with Peter, he mentioned that the project $P^*$ might not be on the diagonal line unlike section \ref{sec:case1}. 
-It might just be a highly non-convex function that we can only solve by finding the min. of KL divergence after discretization. 
+In the discussion with Peter, he mentioned that the project $P^*$ might not be on the diagonal line unlike section \ref{sec:case1}.
+It might just be a highly non-convex function that we can only solve by finding the min. of KL divergence after discretization.
 He mentioned something about the projection not being straight but rather curve.
 
-I think I made a mistake here, when looking at the divergent case, 
+I think I made a mistake here, when looking at the divergent case,
 the null would be the divergence bigger than $\delta$ while the alternative would be else?
 
 {\color{red}
-can we plug in $\theta_b^\circ = \theta_a^\circ + \delta$ here? If so, 
+can we plug in $\theta_b^\circ = \theta_a^\circ + \delta$ here? If so,
 it would just be solving a cubic equation of $\theta_a^\circ$.
 }
 
 
 \subsection{Re-orientate at 01.04.2025}
 
-The biggest reason that I have been so disoriented is that I have so many documents, tests 
-scattered across platforms and places: \githubIssue, \personalRepo, \forkedRepo. 
-Originally, I wanna use Issue as a tracking board, personal repo for experiments, 
-and the forked repo for dev. 
-In the end, I became over-whammed by all and often found myself wasting energy, 
+The biggest reason that I have been so disoriented is that I have so many documents, tests
+scattered across platforms and places: \githubIssue, \personalRepo, \forkedRepo.
+Originally, I wanna use Issue as a tracking board, personal repo for experiments,
+and the forked repo for dev.
+In the end, I became over-whammed by all and often found myself wasting energy,
 organising thoughts even after just 1 day.
 
 Thus, I have decided that I will put everything related to 2x2 in this \LaTeX\ document.
 I will still use my \personalRepo for testing but I will not use \githubIssue any more.
-I will write exclusively here as I find writing with \LaTeX\ is still the simplest 
+I will write exclusively here as I find writing with \LaTeX\ is still the simplest
 when even a little bit of math is involved.
-I will use the item or numbered list here and \sout{strike through it} upon completion 
+I will use the item or numbered list here and \sout{strike through it} upon completion
 or delete it when it is not longer relevant.
 
 \subsection{Discussion with Dante at 23.04.2025}
@@ -320,7 +320,7 @@ In this setup that I call ``one-shot'' where the whole data $U_a, U_b$ is seen a
 the conditional \E-variable is optimal.
 
 The extension of the null hypothesis is meaningful, in this parametric Bernoulli family only:
-the extended null $\hypN'$ will be all distributions where all permutation $U$ are the same 
+the extended null $\hypN'$ will be all distributions where all permutation $U$ are the same
 and the marginal distributions of all (all exchangeable sequences).
 
 In other words, let $U'=(U_1,U_2,\dots,U_{n_a+n_b})$ and
@@ -328,25 +328,25 @@ $\pi$ be any permutation operator on $\{1,\dots,n_a+n_b\}$.
 The null hypothesis is now extended to a much bigger one,
 namely, whether two streams $U_a, U_b$ are exchangeable,
 \begin{align*}
-    \hypN':=(U_1,U_2,\dots,U_{n_a+n_b}) \overset{d}{=} 
-    U_{\pi(1)},U_{\pi(2)},\dots,U_{\pi(n_a+n_b)}\}.
+	\hypN':=(U_1,U_2,\dots,U_{n_a+n_b}) \overset{d}{=}
+	U_{\pi(1)},U_{\pi(2)},\dots,U_{\pi(n_a+n_b)}\}.
 \end{align*}
 
-Moreover, the marginal distribution of $U_j \overset{d}{=} U_i$ for any $i, j$ 
-but the conditional dependence is not assumed in $\hypN'$ any more 
+Moreover, the marginal distribution of $U_j \overset{d}{=} U_i$ for any $i, j$
+but the conditional dependence is not assumed in $\hypN'$ any more
 in contrast to independence assumed in the original $\hypN$
-where $U_i, U_j \iid P$. 
+where $U_i, U_j \iid P$.
 
-Nevertheless, the $S_{\textsc{cond}}$ is still GRO-optimal, we can claim it is a 
+Nevertheless, the $S_{\textsc{cond}}$ is still GRO-optimal, we can claim it is a
 \textit{robust} \E-variable for a bigger problem.
 
 \subsection{28.07.2025}
 
 The goal to get a conditional \E-variable
 \begin{itemize}
-    \item with priors on log odds ratio: Jeffrey's, conjugate, Cauchy, Laplace, Gaussian
-    \item uniformly most powerful (UMP) test for a fixed $\alpha$, ask Sebastian
-    \item normalized maximal likelihood (NML), aligns with the MDL principle
+	\item with priors on log odds ratio: Jeffrey's, conjugate, Cauchy, Laplace, Gaussian
+	\item uniformly most powerful (UMP) test for a fixed $\alpha$, ask Sebastian
+	\item normalized maximal likelihood (NML), aligns with the MDL principle
 \end{itemize}
 
 The second amazingly achieves the most powerful test with a given test,
@@ -355,13 +355,13 @@ the context of unconditional one. So Peter was not sure about its look here.
 
 Compare it with the old one (unconditional one)
 \begin{itemize}
-    \item Turner's
-    \item Universal inference (MLE)
-    \item p-to-e calibrator ($e = 1/\sqrt{q} - 1$ maybe)
+	\item Turner's
+	\item Universal inference (MLE)
+	\item p-to-e calibrator ($e = 1/\sqrt{q} - 1$ maybe)
 \end{itemize}
 
-Previous results shows that the UI performs the worst, next to Turner's, 
-a simple calibrator works best, e.g. $f(p) = \kappa p^{\kappa-1}$ for some $\kappa \in(0,1)$ 
+Previous results shows that the UI performs the worst, next to Turner's,
+a simple calibrator works best, e.g. $f(p) = \kappa p^{\kappa-1}$ for some $\kappa \in(0,1)$
 and $f(p) = p^{-1/2}-1$.
 noted that the Fisher's exact test gives a very small p-value
 
@@ -369,65 +369,65 @@ First step is to start with a fixed prior and fixed alternative.
 
 \subsection*{Confusion about the sequential-ness and conditional-ness}
 
-I was confused about the formulation between the sequential ratio and 
+I was confused about the formulation between the sequential ratio and
 the (what I called) global conditional \E-variables.
 
-Let $X,Y$ be Bernoulli variables with $p$ and $q$, then we can write the 
+Let $X,Y$ be Bernoulli variables with $p$ and $q$, then we can write the
 conditional likelihood ratio test (Wald's) as follow:
 
 \begin{align*}
-    R^n := \prod_{i=1}^n \frac{f_1(X_i, Y_i \mid X_i + Y_i)}{f_0(X_i, Y_i \mid X_i + Y_i)}
+	R^n := \prod_{i=1}^n \frac{f_1(X_i, Y_i \mid X_i + Y_i)}{f_0(X_i, Y_i \mid X_i + Y_i)}
 \end{align*}
 
 and $f_1(\cdot) := (1 + \theta)^{-1}$ and $f_0 = (1 + \theta^{-1})^{-1}$
 
 Here is the example of composite testing:
 \begin{align*}
-    \hypN: (X_1, Y_1), (X_2,Y_2),\dots \iid P \in \Pc_1 \: \textrm{v.s.} 
-    \hypA: (X_1, Y_1), (X_2,Y_2),\dots \iid P \in \Pc_{\theta}
+	\hypN: (X_1, Y_1), (X_2,Y_2),\dots \iid P \in \Pc_1 \: \textrm{v.s.}
+	\hypA: (X_1, Y_1), (X_2,Y_2),\dots \iid P \in \Pc_{\theta}
 \end{align*}
 
 where $\Pc_1$ and $\Pc_{\theta}$ are distribution parametrized by odds ratio $\theta$.
 
 Now it is almost the same as before but just extended where each data point $(X_1, Y_1)$
-is replaced by a contingency table. 
-I think the reason I got so confused is here: 
+is replaced by a contingency table.
+I think the reason I got so confused is here:
 we are testing $m$ copies of tables $T_i$ and within that $T_i$,
 each table is a 2x2 table of $n_a, n_b$ Bernoulli streams with $p, q$.
 
-Using the notation $X^b_i, i = 1,\dots, n_a$ Ber and $X^a_i, i =1,\dots,n_b$ 
+Using the notation $X^b_i, i = 1,\dots, n_a$ Ber and $X^a_i, i =1,\dots,n_b$
 The full expression reads:
 \begin{align*}
-    \frac{f_1(X_1^a, X_2^a,\dots X_{n_a}^a, X_1^b, X_2^b,\dots X_{n_b}^b \mid Y_a + Y_b)}
-    {f_0(X_1^a, X_2^a,\dots X_{n_a}^a, X_1^b, X_2^b,\dots X_{n_b}^b \mid Y_a + Y_b)}
+	\frac{f_1(X_1^a, X_2^a,\dots X_{n_a}^a, X_1^b, X_2^b,\dots X_{n_b}^b \mid Y_a + Y_b)}
+	{f_0(X_1^a, X_2^a,\dots X_{n_a}^a, X_1^b, X_2^b,\dots X_{n_b}^b \mid Y_a + Y_b)}
 \end{align*}
 
 For a particular table $T_i$, I can just jump to the common doc, the hypothesis being tested is
 
 \begin{quote}
-    For all the 2x2 tables $T_i$, group a and group b frequency 
-    has no difference.
+	For all the 2x2 tables $T_i$, group a and group b frequency
+	has no difference.
 \end{quote}
 
 \begin{align*}
-    \hypN: T_1, T_2, \dots \iid P \in \Pc_1 
-        \quad \textrm{v.s.} \quad
-    \hypA: T_1, T_2, \dots \iid P \in \Pc_{\theta}
+	\hypN: T_1, T_2, \dots \iid P \in \Pc_1
+	\quad \textrm{v.s.} \quad
+	\hypA: T_1, T_2, \dots \iid P \in \Pc_{\theta}
 \end{align*}
 
 Questions to discuss tomorrow:
 
 \begin{itemize}
-    \item Is the \E-process-ness still here? \emph{YES}, by
-    \item Is the optional continuation still here, I think so 
-    \item For the mixture, $\theta$ gets Bayesian updating each time (numerical)
-    \item I think we assume group size $n_a, n_b$ is stationary right? Does the 
-    \item I remember there is some nice properties concerning the concave of the Fisher's information
+	\item Is the \E-process-ness still here? \emph{YES}, by
+	\item Is the optional continuation still here, I think so
+	\item For the mixture, $\theta$ gets Bayesian updating each time (numerical)
+	\item I think we assume group size $n_a, n_b$ is stationary right? Does the
+	\item I remember there is some nice properties concerning the concave of the Fisher's information
 \end{itemize}
 
 \subsection*{Formulate this rigously: A small discussion with Peter about the general case paper}
 
-If we have 1-d regular exponential family with the same sufficient statistics, 
+If we have 1-d regular exponential family with the same sufficient statistics,
 let's assume we are talking about Turner's example.
 
 The GRO one is the conditional \E-variable and putting the prior on the curve (ark)
@@ -444,7 +444,7 @@ Let $f(k) = \binom{n_a}{k} \binom{n_b}{U-k}$ and $f'(k) = \frac{n_b!}{k!(n_a-k)!
 
 
 \begin{align*}
-    p_{n_a, n_b, u, \omega}(k) = \frac{\frac{n_b!}{k!(n_a-k)!(u-k)!(n_b-U+k-n_a)!}\omega^k}{\sum \frac{n_b!}{k!(n_a-k)!(u-k)!(n_b-U+k-n_a)!}\omega^j}
+	p_{n_a, n_b, u, \omega}(k) = \frac{\frac{n_b!}{k!(n_a-k)!(u-k)!(n_b-U+k-n_a)!}\omega^k}{\sum \frac{n_b!}{k!(n_a-k)!(u-k)!(n_b-U+k-n_a)!}\omega^j}
 \end{align*}
 
 
@@ -587,7 +587,7 @@ We know $n_{11}$ is the $Y_a = k$ in our settings,
 %     We must not think of $\pi$ on $\Theta$ as a prior distribution but rather
 %     a tuning parameter. Although the expression might resemble the Bayesian 
 %     framework, the interpretation differs.
-    
+
 %     As suggested by Ly, one should not think of the simple alternative
 %     $\Theta_1=\{(\theta_a^*,\theta_b^*)\in [0,1]^2\}$ with $\pi(\theta)$
 %     as if we somehow \textbf{know} how $\pi$ distributes in $\Theta$.
@@ -894,9 +894,9 @@ We know $n_{11}$ is the $Y_a = k$ in our settings,
 
 % \For{$t \gets 1$ \KwTo $m$}{
 %     Compute $e$ using likelihood ratio with $\theta$s\;
-    
+
 %     Update $e_t \gets e_{t-1} \cdot e$\;
-    
+
 %     \If{$e_t \geq 1 / \alpha$}{
 %         Output $\tau \gets t$, $\E_\tau \gets e_t$\;
 %         \textbf{break}\;
@@ -905,7 +905,7 @@ We know $n_{11}$ is the $Y_a = k$ in our settings,
 %     Update posterior density $W_a$ using $Y^{(t)}$\;
 
 %     Compute $\theta_a \gets \bm{g}_a^\transpose \cdot W_{a}$\;
-    
+
 %     Compute $\theta_a \gets \theta_a + \delta$\;
 
 %     Compute $\theta_0 \gets ({n_a} \cdot \theta_a + n_b \cdot \theta_b)/(n_a + n_b)$\;

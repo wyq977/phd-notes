@@ -2,6 +2,129 @@
 
 \section{Meetings}
 
+\subsection*{Got confused}
+
+Got the notation, $X_1^k, \ldots, X_{n_k}^k\in \{0,1\}$, for $n_k\geq 1$ and $k=a,b$. We denote by $Y_{a}=\sum_{i=1}^{n_a} X_i^a$ and $Y_{b}=\sum_{i=1}^{n_b} X_i^b$, essentially the sufficient statistics for $n_k$ independent Bernoulli.
+
+\begin{table}[h]
+	\centering
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\begin{tabular}{llll}
+			\toprule
+			outcome & a                  & b                               \\
+			\midrule
+			1       & $Y_{a,t}$          & $Y_{b,t}$          & $n_{1,t} $ \\
+			0       & $n_{a,t}- Y_{a,t}$ & $n_{b,t}- Y_{b,t}$ & $n_{0,t}$  \\
+			        & $n_{a,t}$          & $n_{b,t}$          & $n_t$      \\
+			\bottomrule
+		\end{tabular}
+		\caption{Data $B_t$ \emph{at} $t\in \Nf$.} \label{table:2x2_at_t}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\begin{tabular}{llll}
+			\toprule
+			outcome & a                 & b                             \\
+			\midrule
+			1       & $Y_{a}^t$         & $Y_{b}^t$         & $n_1^t$   \\
+			0       & $n_a^t - Y_{a}^t$ & $n_b^t - Y_{b}^t$ & $n_0^{t}$ \\
+			        & $n_a^{t}$         & $n_b^{t}$         & $n^{t}$   \\
+			\bottomrule
+		\end{tabular}
+		\caption{Data $B^t$ \emph{until} $t\in \Nf$.} \label{table:2x2_until_t}
+	\end{minipage}
+\end{table}
+
+
+Let's just assume its just testing if there is a difference at group a and b.
+
+Said I got the best method (e-process) at hand that collect 2-stream data, which allows me to measure the evidence whenever I want, continue/stop (optional).
+
+Right now, its constructing a sequential conditional variable and calculate a $S_t$ and multiply them together.
+
+\begin{align*}
+	evidence = \prod_{i=1}^t S_t(Y_{a,t},Y_{b,t},n_{a,t},n_{b,t})
+\end{align*}
+
+I omitted and just see $S_i$ as the \emph{calculator} at timestep $i$ that evaluates.
+
+If $n_{a,t},n_{b,t}$ is all stationary, this is all fine.
+
+\begin{table}[h]
+	\centering
+	\begin{minipage}{0.3\textwidth}
+		\centering
+		\begin{tabular}{lll}
+			\toprule
+			outcome & a  & b  \\
+			\midrule
+			1       & 7  & 80 \\
+			0       & 11 & 20 \\
+			\bottomrule
+		\end{tabular}
+		\caption{A table between 50 and 51}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.3\textwidth}
+		\centering
+		\begin{tabular}{lll}
+			\toprule
+			outcome & a  & b  \\
+			\midrule
+			1       & 12 & 8  \\
+			0       & 1  & 20 \\
+			\bottomrule
+		\end{tabular}
+		\caption{A table between 100 and 101}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.3\textwidth}
+		\centering
+		\begin{tabular}{lll}
+			\toprule
+			outcome & a               & b               \\
+			\midrule
+			1       & $y_{a1}+\cdots$ & $y_{b1}+\cdots$ \\
+			0       & $y_{b0}+\cdots$ & $y_{b0}+\cdots$ \\
+			\bottomrule
+		\end{tabular}
+		\caption{A `growing' table}
+	\end{minipage}
+\end{table}
+
+Assume the tables above we got after stop and \emph{peak} at Table \ref{table:2x2_at_t}
+Is this already the continues evaluation already?
+
+
+\begin{figure}[hbt]
+	\centering
+	% Top Left
+	\begin{subfigure}[t]{2.7in}
+		\centering
+		\includegraphics{loss-fixed-5-5.pdf}
+		\caption{Fixed mean $(\theta_a, \theta_b) = (0.6, 0.4)$ for Bernoulli stream, group size are fixed as $5$.}
+	\end{subfigure}
+	\hfill % Adds horizontal space between the two top figures
+	% Top Right
+	\begin{subfigure}[t]{2.7in}
+		\centering
+		\includegraphics{loss-poisson-gs-5-5.pdf}
+		\caption{Fixed mean $(\theta_a, \theta_b) = (0.6, 0.4)$ for Bernoulli stream, group size follows Poisson distribution with mean $5$.}
+	\end{subfigure}
+	\caption{}
+	\label{fig:2x2_fixed_vs_poisson}
+\end{figure}
+
+I would like to try, so I make 2 streams of data where group size is following $\max(1, \mathrm{Poisson}(5))$, as if we collect more or less every 5 observations. stream a and b are with a fixed parameter. See Fig \ref{fig:2x2_fixed_vs_poisson}.
+
+
+
+
+I suddenly thought it was I have a table (fixed) like the one above, and then altering number, but i dont think so, right? This is a different way to look at it continously I suppose.
+
+
 
 \subsection*{20.03.2026}
 
@@ -14,7 +137,7 @@ We should think from the users' perspectives.
 \begin{itemize}
 	\item 1 group is trying to optimize for power so use UMP each one and multiply them together they wanna publish
 	\item 1 is trying to seq-cond without learning (essentially fixed a point mass on 1 $\delta_{\min}$)
-	\item 1 is trying to do learning then seq bayesian
+	\item 1 is trying to do learning then seq bayesian (with or without updating)
 	\item Put a prior on maybe on $(0, \infty)$ or $(\delta_{\min}, \infty)$.
 \end{itemize}
 
@@ -27,23 +150,23 @@ group size are denoted by $n_a, n_b$, $y_a, y_b$ is the number of $1$ while $n_1
 
 In short, we have the Fisher’s noncentral hypergeometric distribution given the sufficient statistics
 \begin{equation*}
-	f_{\mathrm{FN}(n_a,n_b,n_1,\delta)}(y_a) 
+	f_{\mathrm{FN}(n_a,n_b,n_1,\delta)}(y_a)
 	= \frac{\binom{n_a}{y_a} \binom{n_b}{n_1-y_a} e^{\delta y_a}}{\sum_{\gamma^{-}}^{\gamma^{+}} \binom{n_a}{k} \binom{n_b}{n_1 - k} e^{\delta k}}
 \end{equation*}
 where $\gamma^{-} = \max{0, n_1-n_b}$ and $\gamma^{+}=\min{n_1, n_a}$ is the domain for $y_a$, which is a $1$-dimensional exp. family.
 
 If $\delta=0$ it reduces to central hypergeometric distribution:
 \begin{align*}
-	f_{\delta}(y_a) &= \exp(\delta \cdot y_a - A(\delta)) h(y_a)
+	f_{\delta}(y_a) & = \exp(\delta \cdot y_a - A(\delta)) h(y_a)
 \end{align*}
 
 
 \begin{itemize}
 	\item R: \verb|BiasedUrn::dFNCHypergeo(x = ya, m1 = na, m2 = nb, n = n1, odds = odds)| odds=$\exp(\delta)$ \\
-	$x$ is the number of $1$s in group a, $m_1,m_2$ is the group size, $n$ is the total number of $1$s.
-	\url{https://www.rdocumentation.org/packages/BiasedUrn/versions/1.07/topics/BiasedUrn-Multivariate}
+	      $x$ is the number of $1$s in group a, $m_1,m_2$ is the group size, $n$ is the total number of $1$s.
+	      \url{https://www.rdocumentation.org/packages/BiasedUrn/versions/1.07/topics/BiasedUrn-Multivariate}
 	\item Python: \verb|scipy.stats.nchypergeom_fisher(k=ya, M=na+nb, n=na, N=n1, odds)| \\
-	\url{https://docs.scipy.org/doc/scipy/tutorial/stats/discrete_nchypergeom_fisher.html}
+	      \url{https://docs.scipy.org/doc/scipy/tutorial/stats/discrete_nchypergeom_fisher.html}
 \end{itemize}
 
 The \emph{conditional \E-value} with a fixed $\delta$ is
@@ -101,14 +224,14 @@ In the end, we need to think like the USER!
 	\item Forecasting
 	\item \E-closure
 \end{itemize}
-	
+
 \subsection*{09.03.2026 with Peter}
 
 \begin{itemize}
 	\item Expand a example to $\delta$ stay the same and $\theta_a,\theta_b$ jump in the unit square
 	\item Just try the method Peter for a bit, and show it this week maybe
 	\item I should really look into whether learning, especially Bayesian learning will make the end product different, i.e.
-	$\prod_i^n S_{\mathrm{COND}}(Y_i) = \prod_i^n S_{\text{COND}}(Y_{\pi(i)})$ for a different permutation $\pi$
+	      $\prod_i^n S_{\mathrm{COND}}(Y_i) = \prod_i^n S_{\text{COND}}(Y_{\pi(i)})$ for a different permutation $\pi$
 	\item Lots of new ideas in the list pdf!
 	\item $d/2\log(n)$ rate ?
 \end{itemize}
@@ -117,11 +240,11 @@ In the end, we need to think like the USER!
 
 \begin{itemize}
 	\item Simulate Peter's idea: for batches $B_1, B_2, \dots, B_n$ of size 2, a `oracle' conditional e-variable,
-	divided by the expectation of $\mu$.
+	      divided by the expectation of $\mu$.
 	\item R implementation of fixed delta
 	\item \emph{Discuss with Alex} re-do futility analysis with the 'right' e-variables (so you stop for futility if you can reject $\hypA$, using an e-variable that takes $\hypA$ to be the null hypothesis - this is in many cases not achievable by flipping the original e-variable
- (only do it for conditional e-variable and NML e-variable, not for p-to-e calibration because we do not know how to make p-values with $\hypA$ as the null)
- (discuss with Alexander how to treat the case $\hypN: \delta=0$ vs $\hypA: \delta \neq 0$ because it's unclear how to make an e-variable for H1)
+	      (only do it for conditional e-variable and NML e-variable, not for p-to-e calibration because we do not know how to make p-values with $\hypA$ as the null)
+	      (discuss with Alexander how to treat the case $\hypN: \delta=0$ vs $\hypA: \delta \neq 0$ because it's unclear how to make an e-variable for H1)
 \end{itemize}
 
 \paragraph*{Peter's idea of optimization}
@@ -161,7 +284,7 @@ Some long discussion on if we are doing sequential analysis at all...
 
 The z-test team is facing with a extreme outlier:
 
-H0: 
+H0:
 
 \subsection*{27.02.2026}
 
@@ -197,8 +320,8 @@ Note that this does not require \emph{iid}!
 
 For iid $X_i$:
 \begin{align*}
-	P(X^n) &= \prod_{i=1}^n P(X_i) = \int \pi(\delta) \prod_{i=1}^n P(X_i) \dd{\delta} \qq{Aveging} \\
-	&= \prod_{i=1}^n \int P(X_i \mid \delta) \pi(\delta \mid X^{i-1}) \dd{\delta} \qq{Learning}
+	P(X^n) & = \prod_{i=1}^n P(X_i) = \int \pi(\delta) \prod_{i=1}^n P(X_i) \dd{\delta} \qq{Aveging}    \\
+	       & = \prod_{i=1}^n \int P(X_i \mid \delta) \pi(\delta \mid X^{i-1}) \dd{\delta} \qq{Learning}
 \end{align*}
 
 Note that it always holds that
@@ -230,18 +353,18 @@ Talk with Peter on the $2\times 2$ table problem again.
 
 \begin{itemize}
 	\item Data simulation comes a fixed oracle $(\theta_a^*, \theta_b^*)$ with a $\delta^*$.
-	Although the COND E-variable is for a fixed $\delta$, right now we are testing only from a point, rather than a whole curve.
+	      Although the COND E-variable is for a fixed $\delta$, right now we are testing only from a point, rather than a whole curve.
 	\item Calibrated E-value should include the version from wiki.
 	\item No SEQ-COND in current set up for now, we do not `learn' the alternative but rather just average them out!
 	\item Turner's E should use a flat prior $\mathrm{Beta}(1,1)$.
 	\item Consider adding the $d/2\log n$ term to avoid confusion, readers should know that this is not sequential.
 	\item E-variable to be compared:
-	\begin{itemize}
-		\item Turner's
-		\item Oracle (just multiple) this is the SEQ-RIPr
-		\item COND (Not SEQ!): NML, Gaussian
-		\item UMP
-	\end{itemize}
+	      \begin{itemize}
+		      \item Turner's
+		      \item Oracle (just multiple) this is the SEQ-RIPr
+		      \item COND (Not SEQ!): NML, Gaussian
+		      \item UMP
+	      \end{itemize}
 \end{itemize}
 
 \subsubsection*{Paper future!}
@@ -266,7 +389,7 @@ Therefore, the prior $W_1$ or $W_0$ on the alternative hypothesis is always w.r.
 
 \emph{Peter} E-processes and Approximations. T-test and coarser filtrations $X_i-X_1$. I guess he also talked about the exp. family.
 
-for exponential families where the null and alternative share the same sufficient statistic, conditioning on the sufficient statistic yields an E-variable (expectation 1). 
+for exponential families where the null and alternative share the same sufficient statistic, conditioning on the sufficient statistic yields an E-variable (expectation 1).
 
 Problem: This process is generally not an E-process.
 
@@ -279,8 +402,8 @@ We observe iid data stream $X^t=\{X_1,X_2,\dots,X_t\}$.
 To make it even simpler, the support of $X$: $\Xc$ is finite.
 
 \begin{align*}
-	\Hc_0 &: X \sim P(X \mid \theta_0) \\
-	\Hc_1 &: X \sim P(X \mid \theta^*)
+	\Hc_0 & : X \sim P(X \mid \theta_0) \\
+	\Hc_1 & : X \sim P(X \mid \theta^*)
 \end{align*}
 
 Now let's look at the plug-in, for the first observation $X_1$.
@@ -291,9 +414,9 @@ where $\hat{\theta}(\cdot)$ is the MLE estimator.
 
 Check this is a E-variable:
 \begin{equation*}
-	\ERWi{0}{S^1_{\mathrm{NML}}} = 
-	\sum_{X\in\Xc} P(X\mid \theta_0) \cdot 
-		\frac{P(X\mid \hat{\theta}(X))}{P(X\mid\theta_0) \sum_{k\in\Xc} P(k \mid \hat{\theta}(k))}
+	\ERWi{0}{S^1_{\mathrm{NML}}} =
+	\sum_{X\in\Xc} P(X\mid \theta_0) \cdot
+	\frac{P(X\mid \hat{\theta}(X))}{P(X\mid\theta_0) \sum_{k\in\Xc} P(k \mid \hat{\theta}(k))}
 	= \sum_{X\in\Xc}\frac{P(X\mid\hat\theta(X))}{\sum_{k\in\Xc}P(k\mid\hat{\theta}(k))}
 	\leq 1.
 \end{equation*}
@@ -319,14 +442,14 @@ Given the canonical filtration $\Fc_{t-1}$,
 \begin{equation*}
 	\condERWi{0}{S^t_{\mathrm{NML}}}{\Fc_{t-1}}
 	= \sum_{\Xc} \frac{P(X_t\mid \hat{\theta}(X_1,X_2,\dots,X_{t-1},X_t))}{
-	\sum_{k\in\Xc}P(k \mid \hat{\theta}(X_1,X_2,\dots,X_{t-1},k))
+		\sum_{k\in\Xc}P(k \mid \hat{\theta}(X_1,X_2,\dots,X_{t-1},k))
 	}
 \end{equation*}
 
 Noted that this is a form of SEQ-COND so expect a lot worse than COND (log linearly).
 Going back to the FNCH distribution, the support of $Y_a$ is luckily finite: $\Gamma=[\gamma_{\min}, \gamma_{\max}]$.
 Similarly, we observed iid stream data $Y^t=\{Y_1,Y_2,\dots,Y_t\}$, where $Y_i=(Y_{i,a},Y_{i,b})^\intercal$ are the counts of ones in group $a, b$.
-Numbers of ones in both group is denoted by $n_{i,1}=Y_{a,i}+Y_{b,i}$. 
+Numbers of ones in both group is denoted by $n_{i,1}=Y_{a,i}+Y_{b,i}$.
 The sum up to time $t$ is denoted by $n_{1}^t=\sum_{i=1}^t n_{1,i}=\sum_{i=1}^t Y_{a,i}+Y_{b,i}$.
 As we assume group size is stationary, $n_a^t=n_a\cdot  t,n_b^t=n_b\cdot t$.
 We can write the NML conditional E-variable for $Y^1$:
@@ -341,8 +464,8 @@ For the second time point, the MLE estimator is based on $Y^2$ and the normalizi
 \end{equation*}
 
 \begin{align*}
-	&\hat{\delta}_2 = \argmax_{\Rf} f_{\mathrm{FN}(n_a^2,n_b^2,n_1^2,\delta)}(Y_{1,a}+Y_{2,a}) \\
-	&\hat{\delta}_2* = \argmax_{\Rf} f_{\mathrm{FN}(n_a^2,n_b^2,n_1^2,\delta)}(Y_{1,a}+k),
+	 & \hat{\delta}_2 = \argmax_{\Rf} f_{\mathrm{FN}(n_a^2,n_b^2,n_1^2,\delta)}(Y_{1,a}+Y_{2,a}) \\
+	 & \hat{\delta}_2* = \argmax_{\Rf} f_{\mathrm{FN}(n_a^2,n_b^2,n_1^2,\delta)}(Y_{1,a}+k),
 \end{align*}
 where $k \in [\max(0,n_{2,1}-n_b), \min(n_a, n_{2,1})]$.
 
@@ -369,14 +492,14 @@ Similarly we consider a stream of data $X^n=\{X_1,X_2,\dots,X_n\}$.
 
 In time step 1:
 \begin{align*}
-	p(X^1) &= p(X_1) = \int_{\Theta} p(X_1\mid\theta)\pi(\theta) \dd{\theta}\\
-	&= \condPR[p]{X_1}{\theta}
+	p(X^1) & = p(X_1) = \int_{\Theta} p(X_1\mid\theta)\pi(\theta) \dd{\theta} \\
+	       & = \condPR[p]{X_1}{\theta}
 \end{align*}
 
 At time step 2:
 \begin{align*}
-	p(X^2) &=p(X_1,X_2) = \int_{\Theta} p(X_1\mid\theta)p(X_2\mid\theta)\pi(\theta)\dd{\theta} \\
-	&= p(X_1)p(X_2\mid X_1) = \int_{\Theta} p(X_1\mid\theta)\pi(\theta) \dd{\theta} \int_{\Theta} p(X_2\mid\theta)\pi(\theta\mid  X_1) \dd{\theta}
+	p(X^2) & =p(X_1,X_2) = \int_{\Theta} p(X_1\mid\theta)p(X_2\mid\theta)\pi(\theta)\dd{\theta}                                                            \\
+	       & = p(X_1)p(X_2\mid X_1) = \int_{\Theta} p(X_1\mid\theta)\pi(\theta) \dd{\theta} \int_{\Theta} p(X_2\mid\theta)\pi(\theta\mid  X_1) \dd{\theta}
 \end{align*}
 
 
@@ -386,12 +509,12 @@ Mostly just Lunteren conference. Sebastian Engelke's Talk: Sebastian Engelke gav
 
 Stephan mention some interesting examples on the Bernoulli example!, Also there is a interesting bernoulli Fisher information gain example in Lunteren!
 
-Lukas presented the BAM problem for shifting means: Goal is to find a algorithm to identify best arm (unique) 
+Lukas presented the BAM problem for shifting means: Goal is to find a algorithm to identify best arm (unique)
 
 Algorithm is called importance Sampling for Shifting Means.
 
 \textit{
-Abstract: We study an interactive testing environment in which the learner chooses one of K distributions to sample each timestep with the goal of finding the distribution with the highest expected mean with high probability in the least number of overall samples (the best-arm identification setting with known confidence). We coin the Shifting Means setting, a non-stationary setting where an offset is added to all samples which can change fully adversarially between timesteps and demonstrate how the known approaches of the Track-and-Stop algorithm and the Generalized Likelihood Ratio Test (GLRT) fail for Shifting Means. We propose generalized Importance Weights for Shifting Means, which we show to be delta-correct and sample efficient. We also present a lower bound and evaluate our results empirically.
+	Abstract: We study an interactive testing environment in which the learner chooses one of K distributions to sample each timestep with the goal of finding the distribution with the highest expected mean with high probability in the least number of overall samples (the best-arm identification setting with known confidence). We coin the Shifting Means setting, a non-stationary setting where an offset is added to all samples which can change fully adversarially between timesteps and demonstrate how the known approaches of the Track-and-Stop algorithm and the Generalized Likelihood Ratio Test (GLRT) fail for Shifting Means. We propose generalized Importance Weights for Shifting Means, which we show to be delta-correct and sample efficient. We also present a lower bound and evaluate our results empirically.
 }
 \subsection*{10.10.2025}
 
@@ -411,66 +534,66 @@ Leiden's group,
 
 \subsection*{07.10.2025}
 
-Let's assume we are talking about a classification model that predicts if 
+Let's assume we are talking about a classification model that predicts if
 a image is a cat or a dog or a human.
 
 \subsubsection*{Conformal Prediction vs. Bayesian Methods}
 \begin{itemize}
-    \item Bayesian posterior probabilities give number in $(0,1)$ to 3 labels that sums to 1.
-    \item A key difference is that conformal scores represent \emph{upper bounds} on probability and don't need to sum to one, which contrasts with standard probability theory.
-    \item e.g., the conformal on the cat or the dogs can be both $20\%$, sort of the upper bound, 
-    	while the human is 80\%, then it does not sum up to 1.
-    \item Bayesian can be overconfident because of a prior, even a non-informative one, introduces some strong assumptions.
-    \item Is there a real `FLAT' prior that provides no information?
-    \item Conformal prediction can be seen as a ``worst-case'' approach, whereas Bayesian methods are ``best-case.'' Conformal may sometimes be too pessimistic.
+	\item Bayesian posterior probabilities give number in $(0,1)$ to 3 labels that sums to 1.
+	\item A key difference is that conformal scores represent \emph{upper bounds} on probability and don't need to sum to one, which contrasts with standard probability theory.
+	\item e.g., the conformal on the cat or the dogs can be both $20\%$, sort of the upper bound,
+	      while the human is 80\%, then it does not sum up to 1.
+	\item Bayesian can be overconfident because of a prior, even a non-informative one, introduces some strong assumptions.
+	\item Is there a real `FLAT' prior that provides no information?
+	\item Conformal prediction can be seen as a ``worst-case'' approach, whereas Bayesian methods are ``best-case.'' Conformal may sometimes be too pessimistic.
 \end{itemize}
 
 \subsubsection*{Distinction Between Research Areas}
 \begin{itemize}
-    \item Sebastian is on \emph{model evaluation} and \emph{calibration}, which is more aligned with Bayesian statistics. His goal is to find the best overall predictor or model from a set of candidates, e.g., which weather forecasters is the best among 100.
-    \item But conformal prediction focuses on the \emph{individual prediction} at each step, providing a set of possible outcomes with a certain confidence level (e.g., 95\%), without trying to determine the best underlying model.
-    \item I am still not sure about how one formulate the conformal prediction:
-    	Is it a sup over the training space?
+	\item Sebastian is on \emph{model evaluation} and \emph{calibration}, which is more aligned with Bayesian statistics. His goal is to find the best overall predictor or model from a set of candidates, e.g., which weather forecasters is the best among 100.
+	\item But conformal prediction focuses on the \emph{individual prediction} at each step, providing a set of possible outcomes with a certain confidence level (e.g., 95\%), without trying to determine the best underlying model.
+	\item I am still not sure about how one formulate the conformal prediction:
+	      Is it a sup over the training space?
 \end{itemize}
 
 \subsubsection*{Challenges with E-variables}
 \begin{itemize}
-    \item A major practical issue with sequential e-variables is that the cumulative product can be drastically reduced if multiplied by a single small e-value. This causes significant fluctuations.
-    \item A simple ``safeguard'' is proposed: mixing the e-variable with a constant, such as using $0.5 + 0.5 \times E$. This ensures the multiplier is always at least 0.5, preventing a total loss of evidence.
-    \item This is caused \emph{damping} and it's very popular in fin math where going to infinity
-    is often not realistic and too theoretical!
-    \item Using \emph{R\'enyi e-variables} is suggested as a potentially more sophisticated solution to this volatility problem.
+	\item A major practical issue with sequential e-variables is that the cumulative product can be drastically reduced if multiplied by a single small e-value. This causes significant fluctuations.
+	\item A simple ``safeguard'' is proposed: mixing the e-variable with a constant, such as using $0.5 + 0.5 \times E$. This ensures the multiplier is always at least 0.5, preventing a total loss of evidence.
+	\item This is caused \emph{damping} and it's very popular in fin math where going to infinity
+	      is often not realistic and too theoretical!
+	\item Using \emph{R\'enyi e-variables} is suggested as a potentially more sophisticated solution to this volatility problem.
 \end{itemize}
 
 \subsubsection*{Paper Writing and Next Steps}
 \begin{itemize}
-    \item The professor advises starting the writing process with a clear ``story'' and an outline, saving the polished introduction for the end.
-    \item The main story for their current paper is extending existing methods for 2x2 tables to handle more realistic scenarios where data arrives in a single, potentially asymmetric batch rather than in sequential pairs.
-    \item The immediate next step is to conduct an experiment using ``Rosanna's e-variable.'' This involves breaking their large data table into many small, sequential blocks, as this method performs best with small group sizes.
+	\item The professor advises starting the writing process with a clear ``story'' and an outline, saving the polished introduction for the end.
+	\item The main story for their current paper is extending existing methods for 2x2 tables to handle more realistic scenarios where data arrives in a single, potentially asymmetric batch rather than in sequential pairs.
+	\item The immediate next step is to conduct an experiment using ``Rosanna's e-variable.'' This involves breaking their large data table into many small, sequential blocks, as this method performs best with small group sizes.
 \end{itemize}
 
 \subsubsection*{Potential Future Research Topics}
 \begin{itemize}
-    \item \emph{Stein's Method}: A technique for proving the central limit theorem that, unlike traditional methods, provides explicit error bounds for finite samples.
-    \item \emph{Prior-Marginal Asymptotic Symmetry}: A long-standing research question about the relationship where the marginal distribution of a sufficient statistic tends to mimic the shape of the prior distribution on the parameter (mean-value space). Stein's method might be a useful tool for developing a direct proof.
+	\item \emph{Stein's Method}: A technique for proving the central limit theorem that, unlike traditional methods, provides explicit error bounds for finite samples.
+	\item \emph{Prior-Marginal Asymptotic Symmetry}: A long-standing research question about the relationship where the marginal distribution of a sufficient statistic tends to mimic the shape of the prior distribution on the parameter (mean-value space). Stein's method might be a useful tool for developing a direct proof.
 	\item Show the above phenomenon in exponential case (Bernoulli), which has already been verified.
 \end{itemize}
 
 \subsection*{26.09.2025}
 
-There are quite a lot of things that I need to check after this. 
-Nick presented on conformal prediction where my take-away about is that 
+There are quite a lot of things that I need to check after this.
+Nick presented on conformal prediction where my take-away about is that
 one could relate the
 
-Another theme is still the contingency table. 
-There is something strange about the NML sequential 
+Another theme is still the contingency table.
+There is something strange about the NML sequential
 in which the estimation is on the entire sequence.
 
 Another problem that I need to write down is that for a given prior $\pi$
-and Bayesian updating on the blocks, is the multiplication equal to the 
+and Bayesian updating on the blocks, is the multiplication equal to the
 global one.
 
-Simpler proof: 
+Simpler proof:
 1) write something in closed form, e.g. exponential
 2) compare it to the proof of seq-RIPr and RIPr in general case.
 3) but I think the seq-COND is not there yet?
@@ -491,50 +614,50 @@ of interesting targets
 2) the 44 SNPs in the small dataset are not ``significant''
 
 1) Run Fisher exact test with \texttt{PLINK --assoc fisher}
-2) Rank them by p-value, FDR control ($0.05$) 
+2) Rank them by p-value, FDR control ($0.05$)
 3) Obtain about 125 SNPs with very small $p$
 
-Noted that this is for the 4688 sample points where we are simply testing 
-with Fisher exact test for association. 
-Furthermore, I synthesise sequential dataset by shuffling into blocks 
+Noted that this is for the 4688 sample points where we are simply testing
+with Fisher exact test for association.
+Furthermore, I synthesise sequential dataset by shuffling into blocks
 of 50 whose ratio of case between control is close to global.
 
 \begin{table}[h]
-\centering
-%\caption{rs17375018: Fisher's Exact Test p-value of $9.08 \times 10^{-9}$.}
-\begin{tabular}{lrr}
-\toprule
- & SNP+ ($a$) & SNP- ($b$)\\
-\midrule
-case ($1$) & 1779 & 866 \\
-ctrl ($0$) & 4089 & 2626 \\
-\bottomrule
-\end{tabular}
+	\centering
+	%\caption{rs17375018: Fisher's Exact Test p-value of $9.08 \times 10^{-9}$.}
+	\begin{tabular}{lrr}
+		\toprule
+		           & SNP+ ($a$) & SNP- ($b$) \\
+		\midrule
+		case ($1$) & 1779       & 866        \\
+		ctrl ($0$) & 4089       & 2626       \\
+		\bottomrule
+	\end{tabular}
 \end{table}
 
 One might think that in a global significant SNPs, the pseudo-sequential
-data blocks would likely yield significant results. 
+data blocks would likely yield significant results.
 However, we observed multiple $p_i = 1$, e.g., on tables as below.
 \begin{table}[h]
-\centering
-\begin{tabular}{lrr}
-\toprule
- & $a$ & $b$\\
-\midrule
-$1$ & 46 & 29 \\
-$0$ & 16 & 9 \\
-\bottomrule
-\end{tabular}
+	\centering
+	\begin{tabular}{lrr}
+		\toprule
+		    & $a$ & $b$ \\
+		\midrule
+		$1$ & 46  & 29  \\
+		$0$ & 16  & 9   \\
+		\bottomrule
+	\end{tabular}
 \end{table}
 
-Furthermore, we are trying to calculate the probability of 
+Furthermore, we are trying to calculate the probability of
 $p_{\mathrm{fisher}}=1$ for the pseudo blocks.
-Start with the simple one and use union bound. 
+Start with the simple one and use union bound.
 
 \begin{align*}
 	\condPR{\frac{n'_{a1}}{n'_{a0}} \approx \frac{n_1}{n_0}}{
-	n'_a, n'_b, \frac{n_a}{n_b} \approx \frac{n_a'}{n_b'}
-	} 
+		n'_a, n'_b, \frac{n_a}{n_b} \approx \frac{n_a'}{n_b'}
+	}
 \end{align*}
 
 For now, we consider the cases, $\approx$ is $=$ avoiding situations
@@ -548,21 +671,21 @@ where non-integers appears and ceiling/flooring functions are applied.
 \subsection*{29.08.2025}
 
 I mainly talked about the gap between the test supermartingale and \E-process.
-I was confused but Peter corrected me, saying even though you can find a 
+I was confused but Peter corrected me, saying even though you can find a
 supermartingale upper bounding the \E-process.
 
 In the simple null case, they are the same. However, in the composite settings,
 it is not, for each $P\in\Pc$, there is a test supermartingale but
 there is not a single one for all $P\in\Pc$.
-In fact, it's very easy to give examples where a random process is \E-process 
+In fact, it's very easy to give examples where a random process is \E-process
 but not supermartingale.
 % TODO: add counter-example
 
-He mentioned examples from UI, which is very straightforward to show it's \E 
+He mentioned examples from UI, which is very straightforward to show it's \E
 and Alex also said something about the canonical filtrations, by Ramdas, in
 the t-test.
 
-Seb talks about Gaussian channelling, a paper on 2004 with 3rd derivative 
+Seb talks about Gaussian channelling, a paper on 2004 with 3rd derivative
 and information theory. Interesting, worth a look.
 
 \subsection*{25.08.2025}
