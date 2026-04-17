@@ -17,53 +17,53 @@
 \begin{document}
 
 \begin{tikzpicture}
-    \pgfmathsetmacro{\deltaOne}{0.5}
-    \pgfmathsetmacro{\deltaTwo}{-0.1}
-    \begin{axis} [
-            xmin=0,xmax=1,xtick={1},xtick style={draw=none},
-            ymin=0,ymax=1,ytick={1},ytick style={draw=none},
-            extra x ticks={0},
-            xlabel=$\theta_a$, ylabel=$\theta_b$, ylabel style={rotate=-90},
-            axis equal=true,
-            enlargelimits=false,
-            legend style={at={(0.5,1.2)}, anchor=north,
-                    legend cell align={left}, font=\tiny,
-                    legend image code/.code={\draw (0,0) -- (0.05,0);},
-                },
-        ]
+	\pgfmathsetmacro{\deltaOne}{0.5}
+	\pgfmathsetmacro{\deltaTwo}{-0.1}
+	\begin{axis} [
+			xmin=0,xmax=1,xtick={1},xtick style={draw=none},
+			ymin=0,ymax=1,ytick={1},ytick style={draw=none},
+			extra x ticks={0},
+			xlabel=$\theta_a$, ylabel=$\theta_b$, ylabel style={rotate=-90},
+			axis equal=true,
+			enlargelimits=false,
+			legend style={at={(0.5,1.2)}, anchor=north,
+					legend cell align={left}, font=\tiny,
+					legend image code/.code={\draw (0,0) -- (0.05,0);},
+				},
+		]
 
-        % reference paths
-        \path [name path=lower] (0,0) -- (1,0);
-        \path [name path=upper] (0,1) -- (1,1);
+		% reference paths
+		\path [name path=lower] (0,0) -- (1,0);
+		\path [name path=upper] (0,1) -- (1,1);
 
-        % delta > 0
-        \addplot [
-            name path=deltaOne,
-            line width=1.5pt,
-            color=qqwuqq!80,
-        ] {x + \deltaOne};
-        \addlegendentry{$\delta_1 = \deltaOne$}
+		% delta > 0
+		\addplot [
+			name path=deltaOne,
+			line width=1.5pt,
+			color=qqwuqq!80,
+		] {x + \deltaOne};
+		\addlegendentry{$\delta_1 = \deltaOne$}
 
-        % delta < 0
-        \addplot [
-            name path=deltaTwo,
-            line width=1.5pt,
-            color=xdxdff!80,
-        ] {x + \deltaTwo};
-        \addlegendentry{$\delta_2 = \deltaTwo$}
+		% delta < 0
+		\addplot [
+			name path=deltaTwo,
+			line width=1.5pt,
+			color=xdxdff!80,
+		] {x + \deltaTwo};
+		\addlegendentry{$\delta_2 = \deltaTwo$}
 
-        \addplot [
-            qqwuqq,fill opacity=0.1
-        ] fill between [
-                of=deltaOne and upper,
-            ];
+		\addplot [
+			qqwuqq,fill opacity=0.1
+		] fill between [
+				of=deltaOne and upper,
+			];
 
-        \addplot [
-            xdxdff,fill opacity=0.1
-        ] fill between [
-                of=deltaTwo and lower,
-            ];
+		\addplot [
+			xdxdff,fill opacity=0.1
+		] fill between [
+				of=deltaTwo and lower,
+			];
 
-    \end{axis}
+	\end{axis}
 \end{tikzpicture}
 \end{document}
