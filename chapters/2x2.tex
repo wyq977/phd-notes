@@ -61,6 +61,98 @@
 
 \section{SAVI Contingency Table}
 
+% FIXME: this subsection partially overlaps with "Setup and notation" below.
+% Consider merging once the notation and problem statement are stabilized.
+\subsection*{Again Bernoulli stream revisited}
+
+\begin{quote}
+	This is based on the talk with Wouter after e-reader.
+\end{quote}
+
+Start simple, assume two streams of binary random variable $X,Y$ indexed by $t$.
+If they are both iid Bernoulli, then we are in the paired example where each time we threw two coins.
+At each time, $X_t$ or $Y_t$ is observed, which is governed by some process or switch.
+For simplicity we also assume this process to be Bernoulli iid with parameter $\eta>0$, i.e.
+$p(I_t=1) = \eta$ (seeing a action from group a).
+It assumed independent for simplicity now and note that the means are stationary and iid.
+\begin{align*}
+	P(X_t \mid I_t) \iid \mathrm{Bernoulli}(\theta_a) \\
+	P(Y_t \mid I_t) \iid \mathrm{Bernoulli}(\theta_b)
+\end{align*}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lrr}
+		\toprule
+		    & $a$ & $b$ \\
+		\midrule
+		$1$ & 0   & 1   \\
+		$0$ & 0   & 0   \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+Let the process goes on for $n$ rounds, and we collected the data until time $n$ into the summarized table.
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lrrr}
+		\toprule
+		    & $a$      & $b$      &       \\
+		\midrule
+		$1$ & $n_{a1}$ & $n_{b1}$ & $n_1$ \\
+		$0$ & $n_{a0}$ & $n_{b0}$ &       \\
+		    & $n_a$    & $n_b$    & $n$   \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+In plain english, we are interested in the presence of the differences between two streams.
+$\eta=1$ corresponds to the paired-sample settings where we \emph{must} observe two binary variables (two coins).
+In other words there's one more degree of freedom by allowing $\eta\in(0,1)$.
+
+\begin{itemize}
+	\item $\Hc_0: X_1,X_2,\dots,X_n\iid \mathrm{Bernoulli}(\theta_0)$ and $Y_1,Y_2,\dots,Y_n\iid \mathrm{Bernoulli}(\theta_0)$
+	\item $\Hc_1: X_1,X_2,\dots,X_n\iid \mathrm{Bernoulli}(\theta_a)$ and $Y_1,Y_2,\dots,Y_n\iid \mathrm{Bernoulli}(\theta_b)$
+\end{itemize}
+
+Let $\delta$ be some measure of divergence between $\theta_a$ and $\theta_b$,
+FNCH gives
+% TODO: write the explicit conditional distribution or remove this display.
+\begin{align*}
+	P(n_{a1} \mid n_a,n_b,n_1,\delta)
+\end{align*}
+
+Instead, we can just condition on the total number of ones
+% TODO: complete this expression or turn it into prose.
+\begin{align*}
+	P(n_{a1} \mid n_a+n_b,n_1,\delta) =
+\end{align*}
+
+The questions remains are:
+\begin{itemize}
+	\item Without knowledge on specific $n_a,n_b$,
+	      we can still formulate this into a likelihood ratio test between $\delta$ and $\delta=0$,
+	      but I think this is composite null vs composite alternative.
+	      This is easy to see, let $r=\frac{n_a}{n_b}\in(0,1)$,
+	      the likelihood ratio with the above formulas must contain $r$.
+	      And $r$ could take value in $(0,1)$, making the null and alternative composite.
+	\item Is it natural to also condition on $n_a$ on top of $n=n_a+n_b, n_1$?
+	      % FIXME: incomplete note from discussion with Wouter.
+\end{itemize}
+
+
+A quick word on the Group Invariance paper, we are testing Gaussian with any variance.
+
+\begin{align*}
+	 & \Hc_0: X \sim \Nc(0, \sigma)  \quad \sigma \in \Rf         \\
+	 & \Hc_1: X \sim \Nc(\mu, \sigma), \quad \mu, \sigma \in \Rf.
+\end{align*}
+The variance is a nuisance parameter that testing simple does not care.
+In other words, we can normalized or scale the data however we like.
+The question is: the conditioning on $n_1$ is in the same spirit
+and we implicitly were also doing the same conditioning $n_a$ (and $n$)
+so that the composite null \emph{collapse} into a single distribution.
+
 
 \subsection{Setup and notation}
 
@@ -97,7 +189,7 @@ At each time point $i$, $n_a$ and $n_b$ copies of Bernoulli variables are collec
 following the same distribution:
 \begin{align*}
 	U_a & = (U_{a,1}, U_{a,2},\cdots,U_{a,n_a})^T \sim \mathrm{Ber}(\bm{\mu}_a) \\
-	U_b & = (U_{b,1}, U_{b,2},\cdots,U_{b,n_n})^T \sim \mathrm{Ber}(\bm{\mu}_b)
+	U_b & = (U_{b,1}, U_{b,2},\cdots,U_{b,n_b})^T \sim \mathrm{Ber}(\bm{\mu}_b)
 \end{align*}
 The sufficient statistics vector is denoted by $X = (\sum_j^{n_a}U_{a,j}, \sum_j^{n_b}U_{b,j})$.
 $\Pc$ is extended by the i.i.d. assumption to
@@ -148,7 +240,7 @@ By i.i.d. assumption, the denominator reads the likelihood of $U^{(n)}$ given th
 
 It is mentioned that \emph{prequential ML} method is used here.
 
-\Yongqi{Can I also used the MLE estimator in the numerator? I think so}
+% TODO: verify whether the MLE estimator can also be used in the numerator.
 
 \subsubsection{RIPr}
 
@@ -171,7 +263,7 @@ Also look at the luckiness
 
 \subsubsection{COND}
 
-Add a section on Wald's ratio test
+% TODO: add a section on Wald's ratio test.
 
 We can first write the conditional \E-variable for a data block $X = U = (U_a, U_b)$:
 
@@ -291,8 +383,8 @@ I think I made a mistake here, when looking at the divergent case,
 the null would be the divergence bigger than $\delta$ while the alternative would be else?
 
 {\color{red}
-can we plug in $\theta_b^\circ = \theta_a^\circ + \delta$ here? If so,
-it would just be solving a cubic equation of $\theta_a^\circ$.
+	can we plug in $\theta_b^\circ = \theta_a^\circ + \delta$ here? If so,
+	it would just be solving a cubic equation of $\theta_a^\circ$.
 }
 
 

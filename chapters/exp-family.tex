@@ -234,11 +234,11 @@ just the KL divergence. Here $X=U=(X_1,\dots,X_d)$ is the $d$-dimensional random
 distribution $p$ or $q$
 
 \begin{align*}
-	D_{\textsc{Gauss}}(B) & = \KL{P}{Q}                                                                                                             \\
+	D_{\textsc{Gauss}}(B) & = \KL{P}{Q}                                                                                                            \\
 	                      & := \int_{\Uc} p(X) \log \frac{p(X)}{q(X)}
-	= \ERWi{p}{\log\frac{p(X)}{q(X)}}                                                                                                               \\
+	= \ERWi{p}{\log\frac{p(X)}{q(X)}}                                                                                                              \\
 	                      & = \ERWi{p}{\log\frac{(2\pi)^{-d/2} \det(\Sigma_p)^{-1/2}\exp(-\frac{1}{2}(X-\bm{\mu}^*)^T \Sigma_p^{-1}(X-\bm{\mu}^*))}
-	{(2\pi)^{-d/2} \det(\Sigma_q)^{-1/2}\exp(-\frac{1}{2}(X-\bm{\mu}^*)^\top \Sigma_q^{-1}(X-\bm{\mu}^*))}}                                         \\
+		                          {(2\pi)^{-d/2} \det(\Sigma_q)^{-1/2}\exp(-\frac{1}{2}(X-\bm{\mu}^*)^\top \Sigma_q^{-1}(X-\bm{\mu}^*))}} \\
 	                      & = \ERWi{p}{\log\frac{\det(\Sigma_q)^{-1/2} \exp(\Sigma_p^{-1})}{\det(\Sigma_q)^{-1/2}\exp(\Sigma_q^{-1})}} \qq{Wrong!}
 \end{align*}
 
@@ -256,13 +256,13 @@ The key is just simple derivation with the fact that $\hat{X}_{|n}:=\sum X_i/n \
 Setting $Z=\hat{X}_{|n}/\sqrt{n} \sim \Nc(\sqrt{n}\bm{\mu}^*,\Sigma_q)$, we have
 \begin{align*}
 	q_{W_1}(X^{(n)} \;\mid\; Z) & := \frac{q_{W_1}(X^{(n)}, Z)}{q_{W_1}(Z)} = \frac{q_{W_1}(X^{(n)})}{q_{W_1}(Z)}
-	\stackrel{iid}{=} \frac{\prod^n_{i=1}q_{W_1}(X_i)}{q_{W_1}(Z)}                                                                                  \\
+	\stackrel{iid}{=} \frac{\prod^n_{i=1}q_{W_1}(X_i)}{q_{W_1}(Z)}                                                                                     \\
 	                            & = \frac{\prod(2\pi)^{-d/2}(\det \Sigma_q)^{-1} \exp(-1/2 (X_i-\bm{\mu}^*)^\top \Sigma_q^{-1} (X_i - \bm{\mu}^*))}
-	{(2\pi)^{-d/2}(\det \Sigma_q)^{-1} \exp(-1/2(Z -\sqrt{n} \bm{\mu}^*)^\top \Sigma_q^{-1} (Z -\sqrt{n} \bm{\mu}^*))}                              \\
+	                                {(2\pi)^{-d/2}(\det \Sigma_q)^{-1} \exp(-1/2(Z -\sqrt{n} \bm{\mu}^*)^\top \Sigma_q^{-1} (Z -\sqrt{n} \bm{\mu}^*))} \\
 	                            & = \frac{\exp(\sum_{i=1}^n X_i^\top\Sigma_q^{-1}X_i - 2 \sqrt{n}{\bm{\mu}^*}^\top\Sigma_q^{-1}Z
-		+ n {\bm{\mu}^*}^\top \Sigma_q^{-1}\bm{\mu}^*)}
-	{\exp(Z^\top\Sigma_q^{-1}Z - 2 \sqrt{n}{\bm{\mu}^*}^\top\Sigma_q^{-1}Z
-	+ n {\bm{\mu}^*}^\top \Sigma_q^{-1}\bm{\mu}^*)}                                                                                                 \\
+		                                + n {\bm{\mu}^*}^\top \Sigma_q^{-1}\bm{\mu}^*)}
+	                                {\exp(Z^\top\Sigma_q^{-1}Z - 2 \sqrt{n}{\bm{\mu}^*}^\top\Sigma_q^{-1}Z
+		                                + n {\bm{\mu}^*}^\top \Sigma_q^{-1}\bm{\mu}^*)}                        \\
 	                            & = \exp(\sum_{i=1}^n (X_i - Z)^\top \Sigma_q^{-1} (X_i - Z))
 	% {}\qq{ignoring non-exp part}
 \end{align*}
