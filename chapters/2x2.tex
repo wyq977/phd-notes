@@ -61,6 +61,47 @@
 
 \section{SAVI Contingency Table}
 
+\subsection{Just two Bernoulli random variables}
+
+\emph{Heavily adapted on Dante's Thesis.}
+
+Let $X,Y$ be two independent Bernoulli random variables,
+\begin{equation*}
+	X \sim \mathrm{Bernoulli}(\theta_a) \quad
+	Y \sim \mathrm{Bernoulli}(\theta_b).
+\end{equation*}
+
+$\Pc$ describes the set of distributions on $(X,Y)$ 
+where $X,Y$ are independent and marginally distributed as Bernoulli.
+A distribution on $(X,Y)$ could be parameterized by
+$P_{\theta_a,\theta_b}$ where $\theta_a,\theta_b$ ranges in $[0,1]$.
+There's a \emph{natural} way to squeeze the tuple into one single parameter via log-odds ratio,
+\begin{equation*}
+	\delta:= \log \frac{\theta_a}{1-\theta_b} \Big/ \frac{\theta_b}{1-\theta_b} \in \Rf.
+\end{equation*}
+Note that this does not change two parameters are still needed 
+but we just temporarily swept one of them into the bin for now.
+Then we call the set of distributions on $(X,Y)$ parameterized by $\Pc_{\delta}$.
+
+Assuming point null and alternative hypothesis,
+it is easy to formulate the testing problem by a likelihood ratio test,
+\begin{align*}
+	\Hc_0: X,Y \sim P_{\theta_a,\theta_b} \quad
+	\Hc_1: X,Y \sim P_{\theta_a^*,\theta_b^*}.
+\end{align*}
+
+The problem extends easily to sequential test in iid settings.
+\begin{align*}
+	\Hc_0: (X_1,Y_1),(X_2,Y_2),\dots \iid P_{\theta_a,\theta_b} \quad
+	\Hc_1: (X_1,Y_1),(X_2,Y_2),\dots \iid P_{\theta_a^*,\theta_b^*}.
+\end{align*}
+
+% TODO: the convexity of the distributions on X, Y and X, Y	
+
+
+
+
+
 % FIXME: this subsection partially overlaps with "Setup and notation" below.
 % Consider merging once the notation and problem statement are stabilized.
 \subsection*{Again Bernoulli stream revisited}
@@ -287,7 +328,7 @@ the Fisher's noncentral hypergeometric (FN) distribution and the denominator is
 simply the cases when odds ratio $\omega = 1$ (hypergeometric distribution).
 
 \begin{align*}
-	S_{\textsc{COND}} = \prod_{i=1}^n \frac{q(X_a^{(i)}\mid Z^{(i)})}{p(X_a^{(i)}\mid Z^{(i)})}
+	S_{\textsc{\tiny COND}} = \prod_{i=1}^n \frac{q(X_a^{(i)}\mid Z^{(i)})}{p(X_a^{(i)}\mid Z^{(i)})}
 	= \prod_{i=1}^n \frac{f_{\textrm{FN}(n,n_a,Z^{(i)},w)}(X_a^{(i)})}{f_{\textrm{hyp}(n,n_a,Z^{(i)})}(X_a^{(i)})}
 \end{align*}
 
