@@ -11,7 +11,9 @@
 \usepackage{subcaption}
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 \usepackage[normalem]{ulem}                      % sout
-\usepackage{todonotes}                           % todo
+%\usepackage{todonotes}                           % todo
+\usepackage[colorinlistoftodos,prependcaption]{todonotes}
+\setuptodonotes{inline}
 \usepackage[mode=buildnew]{standalone}
 \usepackage{enumitem}
 \usepackage{xurl}                                % long url break
@@ -23,6 +25,8 @@
 \graphicspath{{fig/}}                            % set of paths to search for images
 \usepackage{bibentry}
 \usepackage{booktabs}                            % toprule
+\usepackage{cancel}                              % cancel in math
+
 % \usepackage{enumerate}                           %i or I in numbered list
 % \usepackage{indentfirst}                         % indent first line after section
 
@@ -87,7 +91,9 @@
 
 \input{chapters/03-TLDR}
 
-\input{chapters/2x2}
+\input{chapters/fnch}
+
+\input{chapters/cond_2x2}
 
 \input{chapters/RIPr}
 

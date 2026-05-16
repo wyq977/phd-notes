@@ -1,0 +1,98 @@
+\newpage
+
+\section{Fisher noncentral hypergeometric distribution}
+\label{sec:fnch}
+
+\begin{table}
+	\centering
+	\begin{tabular}{lrr}
+		\toprule
+		    & $a$ & $b$ \\
+		\midrule
+		$1$ & 46  & 29  \\
+		$0$ & 16  & 9   \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+For a $2\times 2$ table as shown above,
+$n_a$ and $n_b$ denote the group sizes.
+Let $y_a$ and $y_b$ be the number of successes in groups $a$ and $b$, respectively.
+The total number of ones is $n_1 = y_a+y_b$.
+
+Conditional on the margins $n_a,n_b,n_1$,
+$y_a$ follows Fisher's noncentral hypergeometric distribution.
+$$
+y_a \mid n_a,n_b,n_1,\delta
+\sim \mathrm{FNCH}(n_a,n_b,n_1,\delta).
+$$
+
+Replacing $y_a$ with $x$
+\begin{equation}\label{eq:fnch_pdf}
+	f(x\mid \delta,n_a,n_b,n_1)
+	= \frac{\binom{n_a}{x} \binom{n_b}{n_1-x} e^{\delta x}}{\sum_{\gamma^{-}}^{\gamma^{+}} \binom{n_a}{k} \binom{n_b}{n_1 - k} e^{\delta k}}
+	= h(x) \exp\left\{\delta \cdot T(x) - A(\delta)\right\}.
+\end{equation}
+
+This is a $1$-dimensional exponential family wrt $\delta$,
+\begin{itemize}
+	\item domain: $[\gamma^{-},\gamma^{+}]$, $\gamma^{-} = \max\{0, n_1-n_b\}$ and $\gamma^{+}=\min\{n_1, n_a\}$
+	\item sufficient statistics: $T(x)=x$
+	\item natural parameter: $\delta$
+	\item cumulant function $A(\delta; n_a,n_b,n_1)=\log Z(\delta; n_a,n_b,n_1)$
+	\item partition function
+	$Z(\delta; n_a,n_b,n_1)=\sum_{\gamma^{-}}^{\gamma^{+}} \binom{n_a}{k} \binom{n_b}{n_1 - k} e^{\delta k} = \sum_{\gamma^{-}}^{\gamma^{+}} g(n_a,n_b,n_1,k)e^{\delta k}$ \\
+	where $g(n_a,n_b,n_1,k)=\binom{n_a}{k} \binom{n_b}{n_1 - k}$
+\end{itemize}
+
+When $\delta=0$, it reduces to central hypergeometric distribution,
+\begin{equation}
+	f(x\mid 0,n_a,n_b,n_1) = 
+	\frac{
+		\binom{n_a}{x} \binom{n_b}{n_1-x}
+	}{
+		\sum_{\gamma^{-}}^{\gamma^{+}} \binom{n_a}{k} \binom{n_b}{n_1 - k}
+	}
+	= \frac{
+		\binom{n_a}{x} \binom{n_b}{n_1-x}
+	}{
+		\binom{n_a+n_b}{n_1}
+	}
+\end{equation}
+
+\subsection{MLE estimation}
+
+The log-likelihood function for FNCH is
+\begin{align}
+	\ell(\delta)
+	&=\log\binom{n_a}{x}+\log\binom{n_b}{n_1-x}+x\delta-\log\left(\sum_{k}\binom{n_a}{k}\binom{n_b}{n_1-k}\exp(\delta k)\right) \\
+	&= \log h(x) + \delta \cdot x - \log Z
+\end{align}
+
+Differentiate the log likelihood function $l$ wrt $\delta$
+and setting it to zero:
+\begin{equation}
+	\frac{\partial\ell(\delta)}{\partial\delta}
+	=x-\frac{\sum_{\gamma^{-}}^{\gamma^{+}} k\binom{n_a}{k}\binom{n_b}{n_1-k} e^{\delta k}}{\sum_{\gamma^{-}}^{\gamma^{+}} \binom{n_a}{k}\binom{n_b}{n_1-k}e^{\delta k}}=0
+\end{equation}
+
+This is the same as finding $\delta$ such that
+\begin{equation}
+	X = \ERW{X}
+\end{equation}
+
+\subsection{Software references}
+
+\begin{itemize}
+	\item R:
+	\verb|BiasedUrn::dFNCHypergeo(x = ya, m1 = na, m2 = nb, n = n1, odds = odds)|,
+	where odds=$\exp(\delta)$.
+	Here $x$ is the number of $1$s in group a,
+	$m_1,m_2$ are the group sizes,
+	and $n$ is the total number of $1$s.
+	\url{https://www.rdocumentation.org/packages/BiasedUrn/versions/1.07/topics/BiasedUrn-Multivariate}
+	\item Python:
+	\verb|scipy.stats.nchypergeom_fisher(k=ya, M=na+nb, n=na, N=n1, odds)|.
+	\url{https://docs.scipy.org/doc/scipy/tutorial/stats/discrete_nchypergeom_fisher.html}
+\end{itemize}
+
