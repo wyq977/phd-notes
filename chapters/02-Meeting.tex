@@ -2,8 +2,84 @@
 
 \section{Meetings}
 
-\subsection*{Old notes and ideas collected from meetings}
+\subsection*{19.05.2026 van dantzig seminar}
 
+Mainly the Peter BM's lectures are more relevant.
+
+\begin{itemize}
+	\item Pearl Three 
+	\item do-operation: this is the part I didn't get in school but I think his explanation is very good.
+	do-operation is almost like you are hammering the variable,
+	forcing a random variable to be certain value,
+	without affecting the edges or their relationships (autonomy).
+	In real life example, this would be knocking out a gene,
+	`forcing it to be zero' but assume everything else is the same.
+	\item My take away is that the invariance is some sort of linear transformation in the end
+	\item Domain adaptation: not sure if this is distribution-free,
+	or robustness.
+	Usually robustness is the stability against external noise.
+	Here the adaptation is something you never observed before,
+	the trained methods (linear regression or NNs) can adapt well
+	on the never-seen data
+	\item another key point is there is a layers or sample sizes where
+	at the start, it's better to use the info/knowledge learnt before,
+	after a while, you might as well just use the the data in the new environment only.
+	\item But I feel like the limitation is that it assumes a source node, a oracle environment that produces all variables? see anchor regression
+\end{itemize}
+
+\subsection*{Recap of Theorem 1 of Francesca}
+
+\href{https://arxiv.org/pdf/2509.01064}{https://arxiv.org/pdf/2509.01064}
+
+$X$ follows some exponential family
+\begin{equation*}
+	P(X) = \frac{\exp(-\beta^T T(X))}{Z(\beta)},
+\end{equation*}
+where $\beta$ is the canonical parameter and $\mu(\beta)$ is the mean parameter in $\Mt$.
+
+Assume $n$ iid sample $X^{(n)}=(X_1,\dots,X_n)$, and $w$ a prior over the $\Mt$,
+\begin{equation*}
+	Q(\mu \in \Mt') = \int_{\Mt'} w(\mu) \dd{\mu}
+\end{equation*}
+
+``normalized sufficient statistic converges in distribution to $Q^{w}$ at rate $O(\log m/m)$.''
+
+\begin{define}
+	\emph{Ineccsi} subsets $\Theta_0$. $\Mc$ is a model with smooth parameter $\Theta$. 
+	Please refers to the MDL book Chapter 7-10.
+	\begin{itemize}
+		\item the interior of $\Theta_0$ is non-empty.
+		\item the closure of $\Theta_0$ is a compact subset of the interior of $\Theta$.
+	\end{itemize}
+\end{define}
+
+
+\begin{thm}
+Let $w$ be any (regular) prior density over mean-value space $\Mt$.
+For any \emph{incessi} subset $\Mt'\subset \Mt$, we have
+\begin{equation*}
+	P^{w} \left(\frac{T(X^{(n)})}{n} \in\Mt' \right) - Q^w\left(\mu \in \Mt'\right) 
+	= O\left(\frac{\log(n)}{n}\right)
+\end{equation*}
+\end{thm}
+
+The Bayesian marginal likelihood $P^{w}$ is
+\begin{equation*}
+	P^{w}(X) = \int_{\Mt} P(X) w(\mu) \dd{\mu}
+\end{equation*}
+
+
+Questions to be asked
+\begin{itemize}
+	\item Regular prior density $w$ over the mean-value space $\Mt$?
+	\item Is the prior on mean or canonical space?
+	\item Technque: Chernoff, Sanov property, generalized I-projection and
+	a conditional limit theorem also in Yunda's paper
+\end{itemize}
+
+
+\subsection*{Old notes and ideas collected from meetings}
+	
 \begin{itemize}
 	\item Wouter: Betting on sure things: both null and alternative agrees on $X$'s mean is $a$ and null also states mean of $Y$ is $b$, does it make sense to test even?
 	\item Raf: Ideas on time consistency anytime valid comparison of algorithm/Time-consistent decision making
@@ -208,48 +284,6 @@ We should think from the users' perspectives.
 	\item 1 is trying to do learning then seq bayesian (with or without updating)
 	\item Put a prior on maybe on $(0, \infty)$ or $(\delta_{\min}, \infty)$.
 \end{itemize}
-
-\subsection*{ALex verification with $1/R_{01}$}
-
-\Alexander{Alex, write whatever u feel like}
-
-For a given 2x2 table (one table only now),
-group size are denoted by $n_a, n_b$, $y_a, y_b$ is the number of $1$ while $n_1=y_a+y_b$.
-
-In short, we have the Fisher’s noncentral hypergeometric distribution given the sufficient statistics
-\begin{equation*}
-	f_{\mathrm{FN}(n_a,n_b,n_1,\delta)}(y_a)
-	= \frac{\binom{n_a}{y_a} \binom{n_b}{n_1-y_a} e^{\delta y_a}}{\sum_{\gamma^{-}}^{\gamma^{+}} \binom{n_a}{k} \binom{n_b}{n_1 - k} e^{\delta k}}
-\end{equation*}
-where $\gamma^{-} = \max{0, n_1-n_b}$ and $\gamma^{+}=\min{n_1, n_a}$ is the domain for $y_a$, which is a $1$-dimensional exp. family.
-
-If $\delta=0$ it reduces to central hypergeometric distribution:
-\begin{align*}
-	f_{\delta}(y_a) & = \exp(\delta \cdot y_a - A(\delta)) h(y_a)
-\end{align*}
-
-
-\begin{itemize}
-	\item R: \verb|BiasedUrn::dFNCHypergeo(x = ya, m1 = na, m2 = nb, n = n1, odds = odds)| odds=$\exp(\delta)$ \\
-	      $x$ is the number of $1$s in group a, $m_1,m_2$ is the group size, $n$ is the total number of $1$s.
-	      \url{https://www.rdocumentation.org/packages/BiasedUrn/versions/1.07/topics/BiasedUrn-Multivariate}
-	\item Python: \verb|scipy.stats.nchypergeom_fisher(k=ya, M=na+nb, n=na, N=n1, odds)| \\
-	      \url{https://docs.scipy.org/doc/scipy/tutorial/stats/discrete_nchypergeom_fisher.html}
-\end{itemize}
-
-The \emph{conditional \E-value} with a fixed $\delta$ is
-\begin{equation*}
-	S_{n_a,n_b,n_1,\delta}(y_a) = \frac{f_{\mathrm{FN}(n_a,n_b,n_1,\delta)}(y_a)}{f_{\mathrm{FN}(n_a,n_b,n_1,0)}(y_a)}.
-\end{equation*}
-
-
-The `Bayes' is w.r.t. a (truncated) Gaussian with zero mean and scale $\delta$,
-\begin{equation*}
-	\int_{\Rf} S_{n_a,n_b,n_1,\delta}(y_a) \cdot \pi(\delta) \dd{\delta}
-\end{equation*}
-
-See: \url{https://github.com/wyq977/e-table/blob/yongqi/src/e_table/methods/bayes.py}
-
 \subsection*{12.03.2026}
 
 This week has been quite busy with hands-on stuff, mostly drawing for the ML2 project.
