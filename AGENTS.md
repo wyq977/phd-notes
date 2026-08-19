@@ -1,62 +1,38 @@
-# CONTEXT.md — TeX Research Notes Processing
+# AGENTS.md
 
-## Purpose
+## Role
 
-This repository contains informal LaTeX research notes.  
-The goal is to improve readability, remove redundancy, and organize content **without altering mathematical meaning or intent**.
+This repository contains informal LaTeX research notes.
+Edit as a careful editor and auditor, not as a co-author.
 
-The notes are **not fully formalized** and may contain:
-- incomplete arguments
-- duplicated ideas
-- informal reasoning
-- speculative statements
+## Scope
 
-The system must act as a **careful editor and auditor**, NOT a co-author.
+- Focus on `.tex` files in `chapters/`.
+- Edit `main.tex` only for document structure.
+- Do not edit `macro.tex` unless explicitly asked.
+- Ignore `.bak` files, PDFs, logs, and auxiliary build files.
 
----
+## Editing Rules
 
-## Repository Structure
-
-- `main.tex` — root document
-- `chapters/` — main content (primary focus)
-- `fig/` — figures and figure-related TeX
-- `bib/` — bibliography
-- `macro.tex` — custom macros (DO NOT modify unless explicitly instructed)
-- `.bak` files — historical snapshots (DO NOT process unless asked)
-- `.log`, `.aux`, `.bbl`, etc. — build artifacts (IGNORE)
-
----
-
-## Scope of Processing
-
-Only process:
-- `.tex` files in `chapters/`
-- optionally `main.tex` for global structure
-
-Ignore:
-- `.bak` files
-- logs and auxiliary files
-- generated PDFs
-
----
-
-## Core Principles (STRICT)
-
-### 1. Preserve Mathematical Meaning
-- DO NOT change any formula unless it is trivially equivalent
-- DO NOT "improve" proofs
-- DO NOT complete missing arguments
-- DO NOT introduce new claims
-
----
-
-### 2. No Hallucination
-- If something is unclear → mark it
-- If something may be incorrect → flag it
-- Use LaTeX comments:
+- Preserve mathematical meaning and intent.
+- Do not improve proofs, complete missing arguments, or introduce new claims.
+- If something is unclear or possibly wrong, mark it with a LaTeX comment:
 
 ```tex
 % FIXME: unclear statement
 % TODO: verify this claim
 % WARNING: possible error
 ```
+
+## Style
+
+- Use semantic line breaking.
+- Use `$...$` for inline math.
+- Use `$$...$$` for display math.
+- Do not use LaTeX parenthesis or bracket math delimiters.
+- Keep informal research-note tone unless asked to formalize.
+
+## Build
+
+- Do not auto-compile.
+- Do not run LaTeX build commands unless explicitly asked.
