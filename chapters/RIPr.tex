@@ -2,24 +2,159 @@
 
 \section{Reverse Inverse Projections (RIPr)}
 
-\subsection{Li's Algorithm}
+\subsection{Special case: Multi-Bernoulli}
 
-Originally developed by \cite{liEstimationMixtureModels1999}, the following algorithm is written based on the notes from \cite{grunwaldSafeTesting2024, haoEvalues$k$sampleTests2024}.
-To quote \cite{brindaAdaptiveEstimationGaussian2018}, Li's inequality requires the family $\Qc$ to have a uniformly bounded density ratio.
+Everything should be very concrete in 3D case, we do not assume any independence.z
+The sample space is
+\begin{equation}
+  \Omega = \{0,1\}^3 = \left\{000,001,010,100,011,101,110,111\right\}
+\end{equation}
 
-Li obtains the RIPr in a greedy manner where the KL divergence between distribution $Q$ onto the convex hull of a set of distributions $\Qc$ (composite null) is minimized. It is assumed that the KL divergence between $Q$ and any distribution $Q \in \Qc$ is finite \footnote{Which should I use? $\Qc$ or $\Qf$} (often call ``nondegenerate'' condition).
+Any probability measure $P$ on $\Omega$ can be identified with a point in the simplex
+\begin{equation}
+\left\{
+p\in\mathbb R^8:
+p_x\ge 0,\ \sum_{x\in\Omega} p_x=1
+\right\}.
+\end{equation}
 
+Since we do not assume independence, parameter space is 
+\begin{equation}
+  \Theta\subset\Rf^8.
+\end{equation}
+
+We write $P_\theta$ for some element $\theta$ in $\Theta$.
+
+Questions:
+
+Then if I have prior $W$ on parameter space $\Theta$,
+it should follow that the mixture distribution is still 
+\begin{equation}
+  P_{W} = \int_{\Theta} P_{\theta} \dd{W}.
+\end{equation}
+
+Putting a prior in this case
+
+A prior $W$ is a probability distribution on the parameter space $\Theta$.
+It induces a mixture distribution on the sample space by
+\[
+P_W(x)
+=
+\int_\Theta P_\theta(x)\,\mathrm d W(\theta).
+\]
+In the full multi-Bernoulli model, $P_\theta(x)=\theta_x$, and hence
+\[
+P_W(x)
+=
+\int_\Theta \theta_x\,\mathrm d W(\theta)
+=
+\mathbb E_W[\theta_x].
+\]
+Thus $P_W=P_{\bar\theta}$, where
+\[
+\bar\theta=\int_\Theta \theta\,\mathrm d W(\theta)\in\Theta.
+\]
+Equivalently, $P_W=P_{\delta_{\bar\theta}}$, although generally
+$W\neq \delta_{\bar\theta}$. Thus different priors may induce the same
+mixture distribution.
+
+\begin{itemize}
+	\item Why is it suitable here the Frank-Wolfe algorithm? The support is finite.
+	Assume we have some prior $W$ over any sets in the parameter space of multi-Bernoulli.
+	The problem can be recasted into a scalar product in $\Rf^{2^D}$:
+	\begin{equation}
+		P_{W(\Theta)} = P_{\theta} = 
+	\end{equation}
+	This is uniquely determined by $2^D$ coefficients.
+	\item The object to be optimized is the KL divergence between alternative $Q$ 
+	and some linear combination.
+	\item Dirac measure?
+	For multi-Bernoulli distribution, the outcome space is $\{0,1\}^D$, i.e., finite support.
+	The parameter space is $(2^D-1)$ probability simplex.
+	If I put any prior $W$ over that parameter space,
+	the mixture distribution $P_W=\int P_{\theta}(x)\dd{W}$ stays into same model.
+	That is to say mixing over a prior still returns a multi-Bernoulli model.
+	
+	So any prior 
+	\item The Frank-Wolfe 
+\end{itemize}
+
+
+\begin{thm}[Li]
+	$\Pc$ is a convex set of probability measures (\emph{composite null} in testing),
+	and $Q$ a measure on $\Omega$ (\emph{point alternative}).
+	If $\KL{Q}{P} < \infty$ for all $P\in\Pc$,
+	then there exist a unique probability measure $P^*$ such that
+	\begin{enumerate}
+%		\item $\KL{Q}{P^*} = \inf_{P\in \Pc} \KL{Q}{P}$
+		\item $\ln p_n \rightarrow \ln p^*$ in $L_1(Q)$ 
+%		for all sequence $P_n$ in $P$ such that $\underset{n\to\infty}{\lim} \KL{Q}{P_n} = \KL{Q}{\Pc}$
+		\item $\int_{\Omega} \ln\dv{Q}{P^*}\dd{Q} = \KL{Q}{\Pc}$
+		\item $\int_{\Omega} \dv{Q}{P^*}\dd{P}\leq 1$ for all $P\in\Pc$
+	\end{enumerate}
+\end{thm}
+
+We consider a description gain given by
+\begin{equation*}
+	\KL{Q}{P \rightsquigarrow P'}=\int_{\Omega} \ln\left(\dv{P'}{P}\right) \dd{Q} - (P'(\Omega)-P(\Omega))
+\end{equation*}
+
+For a set $\Pc$, \emph{maximum gain from $Q$ to any measure in $\Pc$}
+\begin{equation*}
+	\KL{Q}{P \rightsquigarrow \Pc}=\underset{P'\in\Pc}{\sup} \KL{Q}{P \rightsquigarrow P'}
+\end{equation*}
+
+\begin{thm}[Tyron]
+	Suppose $\inf_{P\in\Pc} \KL{Q}{P \rightsquigarrow \Pc} < \infty$, 
+	then there exists a measure $P^*$ in $\Pc$
+	such that for every sequence $P_n$ in $\Pc$ 
+	we have \\
+	$\KL{Q}{P_n \rightsquigarrow \Pc} \to \inf_{P\in\Pc}\KL{Q}{P \rightsquigarrow \Pc}$ as $n\to\infty$
+	\begin{itemize}
+		\item $p_n \to p^*$ in some complete space, not just $\ln$ convergence in $L_1(Q)$
+		\item .....
+		\item For any $P\in\Pc$,
+		\begin{equation*}
+			\int_{\Omega} \dv{Q}{P^*} \dd{P} \leq Q(\Omega) + P(\Omega) 
+			- \underset{n\to\infty}{\lim\inf} P_{n}(\Omega)
+		\end{equation*}
+	\end{itemize}
+\end{thm}
+
+Assuming that the distributions are parametric with parameter set denoted by $\Theta$.
 \begin{algorithm}
 	\DontPrintSemicolon
-	\caption{Li's Algorithm}
+	\caption{Li's Algorithm -- Greedy Approximation}
 	\BlankLine
-	$Q_{(1)} = {\argmin}_{Q \in \Qc} D(P \Vert Q)$\;
-	\For{$m = 2, 3, \dots, K$}{
-		$Q := \alpha Q_{(m-1)} + (1 - \alpha) Q'$\;
-		$\alpha, Q' \leftarrow \argmin_{\alpha, Q'} D(P \Vert Q)$
+	Let $Q_1 = {\argmin}_{Q \in \Qc}\, \KL{Q}{P}$\;
+	\For{$k = 2, 3, \dots, K$}{
+		Let $\alpha_k=\frac{2}{k+1}$\;
+		Find $\theta_k$ that minizes $\KL{Q}{(1-\alpha_k) Q_{k-1} + \alpha_k Q_{\theta}}$\;
+		Let $Q_k=(1-\alpha_k) Q_{k-1} + \alpha_k Q_{}$
 	}
 \end{algorithm}
 
+\textbf{Difference between Tyron and Li}
+
+\begin{itemize}
+	\item I could not see the extended part where Li's fails,
+	where the divergence is infinity.
+\end{itemize}
+
+\subsection{The Frank Wolfe Algorithm}
+
+\begin{algorithm}
+	\DontPrintSemicolon
+	\caption{The Frank Wolfe Algorithm}
+	\BlankLine
+	Let $Q_1 = {\argmin}_{Q \in \Qc}\, \KL{Q}{P}$\;
+	\For{$k = 2, 3, \dots, K$}{
+		Let $\alpha_k=\frac{2}{k+1}$\;
+		Find $\theta_k$ that minizes $\KL{Q}{(1-\alpha_k) Q_{k-1} + \alpha_k Q_{\theta}}$\;
+		Let $Q_k=(1-\alpha_k) Q_{k-1} + \alpha_k Q_{}$
+	}
+\end{algorithm}
+z
 Here, the distribution $Q'$ and $\alpha$ is chosen (coupled) such that the divergence is minimized.
 The minimizer need not be unique.
 
@@ -42,3 +177,5 @@ Iteratively, the linear combination is still in the convex hull, i.e.
 \end{align*}
 
 It is clear that $Q_{(2)}$ or $Q_{(m)}$ would still be a convex combination of elements in $\Qc$.
+
+
