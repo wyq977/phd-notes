@@ -2,39 +2,20 @@
 
 \section{TODO}
 
-This is just a playground for me! No need to be too nicely formatted.
-
-\subsection{Spare task}
-
-This is the stuff that is not priority but rather just for fun, e.g. designing my own web, writing notes, drawing latex figures, 3d object.
-
-\emph{FUN but not work} so do it when i try to take a break
-
-\begin{itemize}
-	\item Create my own draft latex template as a sty or cls? idk, should be done in
-\end{itemize}
+This is just a playground!
 
 \subsection{Questions}
 
-Convex
 \begin{itemize}
 	\item Why not we just use LASSO always if this is so good!
-\end{itemize}
-
-\begin{itemize}
 	\item Check (best write) something on \emph{post hoc} and \emph{ad hoc}
 	\item What is the regularity condition in universal inference condition?
 	\item Why do we want to have data-dependent significant level $\alpha$
 	\item What is the difference between \p-process and \E-process and nonnegative martingale?
 	\item What is a adapted sequence of random sets, random variables
-	\item Wald's sequential likelihood ratio test
 	\item What is Radon-Nikodym derivative
-	\item Try to explain post-hod and ad-hoc in plain English
 	\item What would happen if you just multiply \E-variables together? Shouldn't you consider the
 	\item What is the evidence in testing? Is likelihood ratio the best one we have for evidence
-\end{itemize}
-
-\begin{itemize}
 	\item What is the difference between carrying measure and carrying measure?
 	\item Write down the lemma/fact that each element in a regular exponential family is continuous
 	      with respect to each other and could be used as carrier. Is it a one-to-one mapping?
@@ -42,43 +23,16 @@ Convex
 	\item Loewner ordering
 \end{itemize}
 
-\subsection{Filtrations and sigma-fields}
-
-\begin{define}[Filtration]
-	Let $(\Omega, \Ac, P)$ be a probability space. An increasing sequence $\Fc_n$ of sub-$\sigma$ algebras of $\Ac$
-	(i.e. $\Fc_0 \subseteq \Fc_1 \subseteq \cdots \Fc_n \subseteq \cdots \subseteq \Ac$) is called a filtration.
-\end{define}
-
-The sub-$\sigma$-algebra is just the sigma algebra of the $X_0, X_1, X_n$.
-
-What is the difference between the stopping time and random times that can take possibly infinity.
-
-Filtration sigma-field at time $t$, filtration is a n increasing sequence of sigma-fields.
-
-What is the lim sup here? $A_t$ is an adapted sequences of events in some filtered probability space.
-$$
-	A_\infty := \limsup_{t\to \infty} A_t := \bigcap_{t\in\Nf}\bigcup_{s\geq t}A_s
-$$
-
-\begin{define}[Absolute continuous]
-	Let $p, q$ be two probability distributions. $p$ is called \emph{absolutely continuous} with respect to $q$ if the
-
-	More explicitly, this reads ($p \ll q$) that
-	\begin{align*}
-		q(A) = 0 \quad \Rightarrow \quad p(A) = 0,  \quad \text{for any } A \in \Fc_t \text{ and } t \in \Nf.
-	\end{align*}
-\end{define}
-
-What about \emph{CORASENING}?
 
 \subsection{All the inequalities}
 
 Hoeffding, Bernstein, McDiarmid, Talagrand's
 
-Evidence lower bound s
+Evidence lower bound
 
 line crossing inequality
 average treatment effect
+Union bound
 mixture adaptive design
 
 \subsection{Papers, talks, textbook, and more topics}
@@ -102,7 +56,9 @@ Calibration
 
 
 Understanding the Fourier transform in terms of transform
+
 Placing a restriction on the Fourier transform == smaller function space
+
 Minimax setup
 
 Integration / Measure
@@ -117,5 +73,10 @@ illustrated in video recordings [Max77, LMM94, SFL98].
 Tower properties
 
 
+\subsection{numeraire}
+
+It discuss a point alternative $Q$ against a composite null $\Qc$ with basically no assumptions.
+For simplicity, use $Q$ for a point alternative and $\Pc$ for composite null 
+\footnote{Tyron use $P$ and $\Cc$ for point alt. and composite null, so was Li}
 
 
