@@ -1,115 +1,188 @@
 \documentclass{wyqart}
 \input{macro}
 
-\newcommand{\modelall}{\Mc_{\mathrm{all}}}
-\newcommand{\modellin}{\Mc_{\mathrm{linear}}}
+\newcommand{\lasso}{\mathrm{Lasso}}
+\newcommand{\yq}[1]{{\color{red} #1}}
 
-\title{Is there difference between testing and learning in OLS?}
+
+\title{How to construct confidence sets after sparse regression}
 
 \begin{document}
 
 \maketitle
 
-\section{Setup}
+\section{Known results for fixed-sample sparse regression}
 
-Let $\bm{X} = \{X_1,X_2,\dots,X_{10}\}^\top\in \Rf^{10}$ be the random variables.
-The predictor $Y\in\Rf$ is given by the linear model $Y=f(\bm{X})=X_1\beta_1+X_3\beta_3+\epsilon$
-where $\epsilon \sim \Nc(0,1)$.
+For observations $x_i\in\Rf^p$ and responses $y_i\in\Rf$,
+let
+$$
+	X_n=\left(x_1^\top,\ldots,x_n^\top\right)^\top\in\Rf^{n\times p}
+	\quad\text{and}\quad
+	Y_n=\left(y_1,\ldots,y_n\right)^\top\in\Rf^n.
+$$
+Assume the sparse linear model
+$$
+	Y_n=X_n\beta^\star+\varepsilon_n,
+$$
+where $\beta^\star\in\Rf^p$ is the true coefficient vector and
+$\varepsilon_n\in\Rf^n$ is the noise vector.
+Write $[p]=\{1,\ldots,p\}$, and define
+$$
+	S^\star=\{j\in[p]:\beta_j^\star\neq 0\}
+$$
+as the true support.
 
-It's natural to \emph{estimate} or \emph{learn} the true model from a class of models.
-Let $\modelall$ denotes 
-\emph{all} models for predicting $Y$ from $\bm{X}$, which can be quite large.
-\begin{equation}
-	\Mc_{\mathrm{all}} := \{f: \Rf^{10}\to \Rf\}.
-\end{equation}
-
-Assume we somehow already limit our model to linear only,
-i.e., all linear models using any subset of the 10 variables
-\begin{equation}
-	\modellin := \left\{
-		f_S(\bm{X})=\sum_{j\in S} X_j\beta_j + \epsilon
-		:\ S\subseteq \{1,\dots,10\},\ \beta_j\in\Rf
+A sparse-regression method such as the Lasso estimates $\beta^\star$ by
+$$
+	\widehat{\beta}_{\lasso,n}
+	=
+	\argmin_{\beta\in\Rf^p}
+	\left\{
+		\frac{1}{2}\norm{Y_n-X_n\beta}_2^2
+		+
+		\lambda\norm{\beta}_1
 	\right\}.
-\end{equation}
+$$
+The tuning parameter $\lambda>0$ is often chosen by cross-validation.
+An alternative constrained formulation, with radius $r>0$, is
+\begin{align*}
+	&\min_{\beta\in\Rf^p}
+	&&\frac{1}{2}\norm{Y_n-X_n\beta}_2^2 \\
+	&\text{subject to}
+	&&\norm{\beta}_1\leq r.
+\end{align*}
 
-Models that are in $\modelall\setminus\modellin$, which are basically all the non-linear function, e.g.,
-\begin{itemize}
-	\item High-order polynomials: $Y=X_1^3$
-	\item Interacting terms: $Y=X_1X_2$
-	\item $Y=\sin(X_1)$ or $Y=\exp(X_1)$
-	\item Step function
-	\item Much more ...
-\end{itemize}
+Sparsity can instead be imposed explicitly through an $\ell_0$ constraint:
+\begin{align*}
+	&\min_{\beta\in\Rf^p}
+	&&\frac{1}{2}\norm{Y_n-X_n\beta}_2^2 \\
+	&\text{subject to}
+	&&\norm{\beta}_0\leq k.
+\end{align*}
+Here $k\in\{0,\ldots,p\}$ is an upper bound on the number of nonzero
+coefficients.
 
+\yq{Check \emph{Sparse High-Dimensional Regression:
+Exact Scalable Algorithms and Phase Transitions} for a fast implementation
+of the $\ell_0$-constrained estimator.}
 
-Suppose we run a algorithm to estimate the linear model, 
-and we get a pair of $(\bm{X}_t, Y_t)$ along the training process.
-In OLS, we will return the estimated $\hat{f}$.
-%Similar story goes for Lasso, where one minimizes MSE with 
-%an $L_1$ penalty on the coefficients.
-It has already been well-studied (TO BE ADDED)
+For a generic sparse-regression procedure,
+let $\widehat{S}_n\subseteq[p]$ denote the retained features.
+The features in $\widehat{S}_n^c=[p]\setminus\widehat{S}_n$ are called the
+kicked-out or excluded features.
 
-See asymptotic statistics by Aad and others
+\yq{Does the intended sparse-regression objective also include an
+$\ell_2$ penalty, as in the elastic net?}
 
-%Needs to be well specified?!
+\yq{Identify and summarize the known fixed-sample guarantees for support
+recovery or support containment.
+Are they mostly asymptotic as $n\to\infty$ and conditional on assumptions
+about the oracle parameter?}
 
+\section{Anytime-valid sequential model comparison for linear regression}
+
+For $S\subseteq[p]$, let $\Lf_S$ denote the class of linear models whose
+coefficient vectors have support exactly $S$.
+For example, consider the two models
+$$
+	y=\beta_1x_1+\beta_2x_2+\varepsilon
+	\qquad\text{and}\qquad
+	y=\beta_1x_1+\beta_3x_3+\varepsilon.
+$$
+They are represented by $\Lf_{\{1,2\}}$ and $\Lf_{\{1,3\}}$,
+respectively.
+
+A feature-level testing problem can be written as
 \begin{equation}
-	(\hat\beta_{\mathrm{OLS}}-\beta_*) \Rightarrow O_p(n^{-1/2}).
+	\Hc_0:\beta_3=0,
+	\qquad
+	\Hc_1:\beta_3\neq 0.
+	\label{eq:test-one-coef}
 \end{equation}
+When $p$ is large, this is a comparison between the composite model classes
+$$
+	\{\Lf_S:3\notin S\}
+	\qquad\text{and}\qquad
+	\{\Lf_S:3\in S\}.
+$$
+The other included features and their coefficients are not fixed,
+so both sides contain many possible linear models.
 
+\yq{Ask S. Ariaus for}
 
-%\begin{itemize}
-%  \item The rate of convergence
-%  \item Also in misspecification cases
-%\end{itemize}
+\yq{Identify the precise existing anytime-valid result for OLS model
+comparison.}
 
-How is it different from the testing problem then?
+\yq{A possible first step is to construct an e-process for a suitably
+specified simple-vs-simple comparison and then extend it to these composite
+model classes.}
 
-\section{Testing framework}
+\section{Why pairwise model e-processes may be unsuitable for variable selection}
 
-In testing, the language would be slightly different.
-If we still have some fixed $n$ data ($\bm{X}_t, Y_t$).
-Usually, we are testing if $X_3$ matters or not:
-\begin{equation}
-	\Hc_0: \beta_3=0, \qquad \Hc_1: \beta_3\not=0.
-\end{equation}
+Even an optimal e-process for the comparison in
+Equation~\eqref{eq:test-one-coef} would not by itself solve the variable-selection
+problem.
+With a large number of features, one would need to handle a large collection
+of feature-level hypotheses or candidate models.
 
-BF approach described by Ly. et al. \url{https://doi.org/10.1037/met0000454}.
+The comparisons also overlap.
+For instance, comparing $\Lf_{\{1,2\}}$ with $\Lf_{\{1,3\}}$ concerns both
+whether feature $2$ should be excluded and whether feature $3$ should be
+included.
+More generally, a single model contains many feature-level decisions,
+and a single feature occurs in many candidate models.
+It is therefore unclear how guarantees for separate model comparisons should
+be combined into a guarantee for the feature set returned by a
+sparse-regression algorithm.
 
-What are the relationship between the loss and the evidence 
-if the null is $\modellin$?
+\yq{Check whether the SMCS paper by Sebastian Arnold provides a useful
+formulation of these overlapping comparisons.}
 
-Simple-vs-composite, fix $\beta_1,\beta_3$ to be $1$,
-this seems like a very useless testing
-\begin{equation}
-	\Hc_0: f \in \modellin, \qquad \Hc_1: Y=X_1 + X_3.
-\end{equation}
+\section{Desired inferential guarantee}
 
-Again
-\begin{equation}
-	\Hc_0: f \in \modellin, \qquad \Hc_1: Y=X_1\beta_1 + X_3 \beta_3, 
-		\qquad \beta_1,\beta_3 \in \Rf.
-\end{equation}
+In the conventional fixed-sample setting, $n$ is predetermined.
+In the sequential setting, observations $(x_t,y_t)$ arrive online for
+$t=1,2,\ldots$.
+Let $X_t$ and $Y_t$ contain the first $t$ observations,
+and let $\widehat{S}_t$ be the feature set retained by the sparse-regression
+algorithm at time $t$.
+A data-dependent stopping time is denoted by $\tau$.
 
-I believe we could use t-test for
-\begin{equation}
-	\Hc_0: Y=X_1\beta_1, \qquad \Hc_1: Y=X_1\beta_1 + X_3 \beta_3, 
-		\qquad \beta_1,\beta_3 \in \Rf.
-\end{equation}
+The goal is to certify the features kicked out by time $\tau$.
+More precisely, the desired guarantee is
+$$
+	\mathbb{P}\left(S^\star\subseteq\widehat{S}_\tau\right)
+	\geq 1-\alpha.
+$$
+Here $\alpha\in(0,1)$ is the chosen error level,
+and the probability covers the randomness in the sequential data and in the
+procedure.
+Equivalently, with probability at least $1-\alpha$,
+every feature in $\widehat{S}_\tau^c$ is truly inactive.
+This guarantee does not assert that every retained feature is active;
+$\widehat{S}_\tau$ may still contain inactive features.
 
+\section{Open questions and literature notes}
 
+\begin{enumerate}
+	\item Run the canonical sparse regression with $\ell_0$ control with fixed sample size $n$, how is the confidence sets constructed
+	\item Try to make a example where the confidence interval is wrong, i.e., a true feature has been wrongly kicked out.
+\end{enumerate}
 
-The above question is a simple-vs-composite testing problem,
-and assume that we construct a e-process or a p-process.
+\yq{How should an e-process be constructed for the feature set or exclusion
+set returned by a sparse-regression algorithm?}
 
-\begin{itemize}
-  \item If the model specified in $\Hc_1$ is the oracle model, 
-  what is the difference between the asymptotic growth rate of such e-process
-  vs the loss? wrt the log-utility
-  \item What if the model in $\Hc_1$ is mis-specified? Say $\Hc_1: Y=X_7\beta_7$.
-  \item What if the oracle model is no longer in $\modellin$?
-\end{itemize}
+\yq{If the sparsity level $k=|S^\star|$ is known in advance,
+can an explicitly constrained sparse-regression procedure be used to obtain
+the desired guarantee for the excluded features?}
 
+\yq{If the Lasso or elastic net can be run efficiently and already has
+large-sample guarantees, how would an e-process
+provide for the retained or excluded feature set?}
 
+\yq{Literature to verify and summarize in a table or list:
+work by Michael Lindon and Sebastian Arnold on model confidence sets,
+and the Bayes-factor approach described by Ly et al.
+\url{https://doi.org/10.1037/met0000454}.}
 
 \end{document}
