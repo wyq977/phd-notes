@@ -1,3 +1,6 @@
+*.pdf
+!/fig/*.pdf
+
 # LaTex gitignore
 # https://raw.githubusercontent.com/github/gitignore/refs/heads/main/TeX.gitignore
 
