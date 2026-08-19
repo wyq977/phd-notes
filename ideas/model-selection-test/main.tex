@@ -1,0 +1,115 @@
+\documentclass{wyqart}
+\input{macro}
+
+\newcommand{\modelall}{\Mc_{\mathrm{all}}}
+\newcommand{\modellin}{\Mc_{\mathrm{linear}}}
+
+\title{Is there difference between testing and learning in OLS?}
+
+\begin{document}
+
+\maketitle
+
+\section{Setup}
+
+Let $\bm{X} = \{X_1,X_2,\dots,X_{10}\}^\top\in \Rf^{10}$ be the random variables.
+The predictor $Y\in\Rf$ is given by the linear model $Y=f(\bm{X})=X_1\beta_1+X_3\beta_3+\epsilon$
+where $\epsilon \sim \Nc(0,1)$.
+
+It's natural to \emph{estimate} or \emph{learn} the true model from a class of models.
+Let $\modelall$ denotes 
+\emph{all} models for predicting $Y$ from $\bm{X}$, which can be quite large.
+\begin{equation}
+	\Mc_{\mathrm{all}} := \{f: \Rf^{10}\to \Rf\}.
+\end{equation}
+
+Assume we somehow already limit our model to linear only,
+i.e., all linear models using any subset of the 10 variables
+\begin{equation}
+	\modellin := \left\{
+		f_S(\bm{X})=\sum_{j\in S} X_j\beta_j + \epsilon
+		:\ S\subseteq \{1,\dots,10\},\ \beta_j\in\Rf
+	\right\}.
+\end{equation}
+
+Models that are in $\modelall\setminus\modellin$, which are basically all the non-linear function, e.g.,
+\begin{itemize}
+	\item High-order polynomials: $Y=X_1^3$
+	\item Interacting terms: $Y=X_1X_2$
+	\item $Y=\sin(X_1)$ or $Y=\exp(X_1)$
+	\item Step function
+	\item Much more ...
+\end{itemize}
+
+
+Suppose we run a algorithm to estimate the linear model, 
+and we get a pair of $(\bm{X}_t, Y_t)$ along the training process.
+In OLS, we will return the estimated $\hat{f}$.
+%Similar story goes for Lasso, where one minimizes MSE with 
+%an $L_1$ penalty on the coefficients.
+It has already been well-studied (TO BE ADDED)
+
+See asymptotic statistics by Aad and others
+
+%Needs to be well specified?!
+
+\begin{equation}
+	(\hat\beta_{\mathrm{OLS}}-\beta_*) \Rightarrow O_p(n^{-1/2}).
+\end{equation}
+
+
+%\begin{itemize}
+%  \item The rate of convergence
+%  \item Also in misspecification cases
+%\end{itemize}
+
+How is it different from the testing problem then?
+
+\section{Testing framework}
+
+In testing, the language would be slightly different.
+If we still have some fixed $n$ data ($\bm{X}_t, Y_t$).
+Usually, we are testing if $X_3$ matters or not:
+\begin{equation}
+	\Hc_0: \beta_3=0, \qquad \Hc_1: \beta_3\not=0.
+\end{equation}
+
+BF approach described by Ly. et al. \url{https://doi.org/10.1037/met0000454}.
+
+What are the relationship between the loss and the evidence 
+if the null is $\modellin$?
+
+Simple-vs-composite, fix $\beta_1,\beta_3$ to be $1$,
+this seems like a very useless testing
+\begin{equation}
+	\Hc_0: f \in \modellin, \qquad \Hc_1: Y=X_1 + X_3.
+\end{equation}
+
+Again
+\begin{equation}
+	\Hc_0: f \in \modellin, \qquad \Hc_1: Y=X_1\beta_1 + X_3 \beta_3, 
+		\qquad \beta_1,\beta_3 \in \Rf.
+\end{equation}
+
+I believe we could use t-test for
+\begin{equation}
+	\Hc_0: Y=X_1\beta_1, \qquad \Hc_1: Y=X_1\beta_1 + X_3 \beta_3, 
+		\qquad \beta_1,\beta_3 \in \Rf.
+\end{equation}
+
+
+
+The above question is a simple-vs-composite testing problem,
+and assume that we construct a e-process or a p-process.
+
+\begin{itemize}
+  \item If the model specified in $\Hc_1$ is the oracle model, 
+  what is the difference between the asymptotic growth rate of such e-process
+  vs the loss? wrt the log-utility
+  \item What if the model in $\Hc_1$ is mis-specified? Say $\Hc_1: Y=X_7\beta_7$.
+  \item What if the oracle model is no longer in $\modellin$?
+\end{itemize}
+
+
+
+\end{document}
