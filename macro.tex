@@ -59,21 +59,21 @@
 
 \newcommand{\conv}{\mathrm{conv}}
 
-\newcommand{\iid}{\; \overset{\mathrm{i.i.d.}}{\sim} \;}
+\newcommand{\iid}{\; \overset{\mathrm{iid}}{\sim} \;}
 
 % inspired by texab.sty
 \DeclareMathOperator{\PRSymbol}{\mathrm{P}}
 \DeclareMathOperator{\ERWSymbol}{\mathbb{E}}
 
 % Defaults: P and E
-\newcommand{\PR}[2][\PRSymbol]{#1 \left( {#2} \right)}
-\newcommand{\PRi}[3][\PRSymbol]{#1_{#2} \left( {#3} \right)}
-\newcommand{\condPR}[3][\PRSymbol]{{#1} \left({#2} \;\middle|\; {#3} \right)}
-\newcommand{\condPRi}[4][\PRSymbol]{{#1}_{#2} \left( {#3} \;\middle|\; {#4} \right)}
-\newcommand{\ERW}[2][\ERWSymbol]{#1 \left[ {#2} \right]}
-\newcommand{\ERWi}[3][\ERWSymbol]{#1_{#2} \left[ {#3} \right]}
-\newcommand{\condERW}[3][\ERWSymbol]{#1 \left[ {#2} \;\middle|\; {#3} \right]}
-\newcommand{\condERWi}[4][\ERWSymbol]{{#1}_{#2} \left[ {#3} \;\middle|\; {#4} \right]}
+\newcommand{\PR}[1]{{\PRSymbol} \left( {#1} \right)}
+\newcommand{\PRi}[2]{{\PRSymbol}_{#1} \left( {#2} \right)}
+\newcommand{\condPR}[2]{{\PRSymbol} \left({#1} \;\middle|\; {#2} \right)}
+\newcommand{\condPRi}[3]{{\PRSymbol}_{#1} \left( {#2} \;\middle|\; {#3} \right)}
+\newcommand{\ERW}[1]{{\ERWSymbol} \left[ {#1} \right]}
+\newcommand{\ERWi}[2]{{\ERWSymbol}_{#1} \left[ {#2} \right]}
+\newcommand{\condERW}[2]{{\ERWSymbol} \left[ {#1} \;\middle|\; {#2} \right]}
+\newcommand{\condERWi}[3]{{\ERWSymbol}_{#1} \left[ {#2} \;\middle|\; {#3} \right]}
 
 \newcommand{\VAR}[2][\mathrm{Var}]{#1 \left( {#2} \right)}
 
