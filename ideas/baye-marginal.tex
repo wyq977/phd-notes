@@ -1,0 +1,192 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{question}{Research question}
+\newcommand{\M}{\mathcal M}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+
+\title{Bayes Marginals of Sufficient Statistics on Mean-Value Space}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Setup and interpretation}
+
+Consider a regular minimal exponential family
+\[
+  P_{\beta}(x)
+  =\frac{\exp\{-\beta^{\mathsf T}T(x)\}}{Z(\beta)},
+  \qquad
+  \mu(\beta)=\E_{\beta}[T(X)]\in\M.
+\]
+The canonical parameter $\beta$ and mean parameter $\mu$ are in one-to-one
+correspondence in the interior of the parameter spaces.  We may therefore
+write $P_{\mu}:=P_{\beta(\mu)}$ and put a prior density $w$ directly on the
+mean-value space:
+\[
+  M\sim Q^w,\qquad Q^w(M\in B)=\int_B w(\mu)\,d\mu.
+\]
+Conditional on $M=\mu$, let $X_1,\ldots,X_n$ be i.i.d. from $P_\mu$ and set
+\[
+  \widehat\mu_n=\frac1n\sum_{i=1}^nT(X_i).
+\]
+The corresponding Bayes marginal (or prior-predictive distribution) is
+\[
+  P^{w,(n)}(x^n)
+  =\int_{\M}\prod_{i=1}^nP_\mu(x_i)w(\mu)\,d\mu.
+\]
+This is not a posterior statement.  It compares the prior distribution of
+the latent mean $M$ with the marginal distribution of $\widehat\mu_n$ before
+the data are observed.  Since
+\[
+  \E[\widehat\mu_n\mid M]=M,
+  \qquad
+  \operatorname{Var}(\widehat\mu_n\mid M)=\frac{V(M)}n,
+\]
+we have the high-level picture
+\[
+  \widehat\mu_n=M+\text{centered noise of size }n^{-1/2}.
+\]
+Thus the marginal law of $\widehat\mu_n$ should approach the prior law of
+$M$.
+
+\section{The existing result and its logarithm}
+
+Theorem~1 of Giuffrida, Garlaschelli and Gr\"unwald
+(\href{https://arxiv.org/abs/2509.01064}{arXiv:2509.01064}) states, in a
+finite-support exponential-family setting, that for a regular prior $w$ and
+an interior compact convex set $B\subset\M$,
+\begin{equation}\label{eq:existing}
+  \left|
+  P^{w,(n)}(\widehat\mu_n\in B)-Q^w(M\in B)
+  \right|
+  =O\!\left(\frac{\log n}{n}\right).
+\end{equation}
+Their proof enlarges and shrinks $B$ by a boundary buffer with squared radius
+of order $\log(n)/n$.  Equivalently, its Euclidean width is
+\[
+  r_n\asymp\sqrt{\frac{\log n}{n}}.
+\]
+For parameters farther than $r_n$ from the boundary, a multivariate Chernoff
+bound is applied.  Local quadratic equivalence between Kullback--Leibler
+divergence and squared Euclidean distance gives
+\[
+  \Pp_{\mu}(\widehat\mu_n\text{ crosses the buffer})
+  \lesssim \exp(-c n r_n^2)=n^{-c}.
+\]
+The logarithm therefore enters through the choice of a buffer large enough
+to make this crossing probability polynomially small.
+
+There is a point worth checking carefully: a boundary layer of width $r_n$
+generally has prior mass of order $r_n$, not $r_n^2$.  Hence the displayed
+sandwich argument appears, without additional cancellation, to give only
+$O(\sqrt{\log(n)/n})$.  The faster rate in \eqref{eq:existing} may still be
+true under suitable smoothness, but it seems to require an argument that uses
+the centering of $\widehat\mu_n-M$, rather than bounding inward and outward
+crossings separately.
+
+\section{Assumptions to distinguish}
+
+A sharper theorem should state explicitly:
+\begin{itemize}
+  \item whether $T(X)$ has finite support, is lattice-valued, or is continuous;
+  \item minimality and regularity of the exponential family;
+  \item that $B$ stays in a compact subset of the interior of $\M$, so that
+        Fisher information is uniformly nonsingular;
+  \item the regularity of $w$ (continuity, H\"older continuity, Lipschitz
+        continuity, or $C^k$ smoothness);
+  \item the geometry of $B$ and its boundary; and
+  \item whether the bound is pointwise in $B,w$ or uniform over a class.
+\end{itemize}
+Continuity and strict positivity alone do not provide a quantitative modulus
+of continuity, so they may be insufficient for a universal polynomial rate.
+Boundary points of $\M$ also require separate treatment because $V(\mu)$ may
+degenerate there.
+
+\section{Possible sharp rate}
+
+For a smooth test function $f$, conditional Taylor expansion suggests
+\begin{equation}\label{eq:generator}
+  \E f(\widehat\mu_n)-\E f(M)
+  =\frac1{2n}\E\!\left[
+    \operatorname{tr}\{V(M)\nabla^2f(M)\}
+  \right]+\text{smaller terms}.
+\end{equation}
+The nominal $n^{-1/2}$ term vanishes because the conditional noise is
+centered.  This suggests that, under appropriate smoothness, the logarithm in
+\eqref{eq:existing} can be removed:
+\[
+  \left|P^{w,(n)}(\widehat\mu_n\in B)-Q^w(M\in B)\right|=O(n^{-1}).
+\]
+The rate $1/n$ is generically sharp.  For example, if
+$X_i\mid M=\mu\sim\operatorname{Bernoulli}(\mu)$ and
+$M\sim\operatorname{Uniform}(0,1)$, then the prior-predictive distribution of
+$K_n=\sum_iX_i$ is uniform on $\{0,\ldots,n\}$.  Therefore, for an interior
+interval $B=[a,b]$,
+\[
+  P^{w,(n)}(K_n/n\in B)
+  =\frac{\#\{k:k/n\in B\}}{n+1}
+  =(b-a)+O(n^{-1}),
+\]
+and lattice rounding generally prevents a uniform $o(n^{-1})$ result.
+
+An $O(n^{-2})$ term is more naturally expected as the remainder in an
+expansion
+\[
+  P^{w,(n)}(\widehat\mu_n\in B)-Q^w(M\in B)
+  =\frac{A(B,w)}n+O(n^{-2}).
+\]
+The total error becomes $O(n^{-2})$ only in special cases where $A(B,w)=0$,
+or after an explicit bias or lattice correction.  A bound
+$O(\log\log(n)/n)$ would improve the published logarithm, but removing the
+logarithm entirely is the more natural target.
+
+\section{Possible tools and next questions}
+
+Stein's method may provide uniform conditional normal approximations for
+\[
+  \sqrt n\,(\widehat\mu_n-\mu)\mid M=\mu
+  \approx N(0,V(\mu)).
+\]
+However, an off-the-shelf central limit bound may be too coarse: the desired
+$1/n$ behavior arises from cancellation after mixing over $w$, while
+$1_B$ is nonsmooth at the boundary.  A useful Stein approach would preserve
+the first-order cancellation, perhaps through an operator or generator
+expansion such as \eqref{eq:generator}, followed by a careful smoothing or
+boundary argument.
+
+Other plausible tools are local central limit theorems, Edgeworth expansions,
+saddlepoint and Laplace approximations, small-diffusion expansions, and
+explicit continuity corrections for lattice families.  A related stronger
+goal is a local expansion of the induced
+prior-predictive density,
+\[
+  g_n(t)=w(t)+\frac1{2n}
+  \sum_{i,j}\partial_{ij}\{V_{ij}(t)w(t)\}+o(n^{-1}),
+\]
+which would also yield expansions for ratios of Bayes marginals and hence
+connect directly to e-values and reverse information projections.
+
+\begin{question}
+Under minimal regularity conditions on the exponential family, prior $w$ and
+set $B$, what is the sharp rate and leading correction in
+\[
+  P^{w,(n)}(\widehat\mu_n\in B)-Q^w(M\in B)?
+\]
+Can the $\log n$ factor be removed, can the coefficient $A(B,w)$ be
+identified, and when does it vanish?
+\end{question}
+
+This gives a compact starting point for the brainstorm: first verify the
+existing rate and assumptions, then study a sharp $1/n$ theorem, its
+second-order correction, boundary and lattice effects, and finally the
+consequences for Bayes-marginal likelihood ratios and e-values.
+
+\end{document}
