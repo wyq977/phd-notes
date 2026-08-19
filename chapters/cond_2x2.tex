@@ -1,0 +1,916 @@
+\clearpage
+
+\section{Conditional E-variables for 2x2 tables}
+\label{sec:conditional-2x2}
+
+
+
+\subsection{Definitions and calculation methods}
+
+\subsubsection{Conditional E-variable}
+
+The FNCH distributional setup is collected in Section~\ref{sec:fnch}.
+Conditioning on the total number of ones,
+and using the pdf from Eq.~\ref{eq:fnch_pdf},
+\begin{align}
+ 	S(x \mid \delta,n_a,n_b,n_1) 
+ 	&= \frac{f(x\mid \delta,n_a,n_b,n_1)}{f(x\mid 0,n_a,n_b,n_1)} \\
+ 	&= \exp\{\delta x + A(0; n_a,n_b,n_1) - A(\delta; n_a,n_b,n_1)\}
+\end{align}
+
+
+As we do not know $\delta$, we marginalized wrt some prior on $\delta$,
+which is the most computational intensive part.
+$$
+	S(x \mid n_a,n_b,n_1) = \int_{\Rf} S(x \mid \delta,n_a,n_b,n_1) p(\delta) \dd{\delta}
+$$
+
+\subsubsection{Two Bernoulli random variables}
+
+\emph{Heavily adapted on Dante's Thesis.}
+
+Let $X,Y$ be two independent Bernoulli random variables,
+\begin{equation*}
+	X \sim \mathrm{Bernoulli}(\theta_a) \quad
+	Y \sim \mathrm{Bernoulli}(\theta_b).
+\end{equation*}
+
+$\Pc$ describes the set of distributions on $(X,Y)$ 
+where $X,Y$ are independent and marginally distributed as Bernoulli.
+A distribution on $(X,Y)$ could be parameterized by
+$P_{\theta_a,\theta_b}$ where $\theta_a,\theta_b$ ranges in $[0,1]$.
+There's a \emph{natural} way to re-parameterize the tuple via log-odds ratio,
+\begin{equation*}
+	\delta:= \log \frac{\theta_a}{1-\theta_b} \Big/ \frac{\theta_b}{1-\theta_b} \in \Rf.
+\end{equation*}
+Note that two parameters (a tuple) are still needed,
+the log-odds ratio $\delta$ is chosen such that 
+we can inexplicitly represent a composite set, i.e.
+\begin{equation*}
+	P_{\delta} = \{P_{\theta_a,\theta_b} \mid \log(\frac{\theta_a}{1-\theta_b} \cdot \frac{1-\theta_b}{\theta_b}) = \delta \in \Rf \}.
+\end{equation*}
+
+Assuming point null and alternative hypothesis,
+it is easy to formulate the testing problem by a likelihood ratio test,
+\begin{align*}
+	\Hc_0: X,Y \sim P_{\theta_a,\theta_b} \quad
+	\Hc_1: X,Y \sim P_{\theta_a^*,\theta_b^*}.
+\end{align*}
+
+The problem extends easily to sequential test in iid settings.
+\begin{align*}
+	\Hc_0: (X_1,Y_1),(X_2,Y_2),\dots \iid P_{\theta_a,\theta_b} \quad
+	\Hc_1: (X_1,Y_1),(X_2,Y_2),\dots \iid P_{\theta_a^*,\theta_b^*}.
+\end{align*}
+
+% TODO: the convexity of the distributions on X, Y and X, Y
+
+\subsubsection{Setup and notation}
+
+We denote the Kullback–Leibler divergence by $\KL{P}{Q} = \int \log(\dv*{P}{Q}) \dd{P}$
+where $\dv*{P}{Q}$ is the Radon-Nikodym derivative of $P$ with respect to $Q$ and
+the integral is taken on the same probability space (not shown here).
+We will assume that the measures discussed here all have full support.
+
+We start with a binary random variable $U$
+following Bernoulli distribution with parameter $\mu$,
+here $\mu$ is also the mean in mean-value parameterization.
+The density reads
+\begin{align*}
+	p_{\mu}(U)
+	 & := \mu^U \cdot (1 - \mu)^{1-U}, \quad U \in \{0,1\}, \quad \mu \in [0,1]
+\end{align*}
+
+By the standard properties of regular exponential families,
+we parameterize $\Pc$ in terms of the mean-value parameter space $\Mt_p$ and write
+\begin{align*}
+	\Pc = \{P_\mu: \mu \in \Mt_p\}, \quad \Mt_p = [0,1].
+\end{align*}
+
+The canonical parameterization for any $\mu \in \Mt_p$ is defined as
+\begin{align*} 
+	p_{\beta}(U) = \frac{1}{Z_p(\beta)} \cdot \exp(\beta \cdot U) \cdot p_{\mu}(U), 
+\end{align*}\label{eq:bern_exp}
+where $Z_p(\beta)$ is the normalizing constance and the canonical parameter space is
+defined as $\Bt_p = \{\beta: Z_p(\beta) < \infty \} = \Rf$.
+% \beta = \log(\frac{\mu}{1-\mu})
+
+Moving on to the 2-stream examples with different group size $n_a, n_b$.
+At each time point $i$, $n_a$ and $n_b$ copies of Bernoulli variables are collected,
+following the same distribution:
+\begin{align*}
+	U_a & = (U_{a,1}, U_{a,2},\cdots,U_{a,n_a})^T \sim \mathrm{Ber}(\bm{\mu}_a) \\
+	U_b & = (U_{b,1}, U_{b,2},\cdots,U_{b,n_b})^T \sim \mathrm{Ber}(\bm{\mu}_b)
+\end{align*}
+The sufficient statistics vector is denoted by $X = (\sum_j^{n_a}U_{a,j}, \sum_j^{n_b}U_{b,j})$.
+$\Pc$ is extended by the i.i.d. assumption to
+a set of distributions for random process $U_{(1)}, U_{(2)}, \dots$
+for $i \geq 1$, i.i.d. copies of $U_{(i)}=(U_{(i),a}, U_{(i),b})$.
+Using superscript, we denote the random process up to time $i$ by
+$U^{(n)} := (U_{(1)}, U_{(2)}, \dots U_{(n)})$
+and $X^{(n)} := (X_{(1)}, X_{(2)}, \dots X_{(n)})$ for the sufficient statistics respectively.
+
+The \emph{alternative} we consider first $\Qc = \{Q\}$ is simple with some oracle
+$\bm{\mu}^* = (\bm{\mu}_a^*, \bm{\mu}_b^*)$.
+\begin{align*}
+	\hypA: U_a \sim \mathrm{Ber}(\bm{\mu}_a^*), U_b \sim \mathrm{Ber}(\bm{\mu}_b^*) \quad
+	\text{independent}.
+\end{align*}
+
+Under mean-value parameterization:
+\begin{align*}
+	\hypA: X_a \sim P_{\bm{\mu}_a^*}, X_b \sim P_{\bm{\mu}_b^*} \quad
+	\text{independent}.
+\end{align*}
+
+The null distribution $\Pc$ is the set of distributions where group $a$ and $b$
+are equipped with the same parameter and hence composite:
+\begin{align*}
+	\hypN: X_a \sim P, X_b \sim P \quad
+	\text{i.i.d. for some } P.
+\end{align*}
+
+
+\subsection{Generated exponential family}
+
+This is based on 4.3 of the simple case and the example 1 and section 4.1 of the general case paper.
+
+Pls refer to the \eqref{eq:bern_exp}, here the null is again z
+
+\subsubsection{Convexity prerequisite}
+
+\begin{remark}
+
+The Bernoulli model, $\Pc=\{P_\theta:\theta\in[0,1]\}$, on $\Yc=\{0,1\}$ is convex, 
+whereas the product model $\Pc^n=\{P_\theta^n:\theta\in[0,1]\}$ on $\Yc^n$ is not convex for $n>1$.
+
+\end{remark}
+
+\begin{proof}
+	Convexity is straightforward for single observation case $Y=\{0,1\}$.
+	For $\lambda\in [0,1]$, consider the convex combination of two elements,
+	$P_{\theta_1},P_{\theta_2}\in \Pc$.
+	Probability for $\lambda P_{\theta_1}+(1-\lambda)P_{\theta_2}$,
+	\begin{align*}
+		\PR{Y=1} &= \lambda \theta_1+(1-\lambda)\theta_2 \\
+		\PR{Y=0} &= 1-\bigl(\lambda \theta_1+(1-\lambda)\theta_2\bigr)
+	\end{align*}
+	Therefore, the mixture is again in $\Pc$ with parameter $\theta^\circ=\lambda \theta_1+(1-\lambda)\theta_2\in[0,1]$.
+	
+	Take $n=2$, consider the mixture
+	\begin{equation}
+		P = \frac{1}{2} P_0^2 + \frac{1}{2} P_1^2
+	\end{equation}
+	where $P_0^2$ put all its mass on $(0,0)$ and $P_1^2$ put all its mass on $(1,1)$.
+	
+	However, there is no $\theta\in[0,1]$ for $P_\theta^2$ such that,
+	\begin{align*}
+		&P_\theta^2(0,0) = P(0,0) = \frac{1}{2} 
+		&P_\theta^2(1,1) = P(1,1) = \frac{1}{2} \\
+		&P_\theta^2(1,0) = P(1,0) = 0
+		&P_\theta^2(0,1) = P(0,1) = 0
+	\end{align*}
+\end{proof}
+
+
+\textbf{Why finite convexity does not immediately imply closure under arbitrary mixtures.}
+
+Let
+$$
+\mathcal P=\{P_\theta:\theta\in\Theta\}.
+$$
+
+Convexity of $\mathcal P$ means that for every finite collection
+$$
+P_{\theta_1},\dots,P_{\theta_k}\in\mathcal P
+$$
+
+and weights
+$$
+\lambda_1,\dots,\lambda_k\ge 0,
+\qquad
+\sum_{i=1}^k \lambda_i=1,
+$$
+
+we have
+$$
+\sum_{i=1}^k \lambda_i P_{\theta_i}\in\mathcal P.
+$$
+
+However, an arbitrary mixture has the form
+$$
+P_W=\int P_\theta\,dW(\theta),
+$$
+
+where $W$ may have infinite support.
+
+Convexity alone directly handles finite sums such as
+$$
+\sum_{i=1}^k \lambda_i P_{\theta_i}.
+$$
+
+It does not directly imply that
+$$
+\int P_\theta\,dW(\theta)\in\{P_\theta:\theta\in\Theta\}.
+$$
+
+A simple example showing the issue is the open interval
+$$
+\mathcal C=(0,1)\subset\mathbb R.
+$$
+
+The set $\mathcal C$ is convex. Every finite convex combination of points in $\mathcal C$ remains in $\mathcal C$. However, convexity alone does not imply that limits of such convex combinations must remain in $\mathcal C$.
+
+For example, take
+$$
+x_m=\frac{1}{m}.
+$$
+
+Then $x_m\in\mathcal C$ for every $m$, but
+$$
+\lim_{m\to\infty} x_m=0.
+$$
+
+The limit point satisfies
+$$
+0\notin\mathcal C.
+$$
+
+Thus convexity alone does not imply closedness under limits or arbitrary infinite averaging. Therefore, to conclude that an arbitrary mixture belongs to the model, one needs an additional argument.
+
+In the finite sample-space case, this additional argument is supplied by Carathéodory's theorem.
+
+\textbf{Why the integral is in the convex hull.}
+
+Assume the sample space $Y$ is finite:
+$$
+Y=\{y_1,\dots,y_m\}, m \in \Nf.
+$$
+
+Then each distribution $P_\theta$ can be represented by the vector
+$$
+p_\theta
+=
+\bigl(p_\theta(y_1),\dots,p_\theta(y_m)\bigr)
+\in\mathbb R^m.
+$$
+
+The mixture distribution $P_W$ has probability mass function
+$$
+p_W(y)
+=
+\int p_\theta(y)\,\dd{W(\theta)}.
+$$
+
+Therefore its vector representation is
+$$
+p_W
+=
+\left(p_W(y_1),\dots,p_W(y_m)\right).
+$$
+
+Substituting the definition of $p_W(y_i)$ gives
+
+\begin{align}
+p_W
+&=
+\left(
+\int p_\theta(y_1)\,dW(\theta),
+\dots,
+\int p_\theta(y_m)\,dW(\theta)
+\right) \\
+&=
+\int
+\bigl(p_\theta(y_1),\dots,p_\theta(y_m)\bigr)
+\,dW(\theta) \\
+&=
+\int p_\theta\,dW(\theta).
+\end{align}
+
+This is an average, or barycenter, of the points
+$$
+\{p_\theta:\theta\in\Theta\}\subset\mathbb R^m.
+$$
+
+Therefore
+$$
+p_W\in\operatorname{conv}\{p_\theta:\theta\in\Theta\}.
+$$
+
+Since this convex hull is finite-dimensional, Carathéodory's theorem implies that there exist
+$$
+\theta_1,\dots,\theta_k\in\Theta
+$$
+
+and weights
+$$
+\lambda_1,\dots,\lambda_k\ge 0,
+\qquad
+\sum_{i=1}^k\lambda_i=1,
+$$
+
+with $k\le m+1$, such that
+
+$$
+p_W
+=
+\sum_{i=1}^k \lambda_i p_{\theta_i}.
+$$
+
+Thus the arbitrary mixture $p_W$ can be represented as a finite mixture.
+
+If the model $\{P_\theta:\theta\in\Theta\}$ is convex, then this finite mixture is again equal to some single model distribution:
+
+$$
+\sum_{i=1}^k \lambda_i P_{\theta_i}
+=
+P_{\theta^\circ}
+$$
+
+for some $\theta^\circ\in\Theta$.
+
+Therefore
+
+$$
+P_W=P_{\theta^\circ}.
+$$
+
+\subsubsection{Bayesian mixture update}
+
+Assume the data generating process means are fixed, group sizes are also fixed,
+we constructed a e-process if we \emph{hack} and know the oracle log-odds ratio,
+at time $t$,
+\begin{equation*}
+	S(B_t) = S_{\textsc{cond}, \delta}(B_t) = \frac{p_{\textsc{fn}}}{p_{\textsc{hyp}}}
+\end{equation*}
+where $p_{\textsc{fn}}$ is the Fisher's noncentral hypergeometric mass
+and $p_{\textsc{hyp}}$ is the central hypergeometric mass.
+
+Cumulative product is worse linearly compared to GRO when sample size increase,
+\begin{equation*}
+	S^n_{\textsc{gro}} - \prod_1^{n} S_{\textsc{cond}, \delta}(B_t) \approx O(n) 
+\end{equation*}
+while the `oneshot' COND is approximately GRO
+\begin{equation*}
+	S^n_{\textsc{gro}} - S_{\textsc{cond}, \delta}(B^n) \approx O(1) 
+\end{equation*}
+
+Since we do not know $\delta$, we try a bayesian mixture
+\begin{equation*}
+	S(B_t) = S_{\textsc{cond}, W}(B_t) = \int S_{\textsc{cond}, \delta} \dd{W}.
+\end{equation*}
+
+Let's say we do not update $W$, always use the same $W$,
+cumulative evidence is
+\begin{equation*}
+	\prod_{i=1}^t \int S_{\textsc{cond}, \delta} \dd{W}.
+\end{equation*}
+
+\textbf{Can this be simplified?}
+
+But that's boring, we need to update the prior density,
+\begin{equation*}
+	\int S_{\textsc{cond}, \delta} \dd{W_{t-1}}.
+\end{equation*}
+
+How do I update this
+
+\subsubsection{Bayesian prior calculations}
+
+\paragraph{Integral over prior}
+
+\paragraph{Gaussian prior}
+
+Suppose we choose a standard Gaussian prior on $\Rf$
+$$
+    \delta \sim \Nc(\mu_0,\sigma_0^2).
+$$
+
+After observing one table, with conditional observation $Y_a=y_a$, the posterior density is
+$$
+    p(\delta\mid y_a,n_a,n_b,n_1)
+    \propto
+    \exp\left\{
+        \delta y_a
+        - A(\delta)
+        - \frac{(\delta-\mu_0)^2}{2\sigma_0^2}
+    \right\}.
+$$
+
+This posterior is generally not Gaussian and does not have a standard closed form.
+
+For multiple tables,
+suppose we have observed $B_i=(y_{a,i},n_{a,i},n_{b,i},n_{1,i})$, $i=1,\dots,t$
+$$
+	p(\delta\mid B^t) \propto 
+	\exp\left\{
+		\delta\sum^t_{i=1} y_{a,i} 
+		- \sum^t_{i=1} A_i(\delta)
+		- \frac{(\delta - \mu_o)^2}{2\sigma_0^2}
+	\right\}
+$$
+
+\paragraph{Conjugate prior}
+
+In the literature, conjugate prior for general exponential family can be written:
+\begin{align*}
+	p(\delta) \propto \exp\{n_0x_0 \delta - n_0 A(\delta)\}.
+\end{align*}
+where $x_0$ is suggested to use the expectation of $x$ under $\delta=0$,
+which is hypergeometric distribution so $x_0=\frac{y_a\cdot y_b}{n}$.
+
+After seeing one data point, assume $n_a,n_b,n_1$ fixed,
+the posterior is
+$$
+    p(\delta\mid y_a,n_0,x_0)
+    \propto
+    \exp\left\{
+        (n_0x_0+y_a)\delta - (n_0+1)A(\delta)
+    \right\}.
+$$
+
+It should be noted that the conjugacy only works for same margin,
+else the cumulant function would change.
+
+\todo{then what is the point of conjugate then?}
+
+
+The \emph{conditional \E-value} with a fixed $\delta$ is
+\begin{equation*}
+	S_{n_a,n_b,n_1,\delta}(y_a) = \frac{f_{\textsc{FN}(n_a,n_b,n_1,\delta)}(y_a)}{f_{\textsc{FN}(n_a,n_b,n_1,0)}(y_a)}.
+\end{equation*}
+
+
+The `Bayes' is w.r.t. a (truncated) Gaussian with zero mean and scale $\delta$,
+\begin{equation*}
+	\int_{\Rf} S_{n_a,n_b,n_1,\delta}(y_a) \cdot \pi(\delta) \dd{\delta}
+\end{equation*}
+
+See: \url{https://github.com/wyq977/e-table/blob/yongqi/src/e_table/methods/bayes.py}
+
+\subsubsection{IID and convexity}
+
+In the original testing framework,
+both null and the alternative require sample to be distributed iid,
+i.e.,
+For every \emph{binary random variable} $X$ in group a or group b,
+at time $j\in\Nf$,
+$$
+X_{a,1}^{(j)},X_{a,2}^{(j)},\dots,X_{a,n_a}^{(j)}\iid \mathrm{Bernoulli}(\theta_a).
+$$
+
+We observe two streams of binary random variables
+$$
+X_{a,i}^{(j)}, X_{b,i}^{(j)} \in \{0,1\},
+$$
+where
+\begin{itemize}
+	\item $g \in \{a,b\}$ denotes the group,
+	\item $j \in \Nf$ denotes the batch/time index,
+	\item i denotes the within-batch observation index.
+\end{itemize}
+
+
+It is also true that at the coarse filtrations (batch level),
+$X$ also following the same Bernoulli.
+
+That is to say, for stream $a$, 
+we are always tossing the same coin over and over again in time,
+and we just observe them in the coarse filtration of $n_a$ coins.
+
+The finest filtration is alway two infinite streams of Bernoulli,
+i.e., two coin-flipping experiments.
+
+\begin{enumerate}
+	\item Now, null is tossing the same coin in group a and b,
+	alternative is tossing two different coin in group a and b.
+	But the coins remains the same throughout.
+	We collect them at a coarse filtration, fixed, $n=n_a+n_b$.
+	\item Still the same null and alternative,
+	could I change the collections (coarsening)?,
+	i.e., every time it's not guaranteed $n_a,n_b$ in group a and b.
+	I could have stopped and observed $5,10$ in the first time,
+	and observed $100, 20$ in the second time.
+	\item Assuming we have the same coarsening,
+	i.e., we observed same $n_a,n_b$ throughout.
+	Within each observation block, we use the same coin (iid),
+	but between blocks, we changed coins.
+	\item I am not sure how to formulate this one,
+	maybe the null is fixed two coins and the alternative is anything but,
+	coarsening variable.
+\end{enumerate}
+
+\newpage
+
+\subsubsection{E-zoo comparison}
+
+\paragraph{UI}
+
+Based on the general case paper and the UI slide.
+
+Let $\hat{\mu}_{\mid i-1}$ be any \emph{non-anticipating}\todo{What does it mean?}
+estimator based on the first $i-1$ observations and we
+denote the MLE estimator for the null as
+$\hat{\mu}_{\mid n} = \argmax_{\mu\in\Theta_0} p_{\mu}(U^{{(n)}})$.
+
+\begin{align*}
+	S_{\textsc{UI}} := \frac{\prod_{i=1}^n q_{\hat{\mu}_{\mid i-1}} (U_{(i)})}{p_{\hat{\mu}_{\mid n}}(U^{(n)})}
+\end{align*}
+
+By i.i.d. assumption, the denominator reads the likelihood of $U^{(n)}$ given the MLE estimator.
+
+It is mentioned that \emph{prequential ML} method is used here.
+
+% TODO: verify whether the MLE estimator can also be used in the numerator.
+
+\paragraph{RIPr}
+
+By Theorem 1 in \cite{turnerExactAnytimevalidConfidence2023}, the GRO \E-variable
+reads:
+\begin{align*}
+	S_{\textsc{RIPr}} := \frac{p_{\mu^*}(U^{(n)})}{p_{\mu^\circ}(U^{(n)})},
+\end{align*}
+where the prior put mass 1 on the boundary and $\mu^\circ = (n_a\mu^*_a/n + n_b \mu^*_b/n)$.
+
+\begin{remark}
+	In 2-stream Bernoulli and the null hypothesis is 2 group is distributed with the same distribution $P \in \Pc$,
+	$S_{\textsc{cond}} = S_{\textsc{RIPr}} = S_{\textsc{PSEUDO}} = S_{\textsc{MIX}}$,
+	which achieves GRO by corollary 1 of safe testing paper.
+\end{remark}
+
+\paragraph{COND}
+
+% TODO: add a section on Wald's ratio test.
+
+We can first write the conditional \E-variable for a data block $X = U = (U_a, U_b)$:
+
+\begin{align*}
+	S_{\textsc{COND}} := \frac{q(X_a, X_b \mid X_a + X_b)}{p(X_a, X_b \mid X_a + X_b)}
+	= \frac{q(X_a\mid X_a +X_b)}{p(X_a\mid X_a+X_b)}
+	= \frac{f_{\textrm{FN}(n,n_a,Z,w)}(X_a)}{f_{\textrm{hyp}(n,n_a,Z)}(X_a)}.
+\end{align*}
+
+\begin{remark}
+	Right now, I finally realize 4.2.3 of Yunda's thesis where the \E is:
+	\begin{align*}
+		S_{\textsc{COND}} := \frac{p_{\bm{\mu}}(X^{k-1}\mid Z)}{p_{\spri{\mu}}(X^{k-1}\mid Z)}.
+	\end{align*}
+	Here the $Z:=\sum_{j=1}^k X_j$ is the sum of the sufficient statistics and
+	$X^{k-1}$ would be the sufficient statistics losing $1$ \emph{degree of freedom}.
+\end{remark}
+
+In our special case of Bernoulli streams, the conditional distribution corresponds to
+the Fisher's noncentral hypergeometric (FN) distribution and the denominator is
+simply the cases when odds ratio $\omega = 1$ (hypergeometric distribution).
+
+\begin{align*}
+	S_{\textsc{\tiny COND}} = \prod_{i=1}^n \frac{q(X_a^{(i)}\mid Z^{(i)})}{p(X_a^{(i)}\mid Z^{(i)})}
+	= \prod_{i=1}^n \frac{f_{\textrm{FN}(n,n_a,Z^{(i)},w)}(X_a^{(i)})}{f_{\textrm{hyp}(n,n_a,Z^{(i)})}(X_a^{(i)})}
+\end{align*}
+
+\clearpage
+
+\subsection{Questions I already answered}
+
+\subsubsection{Prior or turning distribution}
+
+We assume the oracle is some fixed point $\mu^*$
+Let $\pi$ be the prior distribution on the alternative distributions.
+The prior predictive distribution is defined as
+\begin{align*}
+	p(U) = \int p_{\mu}(U) \pi(\mu) \dd{\mu}.
+\end{align*}
+
+In the discussion with Ly on 02.05.2025, he pointed many names for
+the above expression:
+maximal likelihood distribution, the prior predictive distribution (Bayesian), and Bayes mixture (MDL).
+
+Additionally, he mentioned that we usually used \textsc{letters} ($X,A$) for
+observables where \textsc{Greek letters} are reserved for unknown
+($\pi, \theta, \Theta$), especially in Bayesian framework.
+
+In contrast to the belief's $\mu$ in Bayesian, MDL principle
+regards $\pi$ on $\mu$ rather as a turning tool, uninformative,
+to approach the oracle point $\mu^*$ given incoming data.
+
+\subsubsection{What is effect size and why do we need it?}
+\cite{turnerGenericEvariablesExact2024} deals with effect size by stating that $\hypA$ consists of hypotheses with a minimal effect size $\delta$ while the parameter space of interest is $\hypN(\delta)$ (null hypothesis spaces) in \cite{turnerExactAnytimevalidConfidence2023}. These has confused me a great deal but I will try to explain in my words:
+
+The effect size is the minimal difference between group a and group b
+we would like to see when rejecting the null hypothesis.
+Since we are concerned with a parametric model of Bernoulli stream in both group,
+parameterized by $\theta_a$ and $\theta_a$.
+The effect size would essentially be the divergence $d$ between $\theta_a$ and $\theta_b$
+in the parameter space.
+
+\subsubsection{Why put a prior on the boundary only}
+
+$W_1^*$: Prior on $\Theta(\delta)$; $W_1'$: Prior over $\Theta_1^>(\delta)$.
+What are good reasons of putting all prior mass on the boundary?
+
+Pros:
+\begin{itemize}
+	\item Computationally simpler as we only calculate once on $\theta_a$
+	      and we get $\theta_b = \theta_a + \delta$ for free.
+	\item If $(\theta_a^*, \theta_b^*)$ sits somewhere near the line,
+	      \E-variable growth rate is higher with larger prior support.
+	\item Theorem 2 in \cite{turnerExactAnytimevalidConfidence2023} guarantees a degenerate prior
+	      on the boundary $\Theta(\delta)$
+\end{itemize}
+
+Cons:
+\begin{itemize}
+	\item If $d_{abs}(\theta_a^*, \theta_b^*) \gg \delta $,
+	      \E-value calculated from $W_1'$ is much larger than $W_1^*$
+\end{itemize}
+
+\sout{What does it mean to \emph{pick $\hypA$ restricted to $\Theta(\delta)$}?}
+
+In the discussion with Peter, he mentioned that the project $P^*$ might not be on the diagonal line unlike section \ref{sec:case1}.
+It might just be a highly non-convex function that we can only solve by finding the min. of KL divergence after discretization.
+He mentioned something about the projection not being straight but rather curve.
+
+I think I made a mistake here, when looking at the divergent case,
+the null would be the divergence bigger than $\delta$ while the alternative would be else?
+
+{\color{red}
+	can we plug in $\theta_b^\circ = \theta_a^\circ + \delta$ here? If so,
+	it would just be solving a cubic equation of $\theta_a^\circ$.
+}
+
+\subsubsection{Extended null and one-shot conditional e-variable}
+
+The extended null hypothesis is meaningful now!
+
+In this setup that I call ``one-shot'' where the whole data $U_a, U_b$ is seen at once,
+the conditional \E-variable is optimal.
+
+The extension of the null hypothesis is meaningful, in this parametric Bernoulli family only:
+the extended null $\hypN'$ will be all distributions where all permutation $U$ are the same
+and the marginal distributions of all (all exchangeable sequences).
+
+In other words, let $U'=(U_1,U_2,\dots,U_{n_a+n_b})$ and
+$\pi$ be any permutation operator on $\{1,\dots,n_a+n_b\}$.
+The null hypothesis is now extended to a much bigger one,
+namely, whether two streams $U_a, U_b$ are exchangeable,
+\begin{align*}
+	\hypN':=(U_1,U_2,\dots,U_{n_a+n_b}) \overset{d}{=}
+	U_{\pi(1)},U_{\pi(2)},\dots,U_{\pi(n_a+n_b)}\}.
+\end{align*}
+
+Moreover, the marginal distribution of $U_j \overset{d}{=} U_i$ for any $i, j$
+but the conditional dependence is not assumed in $\hypN'$ any more
+in contrast to independence assumed in the original $\hypN$
+where $U_i, U_j \iid P$.
+
+Nevertheless, the $S_{\textsc{cond}}$ is still GRO-optimal, we can claim it is a
+\textit{robust} \E-variable for a bigger problem.
+
+\subsubsection{Sequential-ness and conditional-ness}
+
+I was confused about the formulation between the sequential ratio and
+the (what I called) global conditional \E-variables.
+
+Let $X,Y$ be Bernoulli variables with $p$ and $q$, then we can write the
+conditional likelihood ratio test (Wald's) as follow:
+
+\begin{align*}
+	R^n := \prod_{i=1}^n \frac{f_1(X_i, Y_i \mid X_i + Y_i)}{f_0(X_i, Y_i \mid X_i + Y_i)}
+\end{align*}
+
+and $f_1(\cdot) := (1 + \theta)^{-1}$ and $f_0 = (1 + \theta^{-1})^{-1}$
+
+Here is the example of composite testing:
+\begin{align*}
+	\hypN: (X_1, Y_1), (X_2,Y_2),\dots \iid P \in \Pc_1 \: \textrm{v.s.}
+	\hypA: (X_1, Y_1), (X_2,Y_2),\dots \iid P \in \Pc_{\theta}
+\end{align*}
+
+where $\Pc_1$ and $\Pc_{\theta}$ are distribution parametrized by odds ratio $\theta$.
+
+Now it is almost the same as before but just extended where each data point $(X_1, Y_1)$
+is replaced by a contingency table.
+I think the reason I got so confused is here:
+we are testing $m$ copies of tables $T_i$ and within that $T_i$,
+each table is a 2x2 table of $n_a, n_b$ Bernoulli streams with $p, q$.
+
+Using the notation $X^b_i, i = 1,\dots, n_a$ Ber and $X^a_i, i =1,\dots,n_b$
+The full expression reads:
+\begin{align*}
+	\frac{f_1(X_1^a, X_2^a,\dots X_{n_a}^a, X_1^b, X_2^b,\dots X_{n_b}^b \mid Y_a + Y_b)}
+	{f_0(X_1^a, X_2^a,\dots X_{n_a}^a, X_1^b, X_2^b,\dots X_{n_b}^b \mid Y_a + Y_b)}
+\end{align*}
+
+For a particular table $T_i$, I can just jump to the common doc, the hypothesis being tested is
+
+\begin{quote}
+	For all the 2x2 tables $T_i$, group a and group b frequency
+	has no difference.
+\end{quote}
+
+\begin{align*}
+	\hypN: T_1, T_2, \dots \iid P \in \Pc_1
+	\quad \textrm{v.s.} \quad
+	\hypA: T_1, T_2, \dots \iid P \in \Pc_{\theta}
+\end{align*}
+
+Questions to discuss tomorrow:
+
+\begin{itemize}
+	\item Is the \E-process-ness still here? \emph{YES}, by
+	\item Is the optional continuation still here, I think so
+	\item For the mixture, $\theta$ gets Bayesian updating each time (numerical)
+	\item I think we assume group size $n_a, n_b$ is stationary right? Does the
+	\item I remember there is some nice properties concerning the concave of the Fisher's information
+\end{itemize}
+
+\subsection{Questions without answers}
+
+\subsubsection{Conditioning, margins, and coarsening}
+
+% FIXME: this subsection partially overlaps with "Setup and notation" above.
+% Consider merging once the notation and problem statement are stabilized.
+
+\begin{quote}
+	This is based on the talk with Wouter after e-reader.
+\end{quote}
+
+Start simple, assume two streams of binary random variable $X,Y$ indexed by $t$.
+If they are both iid Bernoulli, then we are in the paired example where each time we threw two coins.
+At each time, $X_t$ or $Y_t$ is observed, which is governed by some process or switch.
+For simplicity we also assume this process to be Bernoulli iid with parameter $\eta>0$, i.e.
+$p(I_t=1) = \eta$ (seeing a action from group a).
+It assumed independent for simplicity now and note that the means are stationary and iid.
+\begin{align*}
+	P(X_t \mid I_t) \iid \mathrm{Bernoulli}(\theta_a) \\
+	P(Y_t \mid I_t) \iid \mathrm{Bernoulli}(\theta_b)
+\end{align*}
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lrr}
+		\toprule
+		    & $a$ & $b$ \\
+		\midrule
+		$1$ & 0   & 1   \\
+		$0$ & 0   & 0   \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+Let the process goes on for $n$ rounds, and we collected the data until time $n$ into the summarized table.
+\begin{table}[h]
+	\centering
+	\begin{tabular}{lrrr}
+		\toprule
+		    & $a$      & $b$      &       \\
+		\midrule
+		$1$ & $n_{a1}$ & $n_{b1}$ & $n_1$ \\
+		$0$ & $n_{a0}$ & $n_{b0}$ &       \\
+		    & $n_a$    & $n_b$    & $n$   \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+In plain english, we are interested in the presence of the differences between two streams.
+$\eta=1$ corresponds to the paired-sample settings where we \emph{must} observe two binary variables (two coins).
+In other words there's one more degree of freedom by allowing $\eta\in(0,1)$.
+
+\begin{itemize}
+	\item $\Hc_0: X_1,X_2,\dots,X_n\iid \mathrm{Bernoulli}(\theta_0)$ and $Y_1,Y_2,\dots,Y_n\iid \mathrm{Bernoulli}(\theta_0)$
+	\item $\Hc_1: X_1,X_2,\dots,X_n\iid \mathrm{Bernoulli}(\theta_a)$ and $Y_1,Y_2,\dots,Y_n\iid \mathrm{Bernoulli}(\theta_b)$
+\end{itemize}
+
+Let $\delta$ be some measure of divergence between $\theta_a$ and $\theta_b$.
+Conditioning on $n_a,n_b,n_1$ gives the FNCH distribution
+from Eq.~\ref{eq:fnch_pdf}.
+
+Instead, we can just condition on the total number of ones
+% TODO: complete this expression or turn it into prose.
+\begin{align*}
+	P(n_{a1} \mid n_a+n_b,n_1,\delta) =
+\end{align*}
+
+The questions remains are:
+\begin{itemize}
+	\item Without knowledge on specific $n_a,n_b$,
+	      we can still formulate this into a likelihood ratio test between $\delta$ and $\delta=0$,
+	      but I think this is composite null vs composite alternative.
+	      This is easy to see, let $r=\frac{n_a}{n_b}\in(0,1)$,
+	      the likelihood ratio with the above formulas must contain $r$.
+	      And $r$ could take value in $(0,1)$, making the null and alternative composite.
+	\item Is it natural to also condition on $n_a$ on top of $n=n_a+n_b, n_1$?
+	      % FIXME: incomplete note from discussion with Wouter.
+\end{itemize}
+
+
+A quick word on the Group Invariance paper, we are testing Gaussian with any variance.
+
+\begin{align*}
+	 & \Hc_0: X \sim \Nc(0, \sigma)  \quad \sigma \in \Rf         \\
+	 & \Hc_1: X \sim \Nc(\mu, \sigma), \quad \mu, \sigma \in \Rf.
+\end{align*}
+The variance is a nuisance parameter that testing simple does not care.
+In other words, we can normalized or scale the data however we like.
+The question is: the conditioning on $n_1$ is in the same spirit
+and we implicitly were also doing the same conditioning $n_a$ (and $n$)
+so that the composite null \emph{collapse} into a single distribution.
+
+\subsubsection{Is MIX also an e-process?}
+
+Adopting the same notation as in Yunda's thesis,
+
+\subsubsection{Why Turner's e-variable for the first table is 1}
+
+% TODO: answer this question.
+
+\subsubsection{Finding confidence sequence for case 1}
+First of all, can we find CS for this testing setup.
+If so, the confidence set should be searched through the $\Theta_0$
+(dashed red line in \refFig{fig:case1_GRO}) or the entire $[0,1]^2$?
+
+\subsubsection{Convexity of hypothesis spaces}
+
+I am not sure why the modified settings where \cite{turnerExactAnytimevalidConfidence2023} and \cite{turnerGenericEvariablesExact2024} looks at the single outcome first and then extend to a single data block.
+
+Calculating the KL divergence over the set of distributions $\mathcal{H}$ are convex while the calculation of KL over parameter space $\Theta$ is \textbf{ALSO} convex??
+
+\begin{quote}
+	% \textit{
+	note that we cannot draw this conclusion if $\hypN'$ is not convex; for then the distribution $p_{W^\circ}'$ may not correspond to the distribution $p_{W^\circ}$ in the original problem — this correspondence is only guaranteed if $p_{W^\circ}'$ coincides with some $p_{\theta}'$.
+	% }
+\end{quote}
+
+The part I am most confused about is the relationship between the convexity of the hypothesis space (original and modified) and parameter space. What we want is a $\hypN'$ that is compact and convex.
+
+\href{https://statproofbook.github.io/P/kl-conv.html}{Proof: Convexity of the Kullback-Leibler divergence}, it gives the proof of convexity in the pair of probability distributions $(p, q)$ in discrete cases but the same could be applied to continuous cases with integration.
+
+\subsubsection{General case paper discussion with Peter}
+
+If we have 1-d regular exponential family with the same sufficient statistics,
+let's assume we are talking about Turner's example.
+
+The GRO one is the conditional \E-variable and putting the prior on the curve (ark)
+results also in the RIPr one (GRO) \E-variable.
+
+Compared to this case (fixed odds ratio $\delta$ vs $1$, curve vs diagonal straight line),
+it is not clear that if we still get the optimal \E-variable if instead of a fixed $\delta$,
+we put a prior on the simplex, what sort of optimality we would get if there any.
+
+Would the conditional variable still be the optimal one?
+
+
+Let $f(k) = \binom{n_a}{k} \binom{n_b}{U-k}$ and $f'(k) = \frac{n_b!}{k!(n_a-k)!(U-k)!(n_b-U+k-n_a)!} = \binom{n_a - U + k}{n_a}$
+
+
+\begin{align*}
+	p_{n_a, n_b, u, \omega}(k) = \frac{\frac{n_b!}{k!(n_a-k)!(u-k)!(n_b-U+k-n_a)!}\omega^k}{\sum \frac{n_b!}{k!(n_a-k)!(u-k)!(n_b-U+k-n_a)!}\omega^j}
+\end{align*}
+
+
+We know $n_{11}$ is the $Y_a = k$ in our settings,
+
+\subsection{Other misc}
+
+\subsubsection{Project direction on 28.07.2025}
+
+The goal to get a conditional \E-variable
+\begin{itemize}
+	\item with priors on log odds ratio: Jeffrey's, conjugate, Cauchy, Laplace, Gaussian
+	\item uniformly most powerful (UMP) test for a fixed $\alpha$, ask Sebastian
+	\item normalized maximal likelihood (NML), aligns with the MDL principle
+\end{itemize}
+
+The second amazingly achieves the most powerful test with a given test,
+related materials are in the reply to the safe testing but it is given in
+the context of unconditional one. So Peter was not sure about its look here.
+
+Compare it with the old one (unconditional one)
+\begin{itemize}
+	\item Turner's
+	\item Universal inference (MLE)
+	\item p-to-e calibrator ($e = 1/\sqrt{q} - 1$ maybe)
+\end{itemize}
+
+Previous results shows that the UI performs the worst, next to Turner's,
+a simple calibrator works best, e.g. $f(p) = \kappa p^{\kappa-1}$ for some $\kappa \in(0,1)$
+and $f(p) = p^{-1/2}-1$.
+noted that the Fisher's exact test gives a very small p-value
+
+First step is to start with a fixed prior and fixed alternative.
+
+\subsubsection{Re-orientate at 01.04.2025}
+
+The biggest reason that I have been so disoriented is that I have so many documents, tests
+scattered across platforms and places: \githubIssue, \personalRepo, \forkedRepo.
+Originally, I wanna use Issue as a tracking board, personal repo for experiments,
+and the forked repo for dev.
+In the end, I became over-whammed by all and often found myself wasting energy,
+organising thoughts even after just 1 day.
+
+Thus, I have decided that I will put everything related to 2x2 in this \LaTeX\ document.
+I will still use my \personalRepo for testing but I will not use \githubIssue any more.
+I will write exclusively here as I find writing with \LaTeX\ is still the simplest
+when even a little bit of math is involved.
+I will use the item or numbered list here and \sout{strike through it} upon completion
+or delete it when it is not longer relevant.
