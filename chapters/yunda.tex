@@ -1,0 +1,114 @@
+\newpage
+
+Notation:
+\begin{itemize}
+	\item $U\in\Uc$
+	\item suff. stat. $X=t(U)$
+	\item $\nu$ the underlying measure on $\Uc$
+\end{itemize}
+
+Assume $U$ some regular $d$-dim exp. family, represented by $\Pc$.
+We write the density as
+\begin{equation*}
+	P(u) = \frac{1}{Z(\beta;\mu_*)} \exp(\beta^T X) p_{0;\mu^*}(u) \nu(du)
+\end{equation*}
+
+The mean value space of $\Pc$ is
+\begin{equation*}
+	\Mt_\Pc = \{\mu : \ERWi{P}{X} = \mu\} \qquad \text{for some } P \in \Pc
+\end{equation*}
+
+The canonical space is
+\begin{equation*}
+	\Bt = \{\beta : Z(\beta) = \int \exp(\beta^T X) p_{0;\mu_*}(u) \nu(du) < \infty \}
+\end{equation*}
+
+Gradient of the log partioning function gives the mean of the suff. stat. $X$.
+
+
+\section{Problems in simple case}
+
+
+
+\subsection{Why there is a mean in the cumulant function $Z$?}
+
+TODO
+
+\subsection{What is the mean of the carrying density}
+
+$p_{\mu^*} = p_{0;\mu^*}$ is probably the most confusing part for me for the longest time.
+But it is basically another way to state that
+\begin{quote}
+	When canonical parameter $\beta$ is set to zero,
+	we got carrying density back.
+\end{quote}
+
+Then $\mu_*$ is the expectation of the mean of the suff. stat. $X=t(U)$
+in the carrying density. 
+
+At $\beta=0$,
+\begin{equation*}
+	P_{0;\mu_*}(u) = \frac{p_{0;\mu_*}(u)}{Z(0)} \nu(\dd{u}).
+\end{equation*}.
+
+Then there is a mean $\mu_*$ corresponding to that!
+Right now, I would just write it explicitly.
+
+\subsection{Why change of measure?}
+
+Because we can write $\Pc$ with a different base measure instead of $\nu$.
+We use $p_{\mu_1}$, one then can write the same set of distribution
+\begin{equation*}
+	\Pc_{\nu} = \Pc_{p_{\mu_1}}
+\end{equation*}
+
+The mean-value space after reparameterization stayed fixed
+the suff. stat. and the distribution stays fixed, so is the expectation.
+
+However, the original density reads like
+\begin{align*}
+	p_{\beta,\nu} &= \frac{1}{Z(\beta)} \exp\left(\beta^T t(u)\right) \nu(\dd{u}) \\
+	&= \frac{1}{Z(\beta;\mu^*)} \exp\left(\beta^T t(u)\right) \nu(\dd{u})
+\end{align*}
+
+Instead of $\nu$, using a different carrying density allows us to re-paremeterize the
+same set of distribution on the \emph{mean-value} space $\Mt_\Pc$ 
+by changing the canonical spaces $\Bt_{\Pc}$
+
+\subsection{Why generate alternative distribution?}
+
+Starting with some distribution $Q$ on $\Uc$, density is $q(u)$.
+We could write a set of distributions using the same
+\begin{equation*}
+	q_{\beta;\mu_*}(u) = \frac{1}{Z(\beta;\mu_*)} \exp(\beta^T t(u)) q(u)
+\end{equation*}
+
+$q(u)$ is what we originally have, $q_{\beta;\mu_*}$ is the \emph{generated} set of 
+distributions on $\Uc$ by taking $q(u)$ as the carrying density.
+
+WHY? we want two sets of distributions sharing the same set of suff. stat.
+
+Why the mean $\mu_*$ appears in the cumulant function. 
+
+\subsection{Benefits of sharing suff. stat.}
+
+Because density $q_{\beta;\mu_*}(u)$ now shares the same suff. stat. as the null $\Pc$
+If we define a function like (2.1 in simple), we can calculate the log of the ratio
+\begin{equation*}
+	f(\beta;\mu^*) = \log \ERWi{P_{\beta;\mu_*}}{\frac{q}{p}}
+\end{equation*}
+
+\subsection{Curvature}
+
+
+%Simple case:
+%
+%1. pµ∗ = p0,µ∗ this is by direct calculation
+%
+%2. Since Q is assumed to have a moment generating function, the canonical domain Bq,µ∗ is
+%nonempty and contains a neighborhood of 0
+%
+%Do we assume sharing same sufficient statistics?
+%
+%We assume throughout this paper that, for any considered alternative Q, there exists a µ∗∈Mp
+%such that EX∼Q[X] = µ∗
