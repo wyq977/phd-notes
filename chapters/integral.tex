@@ -43,3 +43,32 @@ that covers $S$.
 \begin{remark}
 	The set of measure zero would not change a damn thing on $f$
 \end{remark}
+
+\subsection{Filtrations and sigma-fields}
+
+\begin{define}[Filtration]
+	Let $(\Omega, \Ac, P)$ be a probability space. An increasing sequence $\Fc_n$ of sub-$\sigma$ algebras of $\Ac$
+	(i.e. $\Fc_0 \subseteq \Fc_1 \subseteq \cdots \Fc_n \subseteq \cdots \subseteq \Ac$) is called a filtration.
+\end{define}
+
+The sub-$\sigma$-algebra is just the sigma algebra of the $X_0, X_1, X_n$.
+
+What is the difference between the stopping time and random times that can take possibly infinity.
+
+Filtration sigma-field at time $t$, filtration is a n increasing sequence of sigma-fields.
+
+What is the lim sup here? $A_t$ is an adapted sequences of events in some filtered probability space.
+$$
+	A_\infty := \limsup_{t\to \infty} A_t := \bigcap_{t\in\Nf}\bigcup_{s\geq t}A_s
+$$
+
+\begin{define}[Absolute continuous]
+	Let $p, q$ be two probability distributions. $p$ is called \emph{absolutely continuous} with respect to $q$ if the
+
+	More explicitly, this reads ($p \ll q$) that
+	\begin{align*}
+		q(A) = 0 \quad \Rightarrow \quad p(A) = 0,  \quad \text{for any } A \in \Fc_t \text{ and } t \in \Nf.
+	\end{align*}
+\end{define}
+
+What about \emph{CORASENING}?

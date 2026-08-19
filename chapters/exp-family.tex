@@ -1,5 +1,8 @@
 \clearpage
 
+
+
+
 Before writing this section, I sometimes came across expressions such as
 $p(x) = A \dd{x}$ or $p(x) = A' m(\dd{x})$ in defining exponential family.
 It relates to the fundamental concept of measure and a density in measure theory.
@@ -18,7 +21,7 @@ We skipped defining the carrier density and its measure for now.
 
 \section{Exponential Family}
 
-The exponential family is a collection of parametric models with very elegant properties.
+The exponential family is a collection of parametric models with elegant properties.
 Peter and Hao utilised it to arrive some nice results about
 the optimality of \E-variables, mainly relying on the duality.
 We called a model belonging to the exponential family
@@ -26,7 +29,7 @@ if the underlying distributions can be written below.
 
 
 \begin{define}[Exponential Family]
-	\begin{align}\label{eq:exp=family}
+	\begin{align}\label{eq:exp-family}
 		p_\beta(U)
 		:= & \exp\left(\beta^T t(U) - \psi(\beta)\right) r(U) \\
 		=  & \frac{1}{Z(\beta)} \exp(\beta^T X) r(U).
@@ -97,7 +100,7 @@ We usually assume minimal if not mentioned.
 
 \begin{define}[Order]
 	The order of an exponential family is the minimal dimension of $t(u)$ such that we can express
-	the family using \refEq{eq:exp=family}.
+	the family using \refEq{eq:exp-family}.
 \end{define}
 
 \begin{define}[Minimal Exponential Family]
@@ -183,9 +186,6 @@ called \emph{overcomplete}. Both minimal and overcomplete representations are us
 
 
 \subsection{Mean-value parameterization}
-
-We
-
 
 \begin{define}[Matching pair]
 	Let $\Pc, \Qc$ be exponential family for random variable $U$.
