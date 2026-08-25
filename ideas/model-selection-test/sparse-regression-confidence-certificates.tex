@@ -1,0 +1,2436 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  english,
+  11pt,
+  a4paper,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+  \usepackage{CJKutf8}
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+  \newfontfamily\cjkstatusfont{FandolSong-Regular.otf}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{pdflscape}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\ifLuaTeX
+\usepackage[bidi=basic,shorthands=off]{babel}
+\else
+\usepackage[bidi=default,shorthands=off]{babel}
+\fi
+\ifLuaTeX
+  \usepackage{selnolig} % disable illegal ligatures
+\fi
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Finite-Sample and Anytime-Valid Confidence Certificates after Sparse Regression},
+  pdflang={en},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Finite-Sample and Anytime-Valid Confidence Certificates after
+Sparse Regression}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\textbf{Research report}\\
+\textbf{Search cut-off:} 24 August 2026\\
+\textbf{Primary target:} a finite-sample or time-uniform upper
+confidence set for the true support after Lasso or exact
+$\ell_0$-constrained regression
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\clearpage
+
+\section{Claim-status convention}\label{claim-status-convention}
+
+{[}Established{]} denotes a statement directly supported by a cited
+primary source or a standard exact calculation whose assumptions are
+stated.\\
+{[}Deduction{]} denotes a logical consequence proved in this report from
+an established result.\\
+{[}Original result --- proof complete{]} denotes a construction or
+proposition for which all stated proof obligations are discharged
+here.\\
+{[}Conjecture{]} denotes a plausible extension for which at least one
+proof obligation remains open.\\
+{[}Search limitation{]} denotes a boundary of the literature search or
+source audit.\\
+{[}\ifPDFTeX%
+\begin{CJK*}{UTF8}{gbsn}%
+猜测%
+\end{CJK*}%
+\else
+{\cjkstatusfont\char"731C\char"6D4B}%
+\fi{]} is used only where the available sources do not support a
+firmer statement.
+
+{[}Established{]} The supplied research brief requires three stages:
+fixed-sample and asymptotic inference first, anytime-valid ordinary
+linear regression second, and only then a finite-sample construction for
+Lasso and exact sparse regression. This report follows that order and
+keeps coefficient inference, model-confidence collections, support upper
+sets, and raw sparse-regression selectors separate.
+
+\section{Executive summary}\label{executive-summary}
+
+{[}Established{]} In classical fixed-design Gaussian regression with
+$p<n$, exact finite-sample inference is routine for the coefficient
+vector and for linear restrictions: Student $t$, Fisher $F$, the
+joint $F$-ellipsoid, and Scheffé simultaneous contrast regions are
+exact conditional on the design. These objects concern coefficients or
+linear hypotheses. By themselves, they do not provide an informative
+upper confidence set for the exact support.
+
+{[}Established{]} Most Lasso inference results fall into one of four
+classes: finite-sample estimation or prediction bounds; asymptotic
+support recovery; asymptotic debiased-Lasso coefficient inference; or
+exact conditional inference for selected-model coefficients after a
+fixed selection event. None of these classes, without an additional
+argument, proves the target
+
+$$
+\Pr\!\left(S^\star\subseteq U_n\right)\ge 1-\alpha
+$$
+
+for a useful support upper set at a user-chosen finite $n$. In
+particular, a confidence interval that excludes zero can certify
+activity, while certifying inactivity requires ruling out every nonzero
+value. These are opposite inferential directions.
+
+{[}Established{]} Exact $\ell_0$-constrained optimization is now
+computationally realistic in many instances, but the core optimization
+papers do not supply inferential coverage. Selection-consistency results
+for best-subset or constrained regression are generally asymptotic and
+require separation, beta-min, or related identifiability assumptions.
+Exact selective intervals after best-subset selection target
+coefficients conditional on the selection event, not the unknown support
+itself.
+
+{[}Established{]} The closest established fixed-sample result found is
+Wang, Xie, and Zhang (2026), \emph{Finite- and Large-Sample Inference
+for Model and Coefficients in High-dimensional Linear Regression with
+Repro Samples}. Their Theorem 7 gives an exact confidence collection for
+the true sparse model under its stated pivotal-conditioning assumptions.
+Their practical candidate-restricted construction has the weaker
+guarantee in Theorem 8: for fixed finite $n,p$, coverage approaches
+its nominal level as the number $d$ of repro samples grows, with an
+explicit candidate-omission component and an asymptotic computational
+remainder. Theorem 9 is asymptotic in $n$ for fixed $d$.
+
+{[}Deduction{]} Any confidence collection $\Gamma_n$ of supports
+satisfying $\Pr(S^\star\in\Gamma_n)\ge1-\alpha$ immediately gives a
+support upper set
+
+$$
+U_n=\bigcup_{S\in\Gamma_n}S,
+\qquad
+\Pr(S^\star\subseteq U_n)\ge1-\alpha.
+$$
+
+Thus Wang, Xie, and Zhang's exact Theorem 7 solves the requested
+coverage problem in principle after this union map. Its practical
+usefulness depends on whether the resulting union is smaller than
+$[p]$ and whether the exact full-space set can be computed.
+
+{[}Established{]} Anytime-valid ordinary linear regression is
+substantially more developed than anytime-valid support inference.
+Self-normalized confidence ellipsoids, likelihood-ratio martingales,
+invariant sequential $t$- and $F$-type procedures, and general
+sequential likelihood-mixing confidence sequences provide time-uniform
+confidence regions for coefficients or groups of coefficients. The main
+sources audited were Abbasi-Yadkori, Pál, and Szepesvári (2011), Lindon,
+Ham, Tingley, and Bojinov (2026), and Kirschner, Krause, Meziu, and
+Mutný (2025).
+
+{[}Deduction{]} A coefficient confidence sequence $C_t$ gives a
+formally valid support upper sequence through
+
+$$
+U_t=\bigcup_{\beta\in C_t}\operatorname{supp}(\beta).
+$$
+
+The missing step in the existing regression literature is therefore not
+coverage logic. The missing step is informativeness and computation: a
+full-dimensional confidence ellipsoid contains vectors with every
+coordinate nonzero, so its support union is exactly $[p]$.
+
+{[}Original result --- proof complete{]} This report proves a boundary
+impossibility result. Over a continuous Gaussian regression parameter
+space that permits a zero coefficient to be perturbed to an arbitrarily
+small nonzero coefficient, any uniformly valid procedure for certifying
+that coordinate as exactly zero has certification probability at most
+$\alpha$ at the zero boundary. Therefore nontrivial exact-zero
+certification requires a separation restriction, such as a beta-min gap;
+a discrete coefficient model; exact known sparsity; a practically-zero
+equivalence region; or a weaker, nonuniform notion of validity.
+
+{[}Original result --- proof complete{]} Under fixed design, Gaussian
+noise, and known variance, an exact finite-sample construction is
+obtained from the residual ball
+
+$$
+C_n=\left\{\beta\in\Theta:
+  \lVert Y-X\beta\rVert_2^2
+  \le \sigma^2\chi^2_{n,1-\alpha}
+\right\},
+\qquad
+U_n=\widehat S_n\cup\bigcup_{\beta\in C_n}\operatorname{supp}(\beta).
+$$
+
+It has conditional-on-$X$ coverage at least $1-\alpha$ for any
+selector $\widehat S_n$, including Lasso with cross-validated tuning
+or an exact $\ell_0$ solution. It becomes computationally and
+statistically meaningful when $\Theta$ imposes explicit sparsity and
+separation, for example $\lVert\beta\rVert_0\le k$,
+$\lVert\beta\rVert_2\le B$, and each nonzero coefficient has magnitude
+at least $b>0$.
+
+{[}Original result --- proof complete{]} An anytime-valid construction
+follows from a prequential likelihood-ratio martingale. Any predictable
+sequence of regression predictors---including online Lasso or online
+exact best subset---can be used in the numerator. Inverting the
+resulting process gives a joint parameter confidence sequence, which can
+then be mapped to a support upper sequence. Validity does not require
+the predictor to select the true model; prediction quality controls
+tightness, while martingale normalization controls coverage.
+
+{[}Established{]} The main scientific conclusion is therefore
+conditional. Exact fixed-sample and anytime-valid support upper sets
+exist as mathematical constructions. Without an identifiability or
+separation restriction they are generally vacuous or nearly powerless.
+The central unresolved problem is to obtain a computationally practical,
+nonvacuous certificate under assumptions that are both scientifically
+credible and checkable enough for the intended application.
+
+\section{1. Statistical target and
+notation}\label{statistical-target-and-notation}
+
+{[}Established{]} Let $X_n\in\mathbb R^{n\times p}$,
+$Y_n\in\mathbb R^n$, and
+
+$$
+Y_n=X_n\beta^\star+\varepsilon_n,
+\qquad
+S^\star=\{j:\beta_j^\star\ne0\}.
+$$
+
+{[}Established{]} A sparse algorithm returns a raw selected set
+$\widehat S_n$. A confidence certificate is a different object: an
+upper confidence set $U_n\subseteq[p]$ for $S^\star$, with certified
+inactive set $Z_n=U_n^c$. The required fixed-sample guarantee is
+
+$$
+\Pr(S^\star\subseteq U_n)\ge1-\alpha,
+$$
+
+or equivalently
+
+$$
+\Pr\{Z_n\subseteq(S^\star)^c\}\ge1-\alpha.
+$$
+
+{[}Established{]} The anytime-valid target is
+
+$$
+\Pr\left(\forall t\ge1:S^\star\subseteq U_t\right)\ge1-\alpha.
+$$
+
+{[}Established{]} This event implies validity at every stopping time
+$\tau$. It does not imply that a retained feature is active. A lower
+support set, which certifies activity, is a different inferential
+object.
+
+{[}Established{]} The Lasso and exact constrained estimators are
+
+$$
+\widehat\beta_{\mathrm{Lasso},n}
+\in\arg\min_{\beta\in\mathbb R^p}
+\left\{\frac12\lVert Y_n-X_n\beta\rVert_2^2+\lambda\lVert\beta\rVert_1\right\}
+$$
+
+and
+
+$$
+\widehat\beta_{0,n}
+\in\arg\min_{\beta\in\mathbb R^p}
+\left\{\frac12\lVert Y_n-X_n\beta\rVert_2^2:
+\lVert\beta\rVert_0\le k\right\}.
+$$
+
+{[}Established{]} Deterministic tie-breaking is assumed whenever an
+estimator is referred to as a function of the data. An approximate
+best-subset algorithm is not called an exact global $\ell_0$ solution.
+
+\section{2. Search protocol, scope, and audit
+method}\label{search-protocol-scope-and-audit-method}
+
+{[}Established{]} The search was conducted through 24 August 2026. The
+temporal scope was 1939--2026, beginning with Ville's maximal inequality
+and ending with journal articles and arXiv versions available on the
+search date.
+
+{[}Established{]} Primary-source locations included Project Euclid,
+arXiv, JMLR, IEEE Xplore, Oxford Academic, Wiley Online Library, Taylor
+\& Francis, NeurIPS proceedings, PubMed Central, Springer, and
+journal-hosted pages. Cross-references were followed backward from the
+supplied starter bibliography and forward from papers on model
+confidence sets, high-dimensional confidence regions, post-selection
+inference, e-processes, and sequential regression.
+
+{[}Established{]} Representative search strings included:
+\texttt{finite\ sample\ confidence\ set\ true\ support\ high-dimensional\ linear\ regression};
+\texttt{model\ confidence\ set\ sparse\ regression};
+\texttt{upper\ confidence\ set\ support\ Lasso};
+\texttt{best\ subset\ exact\ post-selection\ confidence\ interval};
+\texttt{honest\ confidence\ set\ sparse\ regression\ impossibility};
+\texttt{anytime-valid\ linear\ regression\ F\ test};
+\texttt{confidence\ sequence\ regression\ coefficients\ adaptive\ covariates};
+\texttt{sequential\ likelihood\ mixing\ sparse\ estimation};
+\texttt{e-process\ composite\ linear\ model\ nuisance}; and the exact
+titles and author names of every starter reference.
+
+{[}Established{]} Titles, authors, publication years, journal status,
+and DOI or arXiv identifiers were checked against primary publisher or
+repository pages. Theorem locators were checked in the latest accessible
+paper version when the article text was available. For Wang, Xie, and
+Zhang, theorem numbering refers to arXiv v4 dated 27 November 2025,
+corresponding to the 2026 \emph{Annals of Statistics} article. For
+Lindon et al., locators refer to the latest audited arXiv version and
+its linked 2026 JASA DOI.
+
+{[}Search limitation{]} This is a comprehensive targeted survey rather
+than a registered systematic review with a reproducible database export.
+Plausible omissions include papers using different terminology,
+manuscripts posted after 24 August 2026, non-English work, and results
+embedded in application papers. Recent preprints were not used for
+load-bearing claims unless their relevant theorem was directly audited.
+
+{[}Search limitation{]} Battey, Garcia Rasines, and Tang (2026 revision
+of a 2025 preprint) is directly relevant to post-reduction confidence
+sets of models. Its abstract and current version metadata were audited,
+but its complete theorem chain was not used as a basis for an exact
+support-coverage claim in this report.
+
+\section{3. Stage 1 --- established fixed-sample and asymptotic
+results}\label{stage-1-established-fixed-sample-and-asymptotic-results}
+
+\subsection{3.1 Classical fixed-design Gaussian linear
+regression}\label{classical-fixed-design-gaussian-linear-regression}
+
+{[}Established{]} Assume $X$ is fixed, $\operatorname{rank}(X)=p<n$,
+and $\varepsilon\sim N(0,\sigma^2I_n)$. Let
+
+$$
+\widehat\beta=(X^\top X)^{-1}X^\top Y,
+\qquad
+s^2=\frac{\lVert Y-X\widehat\beta\rVert_2^2}{n-p}.
+$$
+
+Then
+
+$$
+\widehat\beta\sim N\!\left(\beta^\star,\sigma^2(X^\top X)^{-1}\right),
+\qquad
+\frac{(n-p)s^2}{\sigma^2}\sim\chi^2_{n-p},
+$$
+
+and the two quantities are independent.
+
+{[}Established{]} For coordinate $j$, with
+$v_{jj}=((X^\top X)^{-1})_{jj}$,
+
+$$
+\frac{\widehat\beta_j-\beta_j^\star}{s\sqrt{v_{jj}}}\sim t_{n-p}.
+$$
+
+This gives an exact coordinate interval conditional on $X$. Bonferroni
+or a joint multivariate calculation gives simultaneous coordinate
+coverage.
+
+{[}Established{]} For a rank-$q$ matrix $R$, the statistic
+
+$$
+\frac{(R\widehat\beta-r)^\top
+[R(X^\top X)^{-1}R^\top]^{-1}
+(R\widehat\beta-r)}{q s^2}
+$$
+
+has an exact $F_{q,n-p}$ distribution under $R\beta^\star=r$.
+Inverting this test gives exact confidence regions for linear
+restrictions.
+
+{[}Established{]} The joint coefficient ellipsoid is
+
+$$
+\mathcal E_{1-\alpha}=
+\left\{\beta:
+(\widehat\beta-\beta)^\top X^\top X(\widehat\beta-\beta)
+\le p s^2F_{p,n-p;1-\alpha}
+\right\}.
+$$
+
+Scheffé's method gives simultaneous protection for every contrast
+$c^\top\beta$.
+
+{[}Deduction{]} These exact regions do not ordinarily yield useful zero
+certificates. A nondegenerate ellipsoid has nonempty interior; hence it
+contains a vector with coordinate $j$ nonzero for every $j$. Its
+support union is $[p]$.
+
+{[}Established{]} Under independent but non-Gaussian or heteroskedastic
+errors, ordinary least squares with sandwich covariance estimation
+supports asymptotic coefficient inference under moment, leverage, and
+central-limit conditions. Such intervals are not exact finite-sample
+Gaussian pivots and are not automatically valid after arbitrary
+data-dependent model selection.
+
+{[}Established{]} Berk et al.~(2013) construct post-selection-valid
+intervals by simultaneous protection over coefficients arising from all
+candidate submodels. The procedure provides finite-sample Gaussian
+post-selection protection in its exact setup, but its target is a
+model-dependent projection coefficient, not the exact support of a
+single true sparse vector.
+
+\subsection{\texorpdfstring{3.2 Lasso and related $\ell_1$
+methods}{3.2 Lasso and related \textbackslash ell\_1 methods}}\label{lasso-and-related-ell_1-methods}
+
+{[}Established{]} Finite-sample Lasso oracle inequalities control
+prediction error, $\ell_1$ error, or $\ell_2$ error under
+deterministic tuning and design conditions such as restricted eigenvalue
+or compatibility assumptions. These are estimation statements, not
+confidence sets for $S^\star$.
+
+{[}Established{]} Zhao and Yu (2006) establish that an irrepresentable
+condition is almost necessary and sufficient for asymptotic
+model-selection consistency of the Lasso in their regimes. Wainwright
+(2009) gives sharp sparsity-recovery thresholds and high-probability
+analyses under Gaussian designs and beta-min conditions. These results
+are about recovery probability under a model sequence; they do not,
+without calibration and known constants, constitute a generally
+available finite-sample confidence certificate at arbitrary $\alpha$.
+
+{[}Established{]} Sure screening means
+$\Pr(S^\star\subseteq\widehat S_n)\to1$. Fan and Lv (2008) give a
+canonical sure-independence-screening result. Sure screening is in the
+same direction as the requested upper-set guarantee, but its asymptotic
+limit is not an exact finite-$n$ coverage statement.
+
+{[}Established{]} Debiased or desparsified Lasso methods, including
+Zhang and Zhang (2014) and van de Geer et al.~(2014), construct
+asymptotically normal estimators for low-dimensional coordinates or
+contrasts under sparsity and precision-matrix assumptions. Simultaneous
+variants require high-dimensional Gaussian approximation or multiplier
+bootstrap conditions. These procedures primarily certify activity when
+zero is excluded; they do not certify exact inactivity.
+
+{[}Established{]} Lee et al.~(2016) derive exact conditional laws after
+a fixed-$\lambda$ Lasso selection event under Gaussian errors. The
+inferential target is a selected-model projection coefficient after
+conditioning on the polyhedral selection event. A variable not selected
+by the Lasso is not thereby certified inactive in the full
+data-generating coefficient vector.
+
+{[}Established{]} A theorem proved for deterministic $\lambda$ cannot
+be transferred to cross-validated $\lambda$ without including the
+tuning rule in the selection event, using independent tuning data, or
+providing a separate proof. Cross-validation changes the joint
+data-dependent selection map.
+
+{[}Established{]} Nickl and van de Geer (2013) construct and delimit
+honest adaptive confidence sets for sparse coefficient vectors. Their
+results identify separation/testing regimes needed for adaptation.
+Pötscher (2009) and Pötscher and Schneider (2010) show that uniformly
+valid confidence sets centered on sparse or penalized estimators can be
+necessarily large. These results explain why pointwise oracle behavior
+does not imply uniformly informative uncertainty quantification.
+
+\subsection{\texorpdfstring{3.3 Exact $\ell_0$-constrained regression
+and best-subset
+selection}{3.3 Exact \textbackslash ell\_0-constrained regression and best-subset selection}}\label{exact-ell_0-constrained-regression-and-best-subset-selection}
+
+{[}Established{]} Bertsimas, King, and Mazumder (2016), and Bertsimas
+and Van Parys (2020), establish modern exact optimization formulations
+and scalable algorithms for best-subset regression. Their guarantees
+concern optimization, optimality gaps, and statistical or computational
+behavior; they are not confidence-coverage theorems for the unknown
+support.
+
+{[}Established{]} Shen, Pan, Zhu, and Zhou (2013) analyze constrained
+and regularized high-dimensional regression and give
+selection-consistency results under separation and growth conditions.
+The relevant support conclusions are asymptotic.
+
+{[}Established{]} Lin and Li (2023 preprint) derive finite-sample
+selective confidence intervals after AIC-based best-subset selection by
+characterizing the selection event. The intervals concern coefficients
+conditional on selection, not a confidence collection for the true
+support.
+
+{[}Established{]} If $k<|S^\star|$, the exact $\ell_0$-constrained
+estimator is fitted under a misspecified parameter space. No procedure
+whose candidate supports are all constrained to size at most $k$ can
+contain the original $S^\star$. If $k=|S^\star|$, exact-size
+information removes one boundary ambiguity. If only $k\ge|S^\star|$ is
+known, valid model collections are possible but their unions can be
+large because supermodels of $S^\star$ remain admissible.
+
+\subsection{3.4 Confidence collections of models and
+supports}\label{confidence-collections-of-models-and-supports}
+
+{[}Established{]} Ferrari and Yang (2015) construct a variable-selection
+confidence set by retaining submodels not rejected against a classical
+full model by $F$-testing. Under their fixed-design Gaussian
+assumptions, the true model is contained at the nominal level. The
+method is low-dimensional because it requires a valid encompassing full
+model.
+
+{[}Deduction{]} The direct support union of Ferrari and Yang's full
+variable-selection confidence set is vacuous: the full model is the
+reference and is retained, so the union is $[p]$. Their lower-boundary
+models are useful summaries of parsimony but do not by themselves
+inherit the one-sided upper-support guarantee.
+
+{[}Established{]} Li et al.~(2019) introduce lower and upper model
+confidence bounds $m_L\subseteq m^\star\subseteq m_U$. Their bootstrap
+theory is asymptotic and relies on selector and bootstrap conditions.
+Leeb, Pötscher, and Kivaranovic (2019) identify nonuniformity and
+selector-dependent difficulties in the associated discussion.
+
+{[}Established{]} Battey (2023) studies high-dimensional coefficient
+inference and confidence sets of low-dimensional models after
+preliminary reduction. The model-set calibration used in that line is
+asymptotic and depends on the reduction and encompassing-model
+construction; it is not an exact finite-sample support upper set over
+unrestricted $p\gg n$.
+
+{[}Established{]} Wang, Xie, and Zhang (2026) define the target true
+model as the unique smallest support generating the mean, addressing
+high-dimensional nonidentifiability by assumption. Their Theorem 7
+constructs a generic level-$c$ model confidence set
+$\Gamma_c^\tau(Y)$ satisfying
+
+$$
+\Pr\{S^\star\in\Gamma_c^\tau(Y)\}\ge c,
+$$
+
+provided the stated conditional statistic is nuisance-free and its
+acceptance set has conditional probability at least $c$.
+
+{[}Established{]} Their candidate-generation Theorem 1 gives, for
+Gaussian errors and its tuning interval,
+
+$$
+\Pr\{S^\star\notin\mathcal S^{(d)}\}
+\le
+\left(1-\frac{\gamma_\delta^{n-1}}{n-1}\right)^d+\delta,
+$$
+
+for finite $n,p$, with $n-|S^\star|>4$. The tuning interval depends
+on $\sigma_0^2$, the true support size, and a separation quantity
+$C_{\min}$.
+
+{[}Established{]} Their Theorem 8 states, in the paper's convention
+where $c$ is the coverage level, that the practical
+candidate-restricted set has coverage at least
+
+$$
+c-\delta-o(e^{-c_1d})
+$$
+
+for fixed finite $n,p$ as $d\to\infty$. Their Theorem 9 gives
+$c-o(e^{-c_2n})$ as $n\to\infty$ for fixed $d$, under the
+corresponding large-sample conditions.
+
+{[}Deduction{]} Theorem 7 is an exact fixed-sample confidence-collection
+result in principle. Theorem 8 is finite-sample in the statistical
+dimension but asymptotic in computational effort $d$. A finite
+implemented value of $d$, plus finite Monte Carlo evaluation of
+conditional tail probabilities, needs an explicit error budget before
+exact nominal coverage can be claimed.
+
+\subsection{3.5 Established fixed-sample and asymptotic results
+table}\label{established-fixed-sample-and-asymptotic-results-table}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{landscape}
+\scriptsize
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Inferential object
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Exact guarantee
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Finite or asymptotic
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Pointwise or uniform
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+$n,p,s$ regime
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Design and noise assumptions
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Tuning assumptions
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Post-selection?
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Primary source and theorem
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Relevance to exclusion target
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{[}Established{]} Classical OLS $t$ interval & One coefficient & Exact
+conditional-on-$X$ coverage & Finite & Uniform over $(\beta,\sigma)$
+in Gaussian model & $p<n$, full rank & Fixed $X$, iid Gaussian,
+unknown variance & None & No & Standard Gaussian linear-model pivot &
+Does not certify zero; interval usually contains nonzero values \\
+{[}Established{]} Joint OLS $F$-ellipsoid / Scheffé & Full coefficient
+vector or all contrasts & Exact simultaneous coverage & Finite & Uniform
+in Gaussian model & $p<n$ & Fixed full-rank $X$, iid Gaussian & None
+& No & Scheffé (1953); standard $F$ pivot & Support union is $[p]$
+because the region has interior \\
+{[}Established{]} PoSI & Projection coefficients after arbitrary model
+selection & Simultaneous Gaussian protection over candidate models in
+exact setup & Finite, with asymptotic extensions & Uniform over allowed
+selection rules for stated targets & Classical candidate-model setting &
+Fixed design, Gaussian; variance treatment as stated in source & Model
+universe fixed & Yes & Berk et al.~(2013), main PoSI results &
+Coefficient inference, not support coverage \\
+{[}Established{]} Lasso oracle inequalities & Prediction and estimation
+error & High-probability bounds & Finite & Uniform over restricted
+parameter/design class & Often $p\ge n$, sparse & Fixed/random design;
+sub-Gaussian or related noise & Deterministic $\lambda$,
+compatibility/RE & Selection used for estimation & Bickel, Ritov,
+Tsybakov (2009), representative & No inferential support set \\
+{[}Established{]} Lasso sign/model consistency & Exact support recovery
+probability & Probability tends to one under conditions & Asymptotic,
+with finite probability bounds in some regimes & Model-sequence
+dependent & High-dimensional sparse & Irrepresentability, beta-min,
+design/noise conditions & Deterministic scaling of $\lambda_n$ &
+Selector itself & Zhao \& Yu (2006); Wainwright (2009) & Direction
+matches target only in limit; not a calibrated general certificate \\
+{[}Established{]} Sure independence screening & Support inclusion &
+$\Pr(S^\star\subseteq\widehat S_n)\to1$ & Asymptotic &
+Pointwise/model-sequence & Ultrahigh dimensional & Marginal signal and
+design assumptions & Screening threshold & Yes & Fan \& Lv (2008) &
+Closely aligned direction, but not fixed-sample nominal coverage \\
+{[}Established{]} Debiased Lasso & Coordinate or low-dimensional
+contrast intervals & Asymptotic normal coverage & Asymptotic & Pointwise
+or uniform over stated sparse classes & $p\gg n$ allowed & Sparse
+coefficient and precision structure; regularity & Lasso/nodewise tuning
+& May use all data & Zhang \& Zhang (2014); van de Geer et al.~(2014) &
+Can certify activity, not exact inactivity \\
+{[}Established{]} Exact selective Lasso inference & Selected-model
+projection coefficient & Exact conditional Gaussian law after fixed
+selection event & Finite & Conditional on selection & Selected model
+must be identifiable & Gaussian; fixed design; variance assumptions as
+stated & Fixed selection map and $\lambda$ & Yes & Lee et al.~(2016),
+polyhedral lemma and CI construction & No statement for excluded
+variables' true coefficients \\
+{[}Established{]} Honest sparse coefficient confidence sets &
+$\ell_2$-confidence set for $\beta$ & Honest coverage over separated
+sparse classes & Finite/asymptotic theory depending construction &
+Uniform/honest & High-dimensional sparse & Gaussian sequence/regression
+assumptions & Sparsity classes and separation & No raw selector required
+& Nickl \& van de Geer (2013) & Formal support union is valid but often
+vacuous without separation \\
+{[}Established{]} Sparse-estimator impossibility & Lower bounds on
+confidence-set size & Uniform-valid sets must be large & Asymptotic
+lower bound framework & Uniform & Sparse estimation regimes & Regular
+parametric/Gaussian settings & Sparse estimator behavior &
+Post-selection relevance & Pötscher (2009); Pötscher \& Schneider (2010)
+& Fundamental warning against oracle-based certainty \\
+{[}Established{]} Constrained $\ell_0$ regression & Support
+recovery/selection consistency & Probability tends to one under
+separation & Asymptotic & Model-sequence & High-dimensional sparse &
+Identifiability and separation & Known/controlled sparsity or penalty &
+Selector & Shen et al.~(2013) & Not fixed-sample support confidence \\
+{[}Established{]} Exact MIO best subset & Exact global optimization &
+Optimization optimality, not coverage & Finite computation statement &
+Not inferential & $p$ may be large & Optimization/data assumptions &
+Fixed $k$ or penalty & Yes & Bertsimas et al.~(2016); Bertsimas \& Van
+Parys (2020) & Enables computation for proposed certificates, but
+supplies no coverage \\
+{[}Established{]} Best-subset selective CI & Coefficient after
+AIC/best-subset selection & Exact conditional coverage under stated
+Gaussian selection geometry & Finite & Conditional on selection &
+Candidate submodels identifiable & Gaussian linear model & AIC or
+characterized criterion & Yes & Lin \& Li (2023), main selective CI
+results & Coefficient object, not support set \\
+{[}Established{]} F-test variable-selection confidence set & Collection
+of candidate supports & Contains true model at nominal level & Finite &
+Uniform in stated classical model & $p<n$, full encompassing model &
+Fixed design, Gaussian, unknown variance & Candidate universe fixed &
+Same data & Ferrari \& Yang (2015), Theorem 1 & Exact model collection;
+direct union is vacuous because full model is present \\
+{[}Established{]} Model confidence bounds & Nested lower and upper
+models & Bootstrap coverage under consistency assumptions & Asymptotic &
+Pointwise/nonuniform concerns & May be high-dimensional after selection
+& Bootstrap and selector conditions & Data-dependent selector & Yes & Li
+et al.~(2019), main theory; Leeb et al.~(2019) discussion & Upper model
+targets desired form, but not exact finite-sample coverage \\
+{[}Established{]} Repro-sample exact model set & Confidence collection
+for true smallest support & $\Pr(S^\star\in\Gamma_c)\ge c$ & Finite &
+Uniform under stated pivotal model & $p\gg n$ allowed & Fixed $X$,
+Gaussian model for exact implementation; nuisance conditioned out & Full
+model-space inversion & Accounts for model uncertainty & Wang, Xie \&
+Zhang (2026), Theorem 7 & Closest exact result; union gives exact
+support upper set \\
+{[}Established{]} Repro-sample candidate-restricted set & Computable
+confidence collection & $\ge c-\delta-o(e^{-c_1d})$ for fixed $n,p$
+as $d\to\infty$ & Computational asymptotic or sample asymptotic &
+Under separation/tuning conditions & $p\gg n$ & Gaussian; extensions
+discussed & $\lambda$ interval depends on unknown truth/separation &
+Yes & Wang, Xie \& Zhang (2026), Theorems 1, 8, 9 & Practical closest
+result, but fixed finite $d$ needs explicit calibration \\
+{[}Established{]} Post-reduction model sets & Confidence collection
+after screening/reduction & Conditional or asymptotic calibration in
+audited versions & Primarily asymptotic/recent preprint & Depends on
+reduction & High-dimensional reduced to low-dimensional & Normal-theory
+linear model in detailed work & Reduction rule is central & Yes & Battey
+(2023); Battey, Garcia Rasines \& Tang (2026 preprint revision) &
+Relevant, but no audited unrestricted exact support-upper theorem used
+here \\
+\end{longtable}
+\end{landscape}
+}
+
+\subsection{3.6 Stage 1 completion gate}\label{stage-1-completion-gate}
+
+{[}Established{]} \textbf{Coefficient inference only.} Classical $t/F$
+regions, PoSI, debiased Lasso, selective Lasso, and selective
+best-subset intervals provide coefficient or projection-parameter
+inference. They do not directly certify that excluded variables have
+coefficient exactly zero.
+
+{[}Established{]} \textbf{Support recovery only in the limit.} Zhao and
+Yu, Wainwright's asymptotic threshold theory, Fan and Lv's sure
+screening, and Shen et al.'s constrained-regression theory provide
+limiting support statements under signal and design restrictions.
+
+{[}Established{]} \textbf{Honest finite-sample coverage.} Classical
+Gaussian regions, exact selective Gaussian intervals for their
+conditional targets, Ferrari and Yang's classical model collection,
+universal-inference confidence sets, and Wang, Xie, and Zhang's generic
+Theorem 7 are finite-sample objects under their stated assumptions. Of
+these, Wang et al.~is the closest high-dimensional model-support result.
+
+{[}Established{]} \textbf{Confidence collection rather than one upper
+set.} Ferrari and Yang, Battey's model-set line, and Wang et al.~return
+collections of candidate models. A union map is required to obtain one
+support upper set.
+
+{[}Established{]} \textbf{Closest result to the target.} Wang, Xie, and
+Zhang (2026), Theorem 7, is the closest exact high-dimensional result.
+Their Theorem 8 is the closest computational implementation, but its
+displayed guarantee takes $d\to\infty$ for fixed $n,p$.
+
+{[}Established{]} \textbf{Constraining impossibility and identifiability
+results.} Nonidentifiability of supports when columns span the same mean
+vectors, honest-adaptation lower bounds, and the large-confidence-set
+results of Pötscher and collaborators constrain any useful uniformly
+valid procedure. The boundary theorem proved in Section 7 strengthens
+the interpretation for exact-zero certification.
+
+\section{4. Stage 2 --- anytime-valid inference for linear
+regression}\label{stage-2-anytime-valid-inference-for-linear-regression}
+
+\subsection{4.1 Core definitions}\label{core-definitions}
+
+{[}Established{]} For a null family $\mathcal H$, an
+\textbf{e-variable} is a nonnegative random variable $E$ satisfying
+
+$$
+\sup_{P\in\mathcal H}\mathbb E_P[E]\le1.
+$$
+
+A realized value much larger than one is evidence against
+$\mathcal H$.
+
+{[}Established{]} An \textbf{e-process} is an adapted nonnegative
+process $(E_t)$ that retains the e-value property under arbitrary
+stopping, in the operational form
+
+$$
+\sup_{P\in\mathcal H}\mathbb E_P[E_\tau]\le1
+$$
+
+for every stopping time $\tau$ for which the expression is defined. A
+nonnegative test supermartingale starting at one is a canonical
+e-process.
+
+{[}Established{]} A \textbf{test martingale} is a nonnegative martingale
+$(M_t)$ with $M_0=1$ under the null. A \textbf{test supermartingale}
+replaces equality of conditional expectations by the supermartingale
+inequality. For a composite null, validity must hold for every
+distribution in the null family.
+
+{[}Established{]} \textbf{Ville's inequality} states that a nonnegative
+supermartingale with initial value at most one satisfies
+
+$$
+P\!\left(\sup_{t\ge0}M_t\ge\frac1\alpha\right)\le\alpha.
+$$
+
+{[}Established{]} An always-valid $p$-value process can be obtained
+from a test process by
+
+$$
+p_t=\min\left\{1,\frac{1}{\sup_{s\le t}M_s}\right\}.
+$$
+
+{[}Established{]} A $(1-\alpha)$ \textbf{confidence sequence} is a
+sequence $(C_t)$ satisfying
+
+$$
+P(\forall t\ge1:\theta^\star\in C_t)\ge1-\alpha.
+$$
+
+It remains valid at every stopping time and under optional continuation
+because its guarantee is a single time-uniform event.
+
+{[}Established{]} A fixed-time e-value is not automatically an
+e-process. Reusing, peeking at, or multiplying fixed-time e-values
+across times requires a valid sequential construction.
+
+{[}Established{]} For a simple null $P_0$ and alternative density
+$Q$, the likelihood ratio $dQ/dP_0$ is an e-variable; its sequential
+product is a test martingale when the factors are predictable normalized
+densities. Mixture likelihood ratios integrate alternatives. Universal
+inference uses held-out or prequential likelihood ratios so that an
+estimated alternative appears in the numerator without invalidating
+normalization. Self-normalized methods build exponential
+supermartingales that avoid direct knowledge of a variance scale in
+selected settings.
+
+\subsection{4.2 Established anytime-valid regression
+results}\label{established-anytime-valid-regression-results}
+
+{[}Established{]} Abbasi-Yadkori, Pál, and Szepesvári (2011) prove a
+time-uniform self-normalized confidence ellipsoid for regularized least
+squares with predictable covariates and conditionally sub-Gaussian
+noise. Their Theorem 2 is stated with a known sub-Gaussian scale and a
+known bound on $\lVert\theta^\star\rVert$. The object is a coefficient
+ellipsoid.
+
+{[}Established{]} Lindon, Ham, Tingley, and Bojinov (2026) construct
+exact parametric sequential analogues of classical linear-model tests
+using likelihood ratios of invariantly sufficient statistics. Their
+parametric results include unknown variance and nuisance regression
+coefficients, sequential $F$-type tests, and coefficient or group
+confidence sequences. The paper then gives heteroskedasticity-robust
+model-free causal procedures that are asymptotically anytime-valid
+rather than exact parametric finite-sample procedures.
+
+{[}Established{]} Kirschner, Krause, Meziu, and Mutný (2025 preprint)
+give a general realizable-likelihood framework. Their Theorem 2 states
+that a sequential likelihood-ratio sublevel set is a confidence sequence
+for any adapted estimator sequence. Their Theorem 4 allows adapted
+likelihood-mixing distributions. The framework permits arbitrary
+dependence of the covariate on past observations, provided the
+conditional likelihood is correctly specified.
+
+{[}Established{]} In Kirschner et al.'s displayed Gaussian sequential
+linear-regression specialization, the variance is known and the
+confidence set is a regularized-least-squares parameter set. Their
+sparse section restricts the parameter space to a bounded $k$-sparse
+set and converts online regret to a confidence sequence. The paper
+explicitly notes computational difficulty of sparse maximum likelihood
+or an equally strong sparse online predictor.
+
+{[}Established{]} de la Peña, Klass, and Lai (2004) provide
+self-normalized process inequalities that underlie many sequential
+regression bounds. Howard et al.~(2020, 2021) provide general
+nonnegative-supermartingale and confidence-sequence construction tools.
+Ramdas et al.~(2023) organize these ideas as safe anytime-valid
+inference.
+
+{[}Established{]} Wang and Ramdas (2025) give anytime-valid $t$-tests
+and confidence sequences for Gaussian means with unknown variance. This
+is an important nuisance-variance building block, but it is not by
+itself a general high-dimensional regression support certificate.
+
+{[}Established{]} Universal inference gives finite-sample
+split-likelihood e-values and confidence sets under weak regularity. A
+single split likelihood ratio is a fixed-sample e-value. It becomes
+anytime-valid only when embedded in a valid sequential or
+optional-continuation construction; the label ``e-process'' cannot be
+inferred from the fixed-time expectation bound alone.
+
+\subsection{4.3 Anytime-valid results
+table}\label{anytime-valid-results-table}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{landscape}
+\scriptsize
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Reference
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Object: e-value, e-process, test supermartingale, or confidence sequence
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Null and alternative
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Regression target
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Fixed or adaptive design
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Noise and variance assumptions
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Nuisance handling
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Time-uniform guarantee
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Theorem locator
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Remaining mismatch
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{[}Established{]} Ville (1939); Shafer et al.~(2011) & Test
+martingale/supermartingale & Simple or composite null when
+supermartingale property holds for every null law & Generic testing &
+Predictable betting protocol & Model-specific & Must be built into
+process & $P(\sup_t M_t\ge1/\alpha)\le\alpha$ & Ville inequality;
+Shafer et al.~Sections 2--4 & No regression or support construction by
+itself \\
+{[}Established{]} Howard et al.~(2020, 2021) & Nonnegative
+supermartingales and confidence sequences & Mean/process parameters &
+Generic scalar/vector functionals & Predictable/adaptive settings
+supported by assumptions & Bounded, sub-Gaussian, sub-exponential,
+empirical-Bernstein variants & Mixtures/stitching/self-normalization &
+Exact time-uniform concentration & Main mixture and stitching theorems &
+Not a sparse-support method without model-specific inversion \\
+{[}Established{]} de la Peña, Klass \& Lai (2004) & Self-normalized
+exponential processes & Martingale-difference nulls & Normalized sums
+underlying regression & Predictable regressors possible &
+Moment/exponential conditions & Variance absorbed by self-normalizer &
+Maximal/time-uniform inequalities & Main self-normalized inequalities &
+Ellipsoid/score control, not exact zero certification \\
+{[}Established{]} Abbasi-Yadkori, Pál \& Szepesvári (2011) & Confidence
+ellipsoid from self-normalized supermartingale & Linear conditional mean
+model & Full coefficient vector & Predictable, adaptively chosen
+covariates & Conditionally sub-Gaussian scale $R$; ridge $\lambda$;
+norm bound $S$ & Regularization handles rank deficiency & One event
+holds for all $t$ & Theorem 2 & Ellipsoid has full-dimensional support
+union \\
+{[}Established{]} Wasserman, Ramdas \& Balakrishnan (2020) & Split
+likelihood-ratio e-value/confidence set & General null versus estimated
+alternative & General parameter/model & Independent split; sequential
+variants require construction & Likelihood model; broad finite-sample
+applicability & Profiling or null supremum & Fixed-sample exact;
+optional stopping only with e-process embedding & Sections 2--4 &
+Computational support union and informativeness unresolved \\
+{[}Established{]} Lindon et al.~(2026) & Test martingales, sequential
+$F$-tests, confidence sequences & Point/group linear restrictions with
+nuisance coefficients and variance & Coefficients and contrasts &
+Parametric design treated through linear-model sequence; model-free
+causal extension separate & Exact Gaussian parametric model with unknown
+variance; robust extension asymptotic & Invariance/right-Haar
+integration and sufficient statistics & Exact in parametric section;
+asymptotic in robust section & Section 4, Theorem 4.1 and Corollaries
+4.3--4.4 in audited version & Coefficient/group region, not a support
+upper set; high-dimensional rank restrictions remain \\
+{[}Established{]} Kirschner et al.~(2025) & Sequential likelihood-ratio
+and likelihood-mixing confidence sequences & Realizable conditional
+likelihood, point parameter & General parameter; Gaussian linear
+coefficient; sparse bounded parameter set & Arbitrary covariate
+dependence on past & Correct conditional likelihood; displayed RLS case
+known variance; sub-Gaussian extensions & Joint parameterization or
+mixing & $P(\forall t:\theta^\star\in C_t)\ge1-\delta$ & Theorems 2,
+4; sparse application and Lemma 14 & Support mapping is formal; sparse
+optimization and nonvacuity remain \\
+{[}Established{]} Wang \& Ramdas (2025) & Anytime-valid $t$-tests and
+confidence sequences & Gaussian mean with unknown variance & Mean &
+Sequential observations & Gaussian, unknown variance & Exact scale
+treatment & Time-uniform & Main theorems & Building block, not
+multivariate regression support inference \\
+{[}Established{]} Ramdas et al.~(2023) & SAVI synthesis: e-processes and
+confidence sequences & Simple/composite hypotheses & General & Optional
+stopping/continuation & Construction-specific & Composite-null e-process
+theory & Operational anytime validity & Survey sections on e-processes
+and CSs & Conceptual framework rather than sparse-regression theorem \\
+{[}Established{]} Kirschner et al.~sparse online section & Regret-based
+sparse parameter confidence sequence & $k$-sparse bounded linear
+parameter & Sparse coefficient vector & Predictable/adaptive covariates
+& Gaussian or stated sub-Gaussian extension & Restricted parameter set &
+Exact CS conditional on regret bound and likelihood assumptions &
+Sparse-estimation subsection; Lemma 14 & Computing the set and
+converting it to a useful upper support set are hard \\
+\end{longtable}
+\end{landscape}
+}
+
+\subsection{4.4 Stage 2 completion gate}\label{stage-2-completion-gate}
+
+{[}Established{]} \textbf{Genuinely time-uniform.} Abbasi-Yadkori et
+al.'s ellipsoid, Lindon et al.'s exact parametric martingales and
+inverted sets, Kirschner et al.'s sequential likelihood sets, and the
+confidence-sequence results built from nonnegative supermartingales are
+genuinely time-uniform. A conventional fixed-time $t$-test, a split
+e-value, or an asymptotic interval at each time is not time-uniform
+merely because it can be recomputed repeatedly.
+
+{[}Established{]} \textbf{Stopping-time validity.} Every result
+expressed as one event $\{\forall t:\theta^\star\in C_t\}$ or
+controlled by Ville's inequality remains valid at arbitrary stopping
+times. Fixed-time asymptotic intervals generally do not.
+
+{[}Established{]} \textbf{Composite nulls and nuisance parameters.}
+Lindon et al.~explicitly handle regression nuisance coefficients and
+unknown variance through invariance. General likelihood mixing can
+include nuisance parameters jointly, but a pointwise likelihood ratio is
+not automatically a composite-null e-process. Universal inference
+handles composite nulls by profiling or taking a null supremum, often
+with a computational cost.
+
+{[}Established{]} \textbf{Coefficient regions but not support
+certificates.} The audited regression papers return confidence regions
+for $\beta$, a contrast, or a group. None advertises a directly
+computed, nonvacuous set $U_t$ with simultaneous excluded-feature
+certification over an unrestricted continuous sparse-regression
+parameter space.
+
+{[}Deduction{]} \textbf{Exact missing mathematical step.} Given a joint
+confidence sequence $C_t$, the coverage step is only
+
+$$
+C_t\ni\beta^\star
+\quad\Longrightarrow\quad
+S^\star\subseteq\bigcup_{\beta\in C_t}\operatorname{supp}(\beta).
+$$
+
+The unresolved steps are to restrict the parameter space so that the
+union can omit coordinates, establish identifiability and separation,
+and compute the coordinate-wise feasibility queries without enumerating
+all supports.
+
+\section{5. Precise gap statement}\label{precise-gap-statement}
+
+{[}Established{]} Existing coefficient inference is naturally suited to
+a \textbf{lower} support certificate
+
+$$
+L_n=\{j:0\notin I_{j,n}\},
+$$
+
+because simultaneous coefficient intervals imply
+$L_n\subseteq S^\star$ with high probability. The requested object is
+an \textbf{upper} support certificate. To place $j$ outside $U_n$,
+the procedure must rule out every admissible parameter vector with
+$\beta_j\ne0$.
+
+{[}Deduction{]} For an ordinary full-dimensional confidence set, that
+universal exclusion is impossible because arbitrarily small nonzero
+perturbations remain inside the set. This explains why converting a
+debiased-Lasso ellipsoid or an OLS ellipsoid to an upper support set is
+formally valid but scientifically empty.
+
+{[}Established{]} Model-confidence collections avoid the continuous
+perturbation problem by treating support as a discrete target. They
+still face two obstacles. First, support must be identifiable from the
+mean representation. Second, a collection that includes many supermodels
+can have union $[p]$, even while its model-level coverage is exact.
+
+{[}Established{]} The literature gap is therefore not ``no finite-sample
+confidence set exists.'' Wang, Xie, and Zhang (2026) now supply an exact
+model-confidence construction. The remaining gap is an exact,
+computationally feasible, nonvacuous support upper set for finite
+computational budgets under transparent assumptions, together with an
+anytime-valid analogue.
+
+\section{6. Stage 3 --- assumption ladder and construction
+strategy}\label{stage-3-assumption-ladder-and-construction-strategy}
+
+{[}Established{]} The constructions below state their assumption level
+explicitly.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  {[}Established{]} \textbf{Level 1:} fixed design, Gaussian noise,
+  known variance, deterministic or predictable tuning/constraint.
+\item
+  {[}Established{]} \textbf{Level 2:} fixed design, Gaussian noise,
+  unknown variance.
+\item
+  {[}Established{]} \textbf{Level 3:} random design with a stated
+  conditional response model.
+\item
+  {[}Established{]} \textbf{Level 4:} predictable or adaptive covariates
+  in a sequential conditional-likelihood model.
+\end{enumerate}
+
+{[}Established{]} Coverage is separated from informativeness. A
+construction can be exactly valid and still yield $U=[p]$. The
+reported informativeness metrics should include $|U|$, $|Z|$, the
+fraction of truly inactive variables certified in simulations, and
+computational cost.
+
+\section{7. General lemmas and impossibility
+results}\label{general-lemmas-and-impossibility-results}
+
+\subsection{7.1 Model-confidence collection to support upper
+set}\label{model-confidence-collection-to-support-upper-set}
+
+\textbf{Lemma 1 {[}Deduction --- proof complete{]}.} Let $\Gamma$ be a
+random collection of subsets of $[p]$. If
+
+$$
+\Pr(S^\star\in\Gamma)\ge1-\alpha,
+$$
+
+then
+
+$$
+U(\Gamma)=\bigcup_{S\in\Gamma}S
+$$
+
+satisfies $\Pr(S^\star\subseteq U(\Gamma))\ge1-\alpha$.
+
+\textbf{Proof.} {[}Deduction{]} On the event $S^\star\in\Gamma$, every
+element of $S^\star$ belongs to the union of all elements of
+$\Gamma$. Hence
+
+$$
+\{S^\star\in\Gamma\}\subseteq\{S^\star\subseteq U(\Gamma)\}.
+$$
+
+Taking probabilities proves the claim. $\square$
+
+\textbf{Anytime extension {[}Deduction --- proof complete{]}.} If
+
+$$
+\Pr(\forall t:S^\star\in\Gamma_t)\ge1-\alpha,
+$$
+
+then $U_t=\bigcup_{S\in\Gamma_t}S$ satisfies
+
+$$
+\Pr(\forall t:S^\star\subseteq U_t)\ge1-\alpha.
+$$
+
+\subsection{7.2 Parameter confidence set to support upper
+set}\label{parameter-confidence-set-to-support-upper-set}
+
+\textbf{Lemma 2 {[}Deduction --- proof complete{]}.} Let
+$C\subseteq\Theta\subseteq\mathbb R^p$ be a random confidence set
+satisfying
+
+$$
+\Pr_{\beta^\star}(\beta^\star\in C)\ge1-\alpha
+\quad\text{for every }\beta^\star\in\Theta.
+$$
+
+Define
+
+$$
+U(C)=\bigcup_{\beta\in C}\operatorname{supp}(\beta).
+$$
+
+Then $\Pr_{\beta^\star}(S^\star\subseteq U(C))\ge1-\alpha$ for every
+$\beta^\star\in\Theta$.
+
+\textbf{Proof.} {[}Deduction{]} On $\{\beta^\star\in C\}$, the vector
+$\beta^\star$ is one member of the union defining $U(C)$; therefore
+$\operatorname{supp}(\beta^\star)\subseteq U(C)$. $\square$
+
+\subsection{7.3 Selector wrapper}\label{selector-wrapper}
+
+\textbf{Lemma 3 {[}Original result --- proof complete{]}.} If $U_0$ is
+any valid support upper set and $A(Y)\subseteq[p]$ is any
+data-dependent set, then
+
+$$
+U=A(Y)\cup U_0
+$$
+
+has at least the same support coverage.
+
+\textbf{Proof.} {[}Original result --- proof complete{]} The event
+$S^\star\subseteq U_0$ implies $S^\star\subseteq A\cup U_0$.
+$\square$
+
+{[}Deduction{]} Taking $A=\widehat S_{\mathrm{Lasso}}$ or
+$A=\widehat S_0$ ensures that no feature retained by the raw sparse
+algorithm is declared inactive, without requiring the selector itself to
+be valid. The inferential burden is carried by $U_0$.
+
+\subsection{7.4 Interior-vacuity
+proposition}\label{interior-vacuity-proposition}
+
+\textbf{Proposition 1 {[}Original result --- proof complete{]}.} If
+$C\subseteq\mathbb R^p$ has nonempty Euclidean interior, then
+
+$$
+\bigcup_{\beta\in C}\operatorname{supp}(\beta)=[p].
+$$
+
+\textbf{Proof.} {[}Original result --- proof complete{]} Choose an open
+ball $B(\beta_0,r)\subseteq C$. For any coordinate $j$, the ball
+contains $\beta_0+te_j$ for all sufficiently small $|t|$. Choose
+such a $t$ with $\beta_{0j}+t\ne0$. Thus coordinate $j$ appears in
+the support of a member of $C$. Since this holds for every $j$, the
+union is $[p]$. $\square$
+
+{[}Deduction{]} Every nondegenerate OLS or regularized least-squares
+ellipsoid in $\mathbb R^p$ has a vacuous support union. A useful
+support map requires a nonconvex restricted parameter space or a
+confidence object constructed directly in model space.
+
+\subsection{7.5 Boundary impossibility for exact-zero
+certification}\label{boundary-impossibility-for-exact-zero-certification}
+
+\textbf{Theorem 1 {[}Original result --- proof complete{]}.} Fix a
+finite design $X$ and known $\sigma>0$. Let
+$Y\sim N(X\beta,\sigma^2I_n)$. Suppose a procedure returns
+$Z(Y)\subseteq[p]$ and satisfies the uniform familywise correctness
+condition
+
+$$
+\Pr_\beta\{Z(Y)\subseteq S(\beta)^c\}\ge1-\alpha
+\quad\text{for every }\beta\in\Theta.
+$$
+
+Fix $\beta^0\in\Theta$ with $\beta_j^0=0$. Assume $\Theta$
+contains a sequence $\beta^{(m)}\to\beta^0$ with
+$\beta_j^{(m)}\ne0$. Then
+
+$$
+\Pr_{\beta^0}\{j\in Z(Y)\}\le\alpha.
+$$
+
+\textbf{Proof.} {[}Original result --- proof complete{]} For each $m$,
+coordinate $j$ is active under $\beta^{(m)}$. Hence
+
+$$
+\{j\in Z(Y)\}
+\subseteq
+\{Z(Y)\not\subseteq S(\beta^{(m)})^c\},
+$$
+
+so uniform validity gives
+
+$$
+\Pr_{\beta^{(m)}}\{j\in Z(Y)\}\le\alpha.
+$$
+
+Because $\beta^{(m)}\to\beta^0$, the Gaussian mean vectors
+$X\beta^{(m)}\to X\beta^0$. Gaussian laws with common nonsingular
+covariance converge in total variation. Therefore probabilities of the
+measurable event $\{j\in Z(Y)\}$ converge, yielding
+
+$$
+\Pr_{\beta^0}\{j\in Z(Y)\}
+=
+\lim_{m\to\infty}
+\Pr_{\beta^{(m)}}\{j\in Z(Y)\}
+\le\alpha.
+$$
+
+$\square$
+
+{[}Established{]} The theorem applies to $\Theta=\mathbb R^p$, to
+ordinary $\ell_0$-upper-bound classes at points with unused sparsity
+capacity, and to many continuous sparse neighborhoods. It does not apply
+when the parameter space forbids arbitrarily small nonzero coefficients,
+for example through beta-min, or when exact known support size makes the
+relevant perturbation leave the parameter space.
+
+{[}Deduction{]} At a genuine zero on the boundary of active
+alternatives, a uniformly honest exact-zero certificate can succeed with
+probability no greater than the allowed familywise error. This is
+stronger than merely saying that intervals are wide: it identifies
+exact-zero certification as a nonregular one-sided decision problem.
+
+\subsection{7.6 Nonidentifiable columns}\label{nonidentifiable-columns}
+
+\textbf{Proposition 2 {[}Original result --- proof complete{]}.} If two
+parameter vectors $\beta^{(1)}$ and $\beta^{(2)}$ satisfy
+$X\beta^{(1)}=X\beta^{(2)}$ but have different supports, then no
+data-based procedure can distinguish the two support truths from the
+distribution of $Y$.
+
+\textbf{Proof.} {[}Original result --- proof complete{]} Under a common
+noise law, the two response distributions are identical. Every event has
+the same probability under both parameters. Any coordinate active in one
+representation and inactive in the other must therefore be treated
+conservatively if coverage is required for both. $\square$
+
+{[}Deduction{]} Deterministic tie-breaking makes an optimizer
+single-valued but does not make the true support identifiable. A target
+such as the unique smallest support, as used by Wang, Xie, and Zhang, is
+an additional statistical assumption.
+
+\section{8. Fixed-sample
+constructions}\label{fixed-sample-constructions}
+
+\subsection{8.1 Exact residual-ball certificate: known
+variance}\label{exact-residual-ball-certificate-known-variance}
+
+\textbf{Theorem 2 {[}Original result --- proof complete; assumption
+level 1{]}.} Let $X\in\mathbb R^{n\times p}$ be fixed, let
+
+$$
+Y=X\beta^\star+\varepsilon,
+\qquad
+\varepsilon\sim N(0,\sigma^2I_n),
+$$
+
+with known $\sigma$, and assume
+$\beta^\star\in\Theta\subseteq\mathbb R^p$. Let $q_{n,1-\alpha}$ be
+the $(1-\alpha)$-quantile of $\chi_n^2$. Define
+
+$$
+C_{\alpha}(Y;\Theta)
+=
+\left\{\beta\in\Theta:
+\lVert Y-X\beta\rVert_2^2
+\le\sigma^2q_{n,1-\alpha}
+\right\},
+$$
+
+$$
+U_{0,\alpha}(Y)
+=
+\bigcup_{\beta\in C_\alpha(Y;\Theta)}
+\operatorname{supp}(\beta),
+$$
+
+and, for any raw selector $\widehat S(Y)$,
+
+$$
+U_\alpha(Y)=\widehat S(Y)\cup U_{0,\alpha}(Y).
+$$
+
+Then, conditional on $X$,
+
+$$
+\Pr_{\beta^\star}\{S^\star\subseteq U_\alpha(Y)\}\ge1-\alpha.
+$$
+
+\textbf{Proof.} {[}Original result --- proof complete{]} At the true
+coefficient,
+
+$$
+\lVert Y-X\beta^\star\rVert_2^2
+=
+\lVert\varepsilon\rVert_2^2,
+\qquad
+\frac{\lVert\varepsilon\rVert_2^2}{\sigma^2}\sim\chi_n^2.
+$$
+
+Thus $\Pr(\beta^\star\in C_\alpha)=1-\alpha$. Lemma 2 gives support
+coverage for $U_{0,\alpha}$, and Lemma 3 preserves it after adjoining
+$\widehat S$. $\square$
+
+{[}Established{]} The theorem does not require $p<n$, full column
+rank, restricted eigenvalues, correct Lasso selection, or exact
+$\ell_0$ recovery. It is uniform over $\Theta$ under the stated
+Gaussian model.
+
+{[}Deduction{]} If $\Theta=\mathbb R^p$, the certificate is normally
+vacuous by Proposition 1 or by nonidentifiability. The useful version
+restricts $\Theta$.
+
+\subsection{8.2 Closed sparse beta-min parameter space and coordinate
+feasibility}\label{closed-sparse-beta-min-parameter-space-and-coordinate-feasibility}
+
+{[}Original result --- proof complete{]} Define
+
+$$
+\Theta_{k,b,B}
+=
+\left\{\beta\in\mathbb R^p:
+\lVert\beta\rVert_0\le k,
+\ \lVert\beta\rVert_2\le B,
+\ \beta_j=0\text{ or }|\beta_j|\ge b\ \forall j
+\right\},
+$$
+
+where $1\le k<n$, $b>0$, and $B<\infty$ are prespecified and are
+assumed to contain $\beta^\star$.
+
+{[}Original result --- proof complete{]} For coordinate $j$, let
+
+$$
+r_j(Y)=
+\min_{\beta\in\Theta_{k,b,B}:\ |\beta_j|\ge b}
+\lVert Y-X\beta\rVert_2^2,
+$$
+
+with $r_j=+\infty$ if the feasible set is empty. Compactness ensures
+the minimum exists. Then
+
+$$
+j\in U_{0,\alpha}
+\quad\Longleftrightarrow\quad
+r_j(Y)\le\sigma^2q_{n,1-\alpha}.
+$$
+
+{[}Deduction{]} A Lasso-excluded feature
+$j\notin\widehat S_{\mathrm{Lasso}}$ is certified inactive exactly
+when $r_j>\sigma^2q_{n,1-\alpha}$. No multiplicity correction is
+needed because all coordinates are derived from one joint confidence
+event.
+
+{[}Established{]} Each $r_j$ can be formulated as two mixed-integer
+quadratic programs, one imposing $\beta_j\ge b$ and one imposing
+$\beta_j\le-b$, together with sparsity and norm constraints. This
+avoids explicit enumeration of $2^p$ supports but remains NP-hard in
+the worst case. The bound $B$ supplies finite big-$M$ constants when
+a big-$M$ formulation is used.
+
+{[}Deduction{]} The beta-min gap is not a cosmetic power condition. It
+closes the active-coordinate alternative set and removes the local
+perturbations in Theorem 1. Without it, the feasibility infimum for
+$\beta_j\ne0$ can equal the value at $\beta_j=0$, making exact
+exclusion unstable.
+
+\subsection{8.3 Unknown variance with an independent scale
+estimate}\label{unknown-variance-with-an-independent-scale-estimate}
+
+\textbf{Theorem 3 {[}Original result --- proof complete; assumption
+level 2 with external scale information{]}.} In the setup of Theorem 2,
+suppose $\sigma$ is unknown but an independent estimator
+$\widetilde\sigma^2$ satisfies
+
+$$
+\frac{\nu\widetilde\sigma^2}{\sigma^2}\sim\chi_\nu^2.
+$$
+
+Define
+
+$$
+C_{\alpha}^{\mathrm{ind}\text{-}F}
+=
+\left\{\beta\in\Theta:
+\lVert Y-X\beta\rVert_2^2
+\le
+n\widetilde\sigma^2F_{n,\nu;1-\alpha}
+\right\}.
+$$
+
+Then
+$\Pr(\beta^\star\in C_{\alpha}^{\mathrm{ind}\text{-}F})=1-\alpha$, and
+its support union, with or without a selector wrapper, is an exact
+support upper set.
+
+\textbf{Proof.} {[}Original result --- proof complete{]} Independence
+gives
+
+$$
+\frac{\lVert\varepsilon\rVert_2^2/n}{\widetilde\sigma^2}
+=
+\frac{(\chi_n^2/n)}{(\chi_\nu^2/\nu)}
+\sim F_{n,\nu}.
+$$
+
+The remaining argument is Lemmas 2 and 3. $\square$
+
+{[}Established{]} In ordinary $p<n$ regression, the classical joint
+$F$-ellipsoid supplies an exact unknown-variance coefficient set using
+the same sample. Intersecting it with a separated sparse parameter space
+gives a valid support upper set. In $p\ge n$, a full-model residual
+variance estimate generally does not exist without additional structure;
+Wang et al.'s conditioning approach or a joint likelihood construction
+is then more relevant.
+
+\subsection{8.4 Exact residual model collection when the support-size
+class is
+specified}\label{exact-residual-model-collection-when-the-support-size-class-is-specified}
+
+\textbf{Theorem 4 {[}Original result --- proof complete; assumption
+level 1{]}.} Let $\mathcal M$ be a prespecified collection of supports
+$S\subseteq[p]$ such that $\operatorname{rank}(X_S)=|S|<n$, and
+assume $S^\star\in\mathcal M$. Let
+
+$$
+P_S=X_S(X_S^\top X_S)^{-1}X_S^\top,
+\qquad
+\operatorname{RSS}_S=\lVert(I-P_S)Y\rVert_2^2.
+$$
+
+Define
+
+$$
+\Gamma_{1-\alpha}^{\mathrm{RSS}}
+=
+\left\{S\in\mathcal M:
+\operatorname{RSS}_S
+\le
+\sigma^2\chi^2_{n-|S|,1-\alpha}
+\right\}.
+$$
+
+Then
+
+$$
+\Pr(S^\star\in\Gamma_{1-\alpha}^{\mathrm{RSS}})=1-\alpha,
+$$
+
+and $U=\bigcup_{S\in\Gamma_{1-\alpha}^{\mathrm{RSS}}}S$ is an exact
+support upper set.
+
+\textbf{Proof.} {[}Original result --- proof complete{]} Since
+$X\beta^\star\in\operatorname{col}(X_{S^\star})$,
+
+$$
+(I-P_{S^\star})Y=(I-P_{S^\star})\varepsilon.
+$$
+
+The projection $I-P_{S^\star}$ has rank $n-|S^\star|$, so
+
+$$
+\operatorname{RSS}_{S^\star}/\sigma^2\sim\chi^2_{n-|S^\star|}.
+$$
+
+This gives exact model inclusion. Lemma 1 gives support coverage.
+$\square$
+
+{[}Deduction{]} No multiple-testing correction is required for coverage
+of the one true support: only the acceptance probability of $S^\star$
+matters. Multiplicity would matter for other simultaneous
+interpretations of the accepted models.
+
+{[}Established{]} If $\mathcal M=\{S:|S|=k\}$ and $k=|S^\star|$,
+membership of a coordinate in $U$ can be checked by solving an exact
+best-subset residual problem constrained to include that coordinate. If
+$\mathcal M=\{S:|S|\le k\}$ with $k>|S^\star|$, the result remains
+valid but can be uninformative because many supermodels are accepted. If
+$k<|S^\star|$, the assumption $S^\star\in\mathcal M$ fails and so
+does the coverage conclusion.
+
+{[}Deduction{]} The same theorem with an independent variance estimate
+replaces the chi-square cutoff by
+
+$$
+(n-|S|)\widetilde\sigma^2F_{n-|S|,\nu;1-\alpha}.
+$$
+
+\subsection{8.5 Error-budgeted use of a candidate support
+set}\label{error-budgeted-use-of-a-candidate-support-set}
+
+\textbf{Lemma 4 {[}Original result --- proof complete{]}.} Suppose a
+random candidate set $\mathcal S$ satisfies
+
+$$
+\Pr(S^\star\notin\mathcal S)\le\eta,
+$$
+
+and a full-space confidence collection $\Gamma$ satisfies
+
+$$
+\Pr(S^\star\notin\Gamma)\le\xi.
+$$
+
+Then $\Gamma\cap\mathcal S$ contains $S^\star$ with probability at
+least $1-\eta-\xi$.
+
+\textbf{Proof.} {[}Original result --- proof complete{]} The failure
+event is contained in
+
+$$
+\{S^\star\notin\mathcal S\}\cup\{S^\star\notin\Gamma\},
+$$
+
+and the union bound applies. $\square$
+
+{[}Deduction{]} A finite-computation repro-sample implementation could
+be made exactly $(1-\alpha)$-valid if it supplied a computable finite
+bound $\eta$, an exact conditional confidence collection with error
+$\xi$, and any Monte Carlo error $\zeta$, with
+$\eta+\xi+\zeta\le\alpha$.
+
+{[}Established{]} Wang et al.'s Theorem 1 supplies a finite
+candidate-omission expression, but its admissible tuning interval
+depends on unknown $\sigma_0^2$, $|S^\star|$, and $C_{\min}$.
+Therefore it is not directly an implementable user-level error budget
+without additional known bounds or conservative estimation.
+
+{[}Conjecture{]} Exact conditional Monte Carlo ranks, with an add-one
+correction and explicit randomization, may remove an unaccounted finite
+simulation error in the Fisher-Dempster inversion step. A proof would
+need conditional exchangeability of the observed and simulated
+statistics after every data-dependent candidate and nuisance operation.
+That proof is not supplied here.
+
+\section{9. Anytime-valid construction by prequential likelihood
+inversion}\label{anytime-valid-construction-by-prequential-likelihood-inversion}
+
+\subsection{9.1 Generic theorem}\label{generic-theorem}
+
+\textbf{Theorem 5 {[}Original synthesis --- proof complete; assumption
+level 4{]}.} Let $\mathcal F_{t-1}$ contain all observations through
+time $t-1$, and let $x_t$ be $\mathcal F_{t-1}$-measurable or
+revealed before $Y_t$. Let
+
+$$
+Y_t\mid\mathcal F_{t-1},x_t
+\sim p_{\theta^\star}(\cdot\mid x_t),
+\qquad
+\theta^\star=(\beta^\star,\eta^\star)\in\Theta,
+$$
+
+where $\eta$ denotes any nuisance parameter included in the
+conditional likelihood. Let $q_{t-1}(\cdot\mid x_t)$ be any normalized
+$\mathcal F_{t-1}$-measurable predictive density with respect to the
+same dominating measure. Ratios are evaluated on the support of
+$p_\theta$; a candidate $\theta$ assigning zero density to an
+observed response is rejected. Define, for each $\theta\in\Theta$,
+
+$$
+E_t(\theta)
+=
+\prod_{s=1}^t
+\frac{q_{s-1}(Y_s\mid x_s)}
+     {p_\theta(Y_s\mid x_s)},
+\qquad
+C_t=\left\{\theta\in\Theta:E_t(\theta)<\frac1\alpha\right\}.
+$$
+
+Then
+
+$$
+\Pr_{\theta^\star}(\forall t\ge1:\theta^\star\in C_t)
+\ge1-\alpha.
+$$
+
+Let $A_t\subseteq[p]$ be any adapted raw selected set and define
+
+$$
+U_t=A_t\cup
+\bigcup_{(\beta,\eta)\in C_t}
+\operatorname{supp}(\beta).
+$$
+
+Then
+
+$$
+\Pr_{\theta^\star}(\forall t\ge1:S^\star\subseteq U_t)
+\ge1-\alpha.
+$$
+
+\textbf{Proof.} {[}Original synthesis --- proof complete{]} At the
+truth, the one-step factor has conditional expectation
+
+$$
+\mathbb E_{\theta^\star}
+\left[
+\left.
+\frac{q_{t-1}(Y_t\mid x_t)}
+     {p_{\theta^\star}(Y_t\mid x_t)}
+\right|\mathcal F_{t-1},x_t
+\right]
+=
+\int_{\{p_{\theta^\star}>0\}}
+q_{t-1}(y\mid x_t)\,dy
+\le 1.
+$$
+
+Equality holds when the predictive density is supported wherever the
+true model density is positive, as in the Gaussian applications below.
+Therefore $E_t(\theta^\star)$ is a nonnegative supermartingale
+starting at one; under common support it is a martingale. Ville's
+inequality gives
+
+$$
+\Pr\left(\exists t:E_t(\theta^\star)\ge1/\alpha\right)\le\alpha,
+$$
+
+which proves the confidence-sequence statement. On its complement,
+$\theta^\star\in C_t$ for every $t$; Lemma 2 and the selector
+wrapper then give the support event. $\square$
+
+{[}Established{]} The likelihood-ratio supermartingale argument is the
+sequential principle formalized in Kirschner et al.'s Theorem 2. The
+support-union and selector-wrapper steps are the deductions made
+explicit here.
+
+{[}Established{]} The predictor $q_{t-1}$ need not be statistically
+correct. It only needs to be a normalized density chosen predictably;
+the common-support Gaussian case gives conditional expectation exactly
+one, while the general calculation above gives at most one. Better
+predictions generally make the confidence set smaller; validity follows
+from predictability and normalization, not model-selection consistency.
+
+\subsection{9.2 Gaussian known-variance
+form}\label{gaussian-known-variance-form}
+
+{[}Original synthesis --- proof complete{]} Suppose
+
+$$
+Y_t=x_t^\top\beta^\star+\varepsilon_t,
+\qquad
+\varepsilon_t\mid\mathcal F_{t-1},x_t\sim N(0,\sigma^2),
+$$
+
+with known $\sigma$. Let $\widetilde\beta_{t-1}$ be any predictable
+regression estimate and take
+
+$$
+q_{t-1}(\cdot\mid x_t)
+=N(x_t^\top\widetilde\beta_{t-1},\sigma^2).
+$$
+
+Then the confidence sequence is the loss sublevel set
+
+$$
+C_t=
+\left\{\beta\in\Theta:
+\sum_{s=1}^t(Y_s-x_s^\top\beta)^2
+<
+\sum_{s=1}^t(Y_s-x_s^\top\widetilde\beta_{s-1})^2
++2\sigma^2\log(1/\alpha)
+\right\}.
+$$
+
+{[}Deduction{]} If $\Theta=\mathbb R^p$, the support union is
+generally vacuous. If $\Theta=\Theta_{k,b,B}$, the coordinate query is
+a sparse quadratic feasibility problem and can omit variables once all
+beta-min alternatives involving them have cumulative loss above the
+prequential threshold.
+
+\subsection{9.3 Lasso-driven instance}\label{lasso-driven-instance}
+
+\textbf{Corollary 5A {[}Original synthesis --- proof complete;
+Lasso-specific{]}.} At time $t-1$, fit a deterministic-tie Lasso using
+only past data, with $\lambda_{t-1}$ chosen by any rule measurable
+with respect to past data, including past-only cross-validation. Use its
+predictive Gaussian density as $q_{t-1}$, and let
+$A_t=\widehat S_{\mathrm{Lasso},t}$. Then Theorem 5 gives an
+anytime-valid support upper sequence.
+
+{[}Established{]} This does not prove
+$U_t=\widehat S_{\mathrm{Lasso},t}$. The certificate is the enlarged
+set obtained from the likelihood confidence sequence. A Lasso-excluded
+variable is certified inactive only if it is also absent from every
+parameter in $C_t$.
+
+{[}Established{]} Choosing $\lambda_t$ after observing $Y_t$ is
+valid for the next prediction but cannot be retroactively used in the
+factor for $Y_t$. Predictability is the exact optional-stopping
+safeguard.
+
+\subsection{\texorpdfstring{9.4 Exact-$\ell_0$-driven
+instance}{9.4 Exact-\textbackslash ell\_0-driven instance}}\label{exact-ell_0-driven-instance}
+
+\textbf{Corollary 5B {[}Original synthesis --- proof complete;
+exact-$\ell_0$-specific{]}.} At time $t-1$, compute a
+deterministic-tie exact global $\ell_0$-constrained estimator using
+only past data and use its predictive density as $q_{t-1}$. Let
+$A_t$ be its exact selected support. Then Theorem 5 gives an
+anytime-valid enlarged support sequence.
+
+{[}Established{]} An approximate best-subset predictor may also be used
+in the numerator because any normalized predictable density preserves
+validity. It must, however, be labeled approximate, and its selected set
+is not the exact $\ell_0$ solution. Approximation can make the
+confidence sequence wider through worse predictive loss but does not
+invalidate the supermartingale argument.
+
+{[}Established{]} Exact best subset can improve predictive numerator
+quality in some regimes and can directly solve the nonconvex
+coordinate-feasibility problems. It remains worst-case combinatorial.
+
+\subsection{9.5 Unknown variance and joint nuisance
+parameters}\label{unknown-variance-and-joint-nuisance-parameters}
+
+{[}Original synthesis --- proof complete{]} In Theorem 5, take
+
+$$
+p_{\beta,\sigma}(y\mid x)
+=
+\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\left[-\frac{(y-x^\top\beta)^2}{2\sigma^2}\right]
+$$
+
+and let $\Theta$ include $\sigma$ in a prespecified positive range.
+Any predictable Gaussian density with its own positive mean and scale
+can be used as $q_{t-1}$. The same likelihood-ratio proof gives a
+joint confidence sequence for $(\beta,\sigma)$, and the support union
+is taken over its $\beta$-components.
+
+{[}Established{]} This is an exact conceptual treatment of unknown
+variance, not a claim of a closed-form sparse confidence set.
+Computation now involves nonconvex optimization over support,
+coefficients, and scale. Lindon et al.'s invariant construction offers a
+sharper closed-form treatment for low-dimensional Gaussian linear
+restrictions, while the generic joint-likelihood construction is more
+flexible but potentially wider.
+
+\subsection{9.6 Fixed-sample split-likelihood
+version}\label{fixed-sample-split-likelihood-version}
+
+\textbf{Corollary 5C {[}Deduction --- proof complete; assumption levels
+1--3{]}.} Split the observations into training set $A$ and inference
+set $B$. Assume that, conditional on the inference covariates and the
+model parameter, the responses in $B$ have the product likelihood used
+below. Fit any sparse predictor on $A$, define
+
+$$
+E_B(\theta)=
+\prod_{i\in B}
+\frac{p_{\widehat\theta_A}(Y_i\mid x_i)}
+     {p_\theta(Y_i\mid x_i)},
+\qquad
+C_B=\{\theta:E_B(\theta)<1/\alpha\},
+$$
+
+and map $C_B$ to a support upper set. Conditional on the training data
+and inference covariates, $E_B(\theta^\star)$ has expectation at most
+one, and exactly one under common support, so the support certificate
+has finite-sample coverage at least $1-\alpha$.
+
+{[}Established{]} This is a direct universal-inference construction. It
+spends data on independence and can be stabilized by averaging valid
+e-values over independently randomized splits. Products or arbitrary
+data-dependent choices among split e-values are not automatically valid.
+
+\section{10. What remains to prove for
+informativeness}\label{what-remains-to-prove-for-informativeness}
+
+{[}Established{]} The coverage proofs above are complete. A useful rate
+theorem would additionally need a lower bound separating every parameter
+with a false active coordinate from the true mean. A representative
+design-separation quantity for a restricted parameter class is
+
+$$
+\Delta_j^2
+=
+\inf_{\beta\in\Theta:\ |\beta_j|\ge b}
+\frac1n\lVert X(\beta-\beta^\star)\rVert_2^2.
+$$
+
+{[}Deduction{]} If $\Delta_j=0$, no residual- or likelihood-based
+method can reliably exclude coordinate $j$ because an admissible
+active-$j$ parameter produces the same or arbitrarily close mean.
+Positive $\Delta_j$ is a support-specific identifiability requirement.
+
+{[}Conjecture{]} Under predictable designs satisfying a time-growing
+version of $\Delta_{j,t}^2$, conditionally sub-Gaussian noise, and an
+online predictor with sparse regret $R_t=O(k\log t)$, the prequential
+certificate should eventually exclude every inactive $j$ for which the
+cumulative separation dominates $R_t+\log(1/\alpha)$. A complete proof
+requires a uniform lower-tail bound over the nonconvex active-$j$
+parameter class and is not provided here.
+
+{[}Established{]} A practical study should report coverage, $|U_n|$,
+$|Z_n|$, inactive-feature certification rate, time to first
+certification, and solver optimality gaps. Coverage alone is
+insufficient because $U=[p]$ is always valid.
+
+\section{11. Derivation ledger}\label{derivation-ledger}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{landscape}
+\scriptsize
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Candidate method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Assumptions
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Proposed certificate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Proof obligations
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Current status
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Failure mode or counterexample
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{[}Original result{]} Residual ball & Fixed $X$, Gaussian, known
+$\sigma$, $\beta^\star\in\Theta$ &
+$U=\widehat S\cup\bigcup_{\|Y-X\beta\|^2\le\sigma^2\chi^2_{n,1-\alpha}}\operatorname{supp}(\beta)$
+& Exact pivot; support mapping; selector dependence & Proof complete &
+Vacuous if $\Theta$ is continuous/unrestricted \\
+{[}Original result{]} Sparse beta-min residual feasibility & Above plus
+$\Theta_{k,b,B}$ & Include $j$ iff constrained residual $r_j$ is
+below cutoff & Closed parameter class; MIQP exactness; beta-min truth &
+Coverage proof complete; computation instance-dependent & Wrong
+$k,b,B$; NP-hard optimization; weak design separation \\
+{[}Original result{]} Independent-scale residual $F$ set & Independent
+chi-square scale estimate & Replace cutoff by
+$n\widetilde\sigma^2F_{n,\nu}$ & Independence and pivot & Proof
+complete & No independent scale sample available \\
+{[}Original result{]} RSS model collection & Known $\sigma$; true
+support in prespecified full-rank model class & Accept each $S$ by its
+central residual chi-square cutoff; union accepted supports & Correct
+df; true support in class & Proof complete & Union large under many
+supermodels; $k<s^\star$ invalid \\
+{[}Deduction{]} Wang exact model set union & Wang et al.~Theorem 7
+assumptions & $U=\bigcup_{S\in\Gamma}S$ & Model-set coverage and union
+map & Proof complete in principle & Full model-space computation; union
+may be large \\
+{[}Deduction{]} Wang candidate-restricted error budget & Finite
+candidate omission bound and exact conditional test & Intersect exact
+set with candidate set, allocate $\eta+\xi+\zeta\le\alpha$ &
+Implementable finite $\eta$; finite Monte Carlo validity & Union-bound
+proof complete; implementation calibration unresolved & Bounds depend on
+unknown truth/separation; finite simulation error \\
+{[}Original synthesis{]} Prequential likelihood CS & Correct conditional
+likelihood; predictable normalized predictor & Invert $E_t(\theta)$,
+then union supports & Martingale normalization; Ville; support map &
+Proof complete & Continuous $\Theta$ gives $[p]$; nonconvex
+computation \\
+{[}Original synthesis{]} Online Lasso certificate & Prequential
+assumptions; past-only Lasso predictor & Raw Lasso support enlarged by
+sparse likelihood-CS union & Predictability; deterministic ties;
+parameter restriction & Coverage proof complete & Raw Lasso alone not
+certified; current-response tuning breaks factor predictability \\
+{[}Original synthesis{]} Online exact $\ell_0$ certificate &
+Prequential assumptions; exact past optimizer & Exact selected support
+enlarged by likelihood-CS union & Global optimality only for labeling
+raw selector; not for martingale validity & Coverage proof complete &
+Worst-case combinatorial; exactness does not solve identifiability \\
+{[}Conjecture{]} Eventual exclusion rate & Beta-min, cumulative design
+separation, low online regret & Show inactive coordinates leave $U_t$
+after finite time & Uniform nonconvex lower bound and noise control &
+Open & Collinearity or zero separation prevents exclusion \\
+{[}Conjecture{]} Finite exact repro Monte Carlo & Conditional
+exchangeability after all candidate operations & Rank-based conditional
+Monte Carlo p-values plus error budget & Exchangeability and
+data-dependent candidate audit & Open & Selection/nuisance simulation
+can destroy exchangeability \\
+\end{longtable}
+\end{landscape}
+}
+
+\section{12. Gap matrix}\label{gap-matrix}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{landscape}
+\scriptsize
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Coefficient inference
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Support upper set
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Certified inactive set
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Certified active set
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Fixed-sample
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Anytime-valid
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Closest result
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Missing step
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+{[}Established{]} Classical OLS & Exact $t/F$ & Formal union only &
+Usually none for exact zeros & Yes through simultaneous intervals
+excluding zero & Yes, Gaussian $p<n$ & Lindon et al.~exact parametric
+analogue & Joint $F$ region / Lindon CS & Restricted/discrete support
+space and nonvacuous union \\
+{[}Established{]} Lasso & Debiased and selective coefficient methods &
+Raw support only under recovery assumptions; wrapper constructions
+available & Raw exclusions not certified & Debiased/selective tests can
+certify selected activity targets & Exact only for selected conditional
+targets; asymptotic broadly & Prequential Lasso likelihood construction
+in this report & Wang model set; Kirschner LR CS; residual wrapper &
+Separation, computation, and raw-selector equality \\
+{[}Established{]} Exact $\ell_0$ & Selective intervals after best
+subset; coefficient sets via repro samples & Model collections and exact
+residual constructions & Via union complement when informative &
+Selection alone does not certify activity & Yes in constructions stated
+here and Wang Theorem 7 & Prequential exact-$\ell_0$ construction in
+this report & Wang et al.~2026; Theorem 4 here & Efficient exact
+model-set computation and power theory \\
+{[}Established{]} Debiased Lasso & Asymptotic coordinate/simultaneous
+intervals & Formal but vacuous continuous-set union & No exact-zero
+certificate & Yes asymptotically when zero excluded & No exact general
+finite-sample guarantee & No standard e-process version audited & Zhang
+\& Zhang; van de Geer et al. & Time-uniform Gaussian approximation and
+upper-support nonregularity \\
+{[}Established{]} Selective inference & Exact conditional
+selected-coefficient intervals & No & No statement for omitted variables
+& Conditional selected-target statements & Yes under fixed selection
+event & No general anytime selective-support result audited & Lee et
+al.; Lin \& Li & Sequential selection conditioning and support target \\
+{[}Established{]} Model confidence collections & Not necessarily & Union
+gives upper set & Yes if union omits variables & Not necessarily &
+Ferrari classical; Wang high-dimensional exact generic set & No
+established direct anytime model collection found & Wang et al.~Theorem
+7 & Nonvacuous union, finite computation, sequential composite models \\
+{[}Established{]} Self-normalized/likelihood CS & Joint coefficient CS &
+Formal union gives upper set & Only under restricted parameter space &
+Can certify activity through CS exclusion of zero & Yes at every fixed
+time as part of CS & Yes & Abbasi; Lindon; Kirschner & Sparse separated
+parameter space and coordinate feasibility \\
+{[}Original result{]} Residual-ball / prequential wrapper & Joint
+parameter set & Yes & Yes under beta-min/exact-size restrictions & Not
+the primary target & Yes & Yes for prequential version & Theorems 2 and
+5 here & Tightness rates, assumption choice, scalable solver \\
+\end{longtable}
+\end{landscape}
+}
+
+\section{13. Counterexamples and failure
+modes}\label{counterexamples-and-failure-modes}
+
+{[}Original result --- proof complete{]} \textbf{Continuous
+alternatives.} Theorem 1 shows that exact-zero certification has
+probability at most $\alpha$ at a zero that can be approached by
+active alternatives. This rules out uniformly powerful exact-zero
+certificates over unrestricted continuous coefficient spaces.
+
+{[}Original result --- proof complete{]} \textbf{Confidence-ellipsoid
+vacuity.} Any full-dimensional coefficient confidence set has support
+union $[p]$, irrespective of how small its volume is.
+
+{[}Deduction{]} \textbf{Full-model collection vacuity.} Any
+model-confidence collection containing $[p]$ has union $[p]$. Exact
+model coverage does not imply informative inactive-feature
+certification.
+
+{[}Original result --- proof complete{]} \textbf{Collinear
+representation.} If $X_1=X_2$, the parameters
+$(\beta_1,\beta_2)=(a,0)$ and $(0,a)$ induce the same mean. Uniform
+support inference over both cannot reliably certify either duplicated
+feature as inactive.
+
+{[}Established{]} \textbf{Misspecified sparsity.} If an exact-$\ell_0$
+method restricts all candidate supports to size $k<s^\star$, no
+support upper set formed solely from those candidates can cover
+$S^\star$.
+
+{[}Established{]} \textbf{Cross-validation transfer error.} A selective
+or recovery theorem for fixed $\lambda$ does not automatically cover
+cross-validated $\lambda$. A prequential construction remains valid
+only when the value used to predict $Y_t$ is chosen before $Y_t$ is
+observed.
+
+{[}Established{]} \textbf{Approximate-versus-exact optimization.} An
+approximate support can be used as a predictor or as an arbitrary
+wrapper set, but it cannot be reported as the exact global $\ell_0$
+solution. Solver gaps must be included in any claim about exact
+best-subset output.
+
+\section{14. Recommended research
+program}\label{recommended-research-program}
+
+{[}Deduction{]} The first implementable benchmark should use assumption
+level 1 with a prespecified $\Theta_{k,b,B}$. Compute the
+residual-ball certificate, the exact-size RSS model collection when
+$k=s^\star$ is known, and the prequential likelihood certificate.
+Compare all three to $U=[p]$, the raw Lasso support, and the raw
+exact-$\ell_0$ support.
+
+{[}Deduction{]} The second benchmark should vary $b$, support size,
+column coherence, and the restricted separation $\Delta_j$. The
+purpose is to identify the phase transition from exact but vacuous
+coverage to useful exclusion.
+
+{[}Deduction{]} The third step should replace known $\sigma$ by an
+independent or jointly modeled scale and compare the generic likelihood
+construction with Wang et al.'s conditional nuisance elimination.
+
+{[}Deduction{]} The fourth step should implement online Lasso and online
+exact-$\ell_0$ predictors in Theorem 5. The same support parameter
+space should be used so that differences in $|U_t|$ reflect predictive
+regret and computation rather than different validity assumptions.
+
+{[}Conjecture{]} The most promising theoretical rate result is an
+eventual-exclusion theorem under beta-min, cumulative restricted
+eigenvalue/separation, and bounded online regret. The key inequality
+should compare the best active-$j$ likelihood to the prequential
+predictor's likelihood uniformly over all inactive $j$.
+
+\section{15. Prioritized reading list with
+locators}\label{prioritized-reading-list-with-locators}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  {[}Established{]} \textbf{Wang, Xie, and Zhang (2026).} Read Sections
+  2--3; Theorems 1, 2, 7, 8, and 9; Remark 2; and the model-confidence
+  algorithm. Theorem 7 is the exact full-space result. Theorems 8--9
+  distinguish computational and sample asymptotics.
+\item
+  {[}Established{]} \textbf{Kirschner, Krause, Meziu, and Mutný (2025).}
+  Read Theorems 2 and 4, the sequential Gaussian linear-regression
+  subsection, Theorem 9, Lemma 14, and the sparse linear-regression
+  discussion. These give the cleanest route to the prequential
+  construction.
+\item
+  {[}Established{]} \textbf{Lindon, Ham, Tingley, and Bojinov (2026).}
+  Read the exact parametric linear-model section, especially the
+  invariant likelihood-ratio theorem and the coefficient/group
+  confidence-sequence corollaries. Keep its exact parametric and
+  asymptotically robust sections separate.
+\item
+  {[}Established{]} \textbf{Ramdas, Grünwald, Vovk, and Shafer (2023).}
+  Read the definitions of test martingales, e-processes, confidence
+  sequences, composite nulls, and optional continuation before using
+  SAVI terminology.
+\item
+  {[}Established{]} \textbf{Ferrari and Yang (2015).} Read Theorem 1 and
+  the lower-boundary-model discussion. Note that a confidence collection
+  and an upper support set are different objects.
+\item
+  {[}Established{]} \textbf{Li et al.~(2019), with Leeb et al.~(2019).}
+  Read the bootstrap model-bound theorem together with the discussion on
+  consistency and nonuniformity.
+\item
+  {[}Established{]} \textbf{Nickl and van de Geer (2013).} Read the main
+  honest-adaptation theorems and separation regimes. This is central for
+  deciding which beta-min or testing assumptions are unavoidable.
+\item
+  {[}Established{]} \textbf{Pötscher (2009) and Pötscher and Schneider
+  (2010).} Read the lower-bound statements on the size of uniformly
+  valid confidence sets based on sparse estimators.
+\item
+  {[}Established{]} \textbf{Lee et al.~(2016) and Lin and Li (2023).}
+  Read the target definitions as carefully as the pivots: both are exact
+  coefficient-inference results after selection, not support-confidence
+  results.
+\item
+  {[}Established{]} \textbf{Abbasi-Yadkori, Pál, and Szepesvári (2011).}
+  Read Theorem 2 and its predictable-design assumptions as the canonical
+  self-normalized regression confidence ellipsoid.
+\item
+  {[}Established{]} \textbf{Bertsimas, King, and Mazumder (2016);
+  Bertsimas and Van Parys (2020).} Read the optimization formulations
+  and optimality guarantees as computational components, not inferential
+  results.
+\item
+  {[}Search limitation{]} \textbf{Battey, Garcia Rasines, and Tang (2026
+  preprint revision).} Audit the complete conditional-inference theorem
+  chain before using it for a finite-sample post-reduction support
+  claim.
+\end{enumerate}
+
+\section{16. Bibliography}\label{bibliography}
+
+{[}Source{]} Abbasi-Yadkori, Y., Pál, D., \& Szepesvári, C. (2011).
+\href{https://proceedings.neurips.cc/paper/2011/hash/e1d5be1c7f2f456670de3d53c7b54f4a-Abstract.html}{Improved
+Algorithms for Linear Stochastic Bandits}. \emph{Advances in Neural
+Information Processing Systems}, 24.
+
+{[}Source{]} Battey, H. S. (2023).
+\href{https://doi.org/10.1093/jrsssb/qkad001}{On inference in
+high-dimensional regression}. \emph{Journal of the Royal Statistical
+Society Series B}, 85(1), 149--175.
+
+{[}Source{]} Battey, H., Garcia Rasines, D., \& Tang, Y. (2026
+revision). \href{https://arxiv.org/abs/2507.10373}{Post-reduction
+inference for confidence sets of models}. arXiv:2507.10373v2. Preprint.
+
+{[}Source{]} Berk, R., Brown, L., Buja, A., Zhang, K., \& Zhao, L.
+(2013). \href{https://doi.org/10.1214/12-AOS1077}{Valid post-selection
+inference}. \emph{The Annals of Statistics}, 41(2), 802--837.
+
+{[}Source{]} Bertsimas, D., King, A., \& Mazumder, R. (2016).
+\href{https://doi.org/10.1214/15-AOS1388}{Best subset selection via a
+modern optimization lens}. \emph{The Annals of Statistics}, 44(2),
+813--852.
+
+{[}Source{]} Bertsimas, D., \& Van Parys, B. (2020).
+\href{https://doi.org/10.1214/18-AOS1804}{Sparse high-dimensional
+regression: Exact scalable algorithms and phase transitions}. \emph{The
+Annals of Statistics}, 48(1).
+
+{[}Source{]} Bickel, P. J., Ritov, Y., \& Tsybakov, A. B. (2009).
+\href{https://doi.org/10.1214/08-AOS620}{Simultaneous analysis of Lasso
+and Dantzig selector}. \emph{The Annals of Statistics}, 37(4),
+1705--1732.
+
+{[}Source{]} Darling, D. A., \& Robbins, H. (1967).
+\href{https://doi.org/10.1073/pnas.58.1.66}{Confidence sequences for
+mean, variance, and median}. \emph{Proceedings of the National Academy
+of Sciences}, 58(1), 66--68.
+
+{[}Source{]} de la Peña, V. H., Klass, M. J., \& Lai, T. L. (2004).
+\href{https://doi.org/10.1214/009117904000000397}{Self-normalized
+processes: Exponential inequalities, moment bounds and iterated
+logarithm laws}. \emph{The Annals of Probability}, 32(3A).
+
+{[}Source{]} Dezeure, R., Bühlmann, P., Meier, L., \& Meinshausen, N.
+(2015). \href{https://doi.org/10.1214/15-STS527}{High-dimensional
+inference: Confidence intervals, p-values and R-software hdi}.
+\emph{Statistical Science}, 30(4), 533--558.
+
+{[}Source{]} Fan, J., \& Lv, J. (2008).
+\href{https://doi.org/10.1111/j.1467-9868.2008.00674.x}{Sure
+independence screening for ultrahigh dimensional feature space}.
+\emph{Journal of the Royal Statistical Society Series B}, 70(5),
+849--911.
+
+{[}Source{]} Ferrari, D., \& Yang, Y. (2015).
+\href{https://doi.org/10.5705/ss.2014.110}{Confidence sets for model
+selection by F-testing}. \emph{Statistica Sinica}, 25(4), 1637--1658.
+
+{[}Source{]} Grünwald, P., de Heide, R., \& Koolen, W. (2024).
+\href{https://doi.org/10.1093/jrsssb/qkae011}{Safe testing}.
+\emph{Journal of the Royal Statistical Society Series B}.
+
+{[}Source{]} Howard, S. R., Ramdas, A., McAuliffe, J., \& Sekhon, J.
+(2020). \href{https://doi.org/10.1214/18-PS321}{Time-uniform Chernoff
+bounds via nonnegative supermartingales}. \emph{Probability Surveys},
+17, 257--317.
+
+{[}Source{]} Howard, S. R., Ramdas, A., McAuliffe, J., \& Sekhon, J.
+(2021). \href{https://doi.org/10.1214/20-AOS1991}{Time-uniform,
+nonparametric, nonasymptotic confidence sequences}. \emph{The Annals of
+Statistics}, 49(2), 1055--1080.
+
+{[}Source{]} Kirschner, J., Krause, A., Meziu, M., \& Mutný, M. (2025).
+\href{https://arxiv.org/abs/2502.14689}{Confidence Estimation via
+Sequential Likelihood Mixing}. arXiv:2502.14689v1. Preprint.
+
+{[}Source{]} Lai, T. L. (1976).
+\href{https://doi.org/10.1214/aos/1176343406}{On confidence sequences}.
+\emph{The Annals of Statistics}, 4(2), 265--280.
+
+{[}Source{]} Lee, J. D., Sun, D. L., Sun, Y., \& Taylor, J. E. (2016).
+\href{https://doi.org/10.1214/15-AOS1371}{Exact post-selection
+inference, with application to the Lasso}. \emph{The Annals of
+Statistics}, 44(3), 907--927.
+
+{[}Source{]} Leeb, H., Pötscher, B. M., \& Kivaranovic, D. (2019).
+\href{https://doi.org/10.1111/biom.13021}{Discussion on ``Model
+confidence bounds for variable selection''}. \emph{Biometrics}, 75(2),
+407--410.
+
+{[}Source{]} Li, Y., Luo, Y., Ferrari, D., Hu, X., \& Qin, Y. (2019).
+\href{https://doi.org/10.1111/biom.13024}{Model confidence bounds for
+variable selection}. \emph{Biometrics}, 75(2), 392--403.
+
+{[}Source{]} Lin, H., \& Li, M. (2023).
+\href{https://arxiv.org/abs/2311.13768}{Valid confidence intervals for
+regression with best subset selection}. arXiv:2311.13768. Preprint.
+
+{[}Source{]} Lindon, M., Ham, D. W., Tingley, M., \& Bojinov, I. (2026).
+\href{https://doi.org/10.1080/01621459.2026.2692052}{Anytime-Valid
+Inference in Linear Models with Applications to Regression-Adjusted
+Causal Inference}. \emph{Journal of the American Statistical
+Association}. See also
+\href{https://arxiv.org/abs/2210.08589}{arXiv:2210.08589}.
+
+{[}Source{]} Nickl, R., \& van de Geer, S. (2013).
+\href{https://doi.org/10.1214/13-AOS1170}{Confidence sets in sparse
+regression}. \emph{The Annals of Statistics}, 41(6), 2852--2876.
+
+{[}Source{]} Pötscher, B. M. (2009).
+\href{https://arxiv.org/abs/0711.1036}{Confidence Sets Based on Sparse
+Estimators Are Necessarily Large}. \emph{Sankhyā}, 71, 1--18.
+
+{[}Source{]} Pötscher, B. M., \& Schneider, U. (2010).
+\href{https://doi.org/10.1214/09-EJS523}{Confidence sets based on
+penalized maximum likelihood estimators in Gaussian regression}.
+\emph{Electronic Journal of Statistics}, 4, 334--360.
+
+{[}Source{]} Ramdas, A., Grünwald, P., Vovk, V., \& Shafer, G. (2023).
+\href{https://doi.org/10.1214/23-STS894}{Game-Theoretic Statistics and
+Safe Anytime-Valid Inference}. \emph{Statistical Science}.
+
+{[}Source{]} Scheffé, H. (1953).
+\href{https://doi.org/10.1093/biomet/40.1-2.87}{A method for judging all
+contrasts in the analysis of variance}. \emph{Biometrika}, 40(1--2),
+87--110.
+
+{[}Source{]} Shafer, G., Shen, A., Vereshchagin, N., \& Vovk, V. (2011).
+\href{https://doi.org/10.1214/10-STS347}{Test martingales, Bayes factors
+and p-values}. \emph{Statistical Science}, 26(1), 84--101.
+
+{[}Source{]} Shen, X., Pan, W., Zhu, Y., \& Zhou, H. (2013).
+\href{https://doi.org/10.1007/s10463-012-0396-3}{On constrained and
+regularized high-dimensional regression}. \emph{Annals of the Institute
+of Statistical Mathematics}, 65(5), 807--832.
+
+{[}Source{]} van de Geer, S., Bühlmann, P., Ritov, Y., \& Dezeure, R.
+(2014). \href{https://doi.org/10.1214/14-AOS1221}{On asymptotically
+optimal confidence regions and tests for high-dimensional models}.
+\emph{The Annals of Statistics}, 42(3), 1166--1202.
+
+{[}Source{]} Ville, J. (1939).
+\href{https://numdam.org/item/THESE_1939__218__1_0/}{\emph{Étude
+critique de la notion de collectif}}. Gauthier-Villars.
+
+{[}Source{]} Vovk, V., \& Wang, R. (2021).
+\href{https://doi.org/10.1214/20-AOS2020}{E-values: Calibration,
+combination, and applications}. \emph{The Annals of Statistics}, 49(3),
+1736--1754.
+
+{[}Source{]} Wainwright, M. J. (2009).
+\href{https://doi.org/10.1109/TIT.2009.2016018}{Sharp thresholds for
+high-dimensional and noisy sparsity recovery using
+$\ell_1$-constrained quadratic programming}. \emph{IEEE Transactions
+on Information Theory}, 55(5), 2183--2202.
+
+{[}Source{]} Wang, H., \& Ramdas, A. (2025).
+\href{https://doi.org/10.1080/07474946.2024.2428245}{Anytime-valid
+t-tests and confidence sequences for Gaussian means with unknown
+variance}. \emph{Journal of Statistical Computation and Simulation}.
+
+{[}Source{]} Wang, P., Xie, M.-G., \& Zhang, L. (2026).
+\href{https://doi.org/10.1214/25-AOS2591}{Finite- and large-sample
+inference for model and coefficients in high-dimensional linear
+regression with repro samples}. \emph{The Annals of Statistics}, 54(2),
+834--860. See also
+\href{https://arxiv.org/abs/2209.09299}{arXiv:2209.09299v4}.
+
+{[}Source{]} Wasserman, L., Ramdas, A., \& Balakrishnan, S. (2020).
+\href{https://doi.org/10.1073/pnas.1922664117}{Universal inference}.
+\emph{Proceedings of the National Academy of Sciences}, 117(29),
+16880--16890.
+
+{[}Source{]} Zhang, C.-H., \& Zhang, S. S. (2014).
+\href{https://doi.org/10.1111/rssb.12026}{Confidence intervals for low
+dimensional parameters in high dimensional linear models}. \emph{Journal
+of the Royal Statistical Society Series B}, 76(1), 217--242.
+
+{[}Source{]} Zhao, P., \& Yu, B. (2006).
+\href{https://www.jmlr.org/papers/v7/zhao06a.html}{On model selection
+consistency of Lasso}. \emph{Journal of Machine Learning Research}, 7,
+2541--2563.
+
+\section{17. Final assessment}\label{final-assessment}
+
+{[}Established{]} A correct answer to the original inferential question
+must not be phrased as ``run Lasso and trust the zeros.'' The raw sparse
+selector and the confidence certificate are separate objects.
+
+{[}Established{]} Exact fixed-sample support coverage is available
+through three routes identified here: an exact model-confidence
+collection followed by a support union; an exact restricted parameter
+confidence set followed by a support union; or an exact likelihood-ratio
+confidence set followed by a support union. Wang, Xie, and Zhang provide
+the strongest established high-dimensional model-confidence result. The
+residual and prequential constructions give transparent alternative
+routes.
+
+{[}Original result --- proof complete{]} The Lasso and exact $\ell_0$
+estimators can be incorporated without selection-validity assumptions by
+using them as arbitrary wrapper sets or predictable likelihood
+predictors. Their optimization quality affects informativeness, not the
+exact coverage proof.
+
+{[}Established{]} Without support identifiability or a separation
+condition, the exact-zero target is nonregular and useful uniform
+certification is impossible at the boundary. Any scientifically
+defensible method must state the separation model explicitly and report
+how certificate size changes as the separation weakens.
+
+{[}Search limitation{]} No audited source was found that already
+provides all of the following in one practical method: high-dimensional
+$p\ge n$; fixed finite $n$; exact user-calibrated coverage at fixed
+finite computational budget; unknown variance; data-adaptive tuning; a
+nonvacuous upper support set; and anytime validity under adaptive
+covariates. The constructions in this report satisfy exact coverage
+under explicit subsets of these assumptions, while computation and
+informativeness remain the central research tasks.
+
+\end{document}
